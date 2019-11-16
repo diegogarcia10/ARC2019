@@ -1,0 +1,37 @@
+{% extends 'base/index.html'%}
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col-md-4"></div>
+		
+		<div class="col-md-4 text-center">
+			<form method="POST">
+			{% csrf_token %}
+			<br>
+			<hr>
+			<h3>Elija de que tipo de usuario Iniciara sesion</h3>
+			<hr>
+			{% if medico %}
+			<h2>Como Medico</h2>
+			<button class="btn btn-primary" type="submit" name="btnMedico">Click Aqui</button>
+			{% endif %}
+			<hr>
+			{% if paciente %}
+			<h2>Como Paciente</h2>
+			<button class="btn btn-warning" name="btnPaciente" >Click Aqui</button>
+			{% endif %}
+			<hr>
+			{% if resepcionista %}
+			<h2>Como Resepcionista</h2>
+			<button class="btn btn-default" name="btnResepcionista">Click Aqui</button>
+			{% endif %}	
+			</form>
+		</div>
+		
+		<div class="col-md4-"></div>
+	</div>
+</div>
+
+{% endblock %}
+{% block footer %}
+{% endblock %}

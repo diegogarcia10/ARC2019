@@ -6,7 +6,7 @@
 {% block head %}
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Docmed</title>
+    <title>INICIO</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -41,6 +41,7 @@
     <header>
     {% block header %}
         <div class="header-area ">
+            <!--
             <div class="header-top_area">
                 <div class="container">
                     <div class="row">
@@ -68,49 +69,82 @@
                     </div>
                 </div>
             </div>
+            -->
             <div id="sticky-header" class="main-header-area">
                 <div class="container">
                     <div class="row align-items-center">
                         <div class="col-xl-3 col-lg-2">
+                            {% if not tipoPersona  %}                                
                             <div class="logo">
-                                <a href="index.html">
+                                <a href="{% url 'hospital:index' %}">
                                     <img src="{% static 'img/logo.png' %}" alt="">
                                 </a>
                             </div>
+                            {% else%}
+                            <div class="logo">
+                                <a href="{% url 'hospital:index3' tipoPersona %}">
+                                    <img src="{% static 'img/logo.png' %}" alt="">
+                                </a>
+                            </div>
+                            {% endif %}
                         </div>
                         <div class="col-xl-6 col-lg-7">
                             <div class="main-menu  d-none d-lg-block">
                                 <nav>
                                 {% block navbar %}
-                                    <ul id="navigation">
-                                        <li><a class="active" href="index.html">home</a></li>
-                                        <li><a href="Department.html">Department</a></li>
-                                        <li><a href="#">blog <i class="ti-angle-down"></i></a>
-                                            <ul class="submenu">
-                                                <li><a href="blog.html">blog</a></li>
-                                                <li><a href="single-blog.html">single-blog</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="#">pages <i class="ti-angle-down"></i></a>
-                                            <ul class="submenu">
-                                                <li><a href="elements.html">elements</a></li>
-                                                <li><a href="about.html">about</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="Doctors.html">Doctors</a></li>
-                                        <li><a href="contact.html">Contact</a></li>
-                                    </ul>
+                                {% if not tipoPersona  %}
+                                {% else %}
+                                {% ifequal tipoPersona "1" %}
+                                <!--
+                                <ul id="navigation">
+                                    <li><a href="#">Buscar Expediente</a></li>
+                                    <li><a href="#">Generar Cita</a></li>
+                                    <li><a href="#">Generar Boleta de Medicamentos</a></li>
+                                    
+                                </ul> 
+                                -->
+                                <ul id="navigation">
+                                    <h3>Bienvenido Medico</h3>
+                                </ul>                                   
+                                {% endifequal %}
+                                {% ifequal tipoPersona "2" %}
+                                <ul id="navigation">
+                                    <li><a href="#">Ver Citas Futuras</a></li>
+                                    <li><a href="#">Mi Expediente</a></li>
+                                    <li><a href="#">Mis Medicamentos</a></li>
+                                    <li><a href="#">Historial de Citas</a></li>
+                                </ul>
+                                {% endifequal %}
+                                {% ifequal tipoPersona "3" %}
+                                <ul id="navigation">
+                                    <li><a href="#">Registrar Entrada</a></li>
+                                    <li><a href="#">Gestionar Pacientes</a></li>
+                                    <li><a href="#">Gestionar Doctores</a></li>
+                                    
+                                </ul>
+                                {% endifequal %}
+                                {% endif %}
                                 {% endblock %}
                                 </nav>
                             </div>
                         </div>
+                        {% if user.is_authenticated %}
                         <div class="col-xl-3 col-lg-3 d-none d-lg-block">
                             <div class="Appointment">
-                                <div class="book_btn d-none d-lg-block">
-                                    <a class="popup-with-form" href="#test-form">Make an Appointment</a>
+                                <div class="book_btn  d-lg-block">
+                                    <a  href="{% url 'logout' %}"><b>{{user.first_name}}</b> Cerrar sesion</a>
                                 </div>
                             </div>
                         </div>
+                        {% else %}
+                        <div class="col-xl-3 col-lg-3 d-none d-lg-block">
+                            <div class="Appointment">
+                                <div class="book_btn d-none d-lg-block">
+                                    <a  href="{% url 'login' %}">Iniciar Sesion</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
                         <div class="col-12">
                             <div class="mobile_menu d-block d-lg-none"></div>
                         </div>
@@ -788,7 +822,8 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     <script src="{% static 'js/jquery.form.js' %}"></script>
     <script src="{% static 'js/jquery.validate.min.js' %}"></script>
     <script src="{% static 'js/mail-script.js' %}"></script>
-
+    {% block extrajs %}
+    {% endblock %}
     <script src="{% static 'js/main.js' %}"></script>
     <script>
         $('#datepicker').datepicker({
