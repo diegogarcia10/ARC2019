@@ -35,7 +35,7 @@ class Especialidad(models.Model):
 		return str(self.nombre_especialidad)
 
 class Medico(models.Model):
-	especialidad=models.ForeignKey(Especialidad,on_delete=models.CASCADE)
+	especialidad=models.ManyToManyField(Especialidad)
 	cod_persona=models.ForeignKey(Persona,on_delete=models.CASCADE)
 	cod_medico=models.CharField(max_length=10,primary_key=True)
 	num_regsitro=models.CharField(max_length=20)
@@ -64,7 +64,8 @@ class SistemaMedicion(models.Model):
 		return str(self.nombre_sistema)
 
 class Medicamento(models.Model):
-	cod_sistema_medicion=models.ForeignKey(SistemaMedicion,on_delete=models.CASCADE)
+	sistema_medicion=models.ManyToManyField(SistemaMedicion)
+	nombre_medicamento=models.CharField(max_length=40)
 	farmacia=models.CharField(max_length=50)
 	descripcion=models.CharField(max_length=100)
 	cod_medicamento=models.CharField(max_length=10,primary_key=True)

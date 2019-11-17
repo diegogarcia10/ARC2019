@@ -141,4 +141,59 @@ def especialidadEdit(request, cod_especialidad):
 			form1.save()
 		return redirect('hospital:especialidadList')
 	return render(request, 'especialidad/especialidadCreate.html', {'form1':form1})
+
+def medicamentoList(request):
+	if 'buscar' in request.GET:		
+		if request.GET['buscarInput'] != "":
+			palabraClave = request.GET['buscarInput']
+			
+			if Medicamento.objects.filter(cod_medicamento__contains = palabraClave).exists():
+				medicamento = Medicamento.objects.filter(cod_medicamento__contains = palabraClave)
+				contexto={'medicamentos':medicamento}
+				return render(request, 'medicamento/medicamentoList.html', contexto)
+			else:
+				if Medicamento.objects.filter(nombre_medicamento__contains = palabraClave).exists():
+					medicamento = Medicamento.objects.filter(nombre_medicamento__contains = palabraClave)
+					contexto={'medicamentos':medicamento}
+					return render(request, 'medicamento/medicamentoList.html', contexto)
+				
+		pass
+	if 'accion' in request.POST:
+		accion = request.POST['accion']
+		codigo_medicamento = request.POST['medicamento']
+		medicamento = Medicamento.objects.get(cod_medicamento = codigo_medicamento)
+		if accion == 'Eliminar':	
+			medicamento.delete()
+			pass
+						
+		else:
+			pass
+		pass
+	medicamento = Medicamento.objects.all().order_by('cod_medicamento')
+	contexto = {'medicamentos':medicamento}
+	return render(request, 'medicamento/medicamentoList.html', contexto)
+
+def medicamentoCreate(request):
+	if request.method == 'POST':
+		form = MedicamentoForm(request.POST)
+		if form.is_valid():
+			form.save()
+			pass
+		pass
+		return redirect('hospital:medicamentoList')
+	else:
+		form = MedicamentoForm()
+	return render(request, 'medicamento/medicamentoCreate.html', {'form':form})
+
+def medicamentoEdit(request, cod_medicamento):
+	medicamento = Medicamento.objects.get(pk=cod_medicamento)
+#	print(medicamento.sistema_medicion.nombre_medicamento.all())
+	if request.method == 'GET':
+		form1 = MedicamentoForm_2(instance=medicamento)
+	else:
+		form1 = MedicamentoForm_2(request.POST, instance=medicamento)
+		if form1.is_valid():
+			form1.save()
+		return redirect('hospital:medicamentoList')
+	return render(request, 'medicamento/medicamentoCreate.html', {'form1':form1})
 #Final views Marco
