@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from apps.hospital.models import *
+from apps.hospital.forms import *
 
 def usuarioActual(param=None):
 	usuario_actual=""
@@ -85,4 +86,59 @@ def index3(request,id_tipo):
 		tipoPersona="3"
 		print("Elijio 3")
 		return render(request,'base/index.html',{'tipoPersona':tipoPersona})
-	
+
+#view Marco
+def especialidadList(request):
+	if 'buscar' in request.GET:		
+		if request.GET['buscarInput'] != "":
+			palabraClave = request.GET['buscarInput']
+			
+			if Especialidad.objects.filter(cod_especialidad__contains = palabraClave).exists():
+				especialidad = Especialidad.objects.filter(cod_especialidad__contains = palabraClave)
+				contexto={'especialidades':especialidad}
+				return render(request, 'especialidad/especialidadList.html', contexto)
+			else:
+				if Especialidad.objects.filter(nombre_especialidad__contains = palabraClave).exists():
+					especialidad = Especialidad.objects.filter(nombre_especialidad__contains = palabraClave)
+					contexto={'especialidades':especialidad}
+					return render(request, 'especialidad/especialidadList.html', contexto)
+				
+		pass
+	if 'accion' in request.POST:
+		accion = request.POST['accion']
+		codigo_especialidad = request.POST['especialidad']
+		especialidad = Especialidad.objects.get(cod_especialidad = codigo_especialidad)
+		if accion == 'Eliminar':	
+			especialidad.delete()
+			pass
+						
+		else:
+			pass
+		pass
+	especialidad = Especialidad.objects.all().order_by('cod_especialidad')
+	contexto = {'especialidades':especialidad}
+	return render(request, 'especialidad/especialidadList.html', contexto)	
+
+def especialidadCreate(request):
+	if request.method == 'POST':
+		form = EspecialidadForm(request.POST)
+		if form.is_valid():
+			form.save()
+			pass
+		pass
+		return redirect('hospital:especialidadList')
+	else:
+		form = EspecialidadForm()
+	return render(request, 'especialidad/especialidadCreate.html', {'form':form})
+
+def especialidadEdit(request, cod_especialidad):
+	especialidad = Especialidad.objects.get(pk=cod_especialidad)
+	if request.method == 'GET':
+		form1 = EspecialidadForm_2(instance=especialidad)
+	else:
+		form1 = EspecialidadForm_2(request.POST, instance=especialidad)
+		if form1.is_valid():
+			form1.save()
+		return redirect('hospital:especialidadList')
+	return render(request, 'especialidad/especialidadCreate.html', {'form1':form1})
+#Final views Marco

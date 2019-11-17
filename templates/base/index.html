@@ -6,7 +6,7 @@
 {% block head %}
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>INICIO</title>
+    <title>{% block title %} INICIO {% endblock %}</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -27,7 +27,6 @@
     <link rel="stylesheet" href="{% static 'css/slicknav.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <!-- <link rel="stylesheet" href="css/responsive.css"> -->
-    <title>{% block title %} Inicio {% endblock %}</title>
 {% endblock %}
 </head>
 
