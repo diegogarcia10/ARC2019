@@ -1,5 +1,5 @@
 from django import forms
-from apps.hospital.models import Especialidad, Medicamento, SistemaMedicion
+from apps.hospital.models import Especialidad, Medicamento, SistemaMedicion, Medico
 
 class EspecialidadForm(forms.ModelForm):
 
@@ -61,7 +61,7 @@ class MedicamentoForm(forms.ModelForm):
             'nombre_medicamento' : 'Nombre',
             'farmacia' : 'Farmacia',
             'descripcion' : 'Descripción',
-            'sistema_medicion' : 'Sistema de Medición',
+            'sistema_medicion' : 'Sistemas de Medición',
 
         }
 
@@ -91,7 +91,7 @@ class MedicamentoForm_2(forms.ModelForm):
             'nombre_medicamento' : 'Nombre',
             'farmacia' : 'Farmacia',
             'descripcion' : 'Descripción',
-            'sistema_medicion' : 'Sistema de Medición',
+            'sistema_medicion' : 'Sistemas de Medición',
 
         }
 
@@ -143,4 +143,58 @@ class SistemaMedicionForm_2(forms.ModelForm):
         widgets = {
             'cod_sistema' : forms.TextInput(attrs={'class':'form-control','readonly':'readonly','placeholder':'Escriba el Código del Sistema de Medicion'}),
             'nombre_sistema' : forms.TextInput(attrs={'class':'form-control','placeholder':'Escriba el Nombre del Sistema de Medicion'}),
+                    }
+
+class MedicoForm(forms.ModelForm):
+
+    class Meta:
+        model = Medico
+
+        fields = [
+            'cod_medico',
+            'num_regsitro',
+            'especialidad',
+            'cod_persona',
+
+        ]
+        labels = {
+            'cod_medico' : 'Código',            
+            'num_regsitro' : 'Número de Registro',
+            'especialidad' : 'Especialidades',
+            'cod_persona' : 'Persona',
+
+        }
+
+        widgets = {
+            'cod_medico' : forms.TextInput(attrs={'class':'form-control','placeholder':'Escriba el Código del Medico'}),
+            'num_regsitro' : forms.TextInput(attrs={'class':'form-control','placeholder':'Escriba el Numero de Registro del Medico'}),
+            'especialidad': forms.CheckboxSelectMultiple(),
+            'cod_persona': forms.Select(attrs={'class':'form-control'}),
+                    }
+
+class MedicoForm_2(forms.ModelForm):
+
+    class Meta:
+        model = Medico
+
+        fields = [
+            'cod_medico',
+            'num_regsitro',
+            'especialidad',
+            'cod_persona',
+
+        ]
+        labels = {
+            'cod_medico' : 'Código',
+            'num_regsitro' : 'Numero de Registro',
+            'especialidad' : 'Especialidades',
+            'cod_persona' : 'Persona',
+
+        }
+
+        widgets = {
+            'cod_medico' : forms.TextInput(attrs={'class':'form-control','readonly':'readonly','placeholder':'Escriba el Código del Medico'}),
+            'num_regsitro' : forms.TextInput(attrs={'class':'form-control','placeholder':'Escriba el Numero de Registro del Medico'}),
+            'especialidad': forms.CheckboxSelectMultiple(),
+            'cod_persona': forms.Select(attrs={'class':'form-control'}),
                     }

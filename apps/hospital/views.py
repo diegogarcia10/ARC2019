@@ -187,7 +187,6 @@ def medicamentoCreate(request):
 
 def medicamentoEdit(request, cod_medicamento):
 	medicamento = Medicamento.objects.get(pk=cod_medicamento)
-#	print(medicamento.sistema_medicion.nombre_medicamento.all())
 	if request.method == 'GET':
 		form1 = MedicamentoForm_2(instance=medicamento)
 	else:
@@ -250,4 +249,58 @@ def sistemaMedicionEdit(request, cod_sistema):
 			form1.save()
 		return redirect('hospital:sistemaMedicionList')
 	return render(request, 'sistemaMedicion/sistemaMedicionCreate.html', {'form1':form1})
+
+def medicoList(request):
+	if 'buscar' in request.GET:		
+		if request.GET['buscarInput'] != "":
+			palabraClave = request.GET['buscarInput']
+			
+			if Medico.objects.filter(cod_medico__contains = palabraClave).exists():
+				medico = Medico.objects.filter(cod_medico__contains = palabraClave)
+				contexto={'medicos':medico}
+				return render(request, 'medico/medicoList.html', contexto)
+			else:
+				if Medico.objects.filter(especialidad__contains = palabraClave).exists():
+					medico = Medico.objects.filter(especialidad__contains = palabraClave)
+					contexto={'medicos':medico}
+					return render(request, 'medico/medicoList.html', contexto)
+				
+		pass
+	if 'accion' in request.POST:
+		accion = request.POST['accion']
+		codigo_medico = request.POST['medico']
+		medico = Medico.objects.get(cod_medico = codigo_medico)
+		if accion == 'Eliminar':	
+			medico.delete()
+			pass
+						
+		else:
+			pass
+		pass
+	medico = Medico.objects.all().order_by('cod_medico')
+	contexto = {'medicos':medico}
+	return render(request, 'medico/medicoList.html', contexto)
+
+def medicoCreate(request):
+	if request.method == 'POST':
+		form = MedicoForm(request.POST)
+		if form.is_valid():
+			form.save()
+			pass
+		pass
+		return redirect('hospital:medicoList')
+	else:
+		form = MedicoForm()
+	return render(request, 'medico/medicoCreate.html', {'form':form})
+
+def medicoEdit(request, cod_medico):
+	medico = Medico.objects.get(pk=cod_medico)
+	if request.method == 'GET':
+		form1 = MedicoForm_2(instance=medico)
+	else:
+		form1 = MedicoForm_2(request.POST, instance=medico)
+		if form1.is_valid():
+			form1.save()
+		return redirect('hospital:medicoList')
+	return render(request, 'medico/medicoCreate.html', {'form1':form1})
 #Final views Marco

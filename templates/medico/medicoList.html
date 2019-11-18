@@ -1,11 +1,11 @@
 {% extends 'base/index.html' %}
-{% block title %}MEDICAMENTO{% endblock %}
+{% block title %}MÉDICO{% endblock %}
 {% block content %}
 <br>
 <section class="col-md-12">
 	<div class="table-responsive">
 		<div class="row">
-			<div class="col" id="buscadorMedicamento" style="display:inline-block">
+			<div class="col" id="buscadorMedico" style="display:inline-block">
 			    <nav class="navbar navbar-light bg-light" style="width: 57%">
 			        <form class="form-inline">
 			            <input style="width: 70%" id="buscarInput" name="buscarInput" class="form-control mr-sm-2" type="search" placeholder="Atributo" aria-label="Search">
@@ -16,7 +16,7 @@
 			    <br>           
 			</div>
 			<div class="col" align="right">
-				<a href="{% url 'hospital:medicamentoCreate' %}" class="btn btn-success">
+				<a href="{% url 'hospital:medicoCreate' %}" class="btn btn-success">
 		        <span class="fas fa-plus"></span> Agregar
 			    </a>
 			</div>
@@ -26,39 +26,36 @@
 			<thead class="table table-hover table-bordered">
 				<tr class="table-success">
 					<td class="font-weight-bold">Codigo</td>
-					<td class="font-weight-bold">Nombre</td>
-					<td class="font-weight-bold">Farmacia</td>
-					<td class="font-weight-bold">Sistema Medición</td>
-					<td class="font-weight-bold">Descripción</td>
+					<td class="font-weight-bold">Número de Registro</td>
+					<td class="font-weight-bold">Persona</td>
+					<td class="font-weight-bold">Especialidades</td>
 					<td class="font-weight-bold">Acciones</td>
 				</tr>
 			</thead>
 			<tbody>
-				{% if medicamentos %}
-				{% for medicamento in medicamentos %}
+				{% if medicos %}
+				{% for medico in medicos %}
 				<tr class="text-justify">
-					<td>{{ medicamento.cod_medicamento }}</td>
-					<td>{{ medicamento.nombre_medicamento }}</td>
-					<td>{{ medicamento.farmacia }}</td>
-					<!-- <td>{{ medicamento.sistema_medicion.all }}</td>-->
+					<td>{{ medico.cod_medico }}</td>
+					<td>{{ medico.num_regsitro }}</td>
+					<td>{{ medico.cod_persona }}</td>
 					<td>
 						<ul>
-						{% for sis_med in medicamento.sistema_medicion.all %}						
-							<li>{{ sis_med }}</li>
+						{% for esp in medico.especialidad.all %}						
+							<li>{{ esp }}</li>
 						{% endfor %}
 						</ul>
 					</td>
-					<td>{{ medicamento.descripcion }}</td>
 					<td>
-						<a href="{% url 'hospital:medicamentoEdit' medicamento.pk %}">Modificar</a>
+						<a href="{% url 'hospital:medicoEdit' medico.pk %}">Modificar</a>
 						<br>
 						<div>
 							<form method="POST">
 				                {% csrf_token %}
-				                <input type="hidden" name="medicamento" value="{{ medicamento.cod_medicamento }}"> 
-				                <a href="" data-toggle="modal" data-target="#Eliminar_{{ medicamento.cod_medicamento }}">Eliminar</a>
+				                <input type="hidden" name="medico" value="{{ medico.cod_medico }}"> 
+				                <a href="" data-toggle="modal" data-target="#Eliminar_{{ medico.cod_medico }}">Eliminar</a>
 				                <!-- Modal -->
-				                <div class="modal fade" id="Eliminar_{{ medicamento.cod_medicamento }}" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				                <div class="modal fade" id="Eliminar_{{ medico.cod_medico }}" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				                  <div class="modal-dialog" role="document">
 				                    <div class="modal-content">
 				                      <div class="modal-header">
@@ -68,7 +65,7 @@
 				                        </button>
 				                      </div>
 				                      <div class="modal-body">
-				                        ¿Esta seguro de eliminar el Medicamento <b>{{ medicamento.nombre_medicamento }}?</b>
+				                        ¿Esta seguro de eliminar el Médico <b>{{ medico.cod_persona }}?</b>
 				                      </div>
 				                      <div class="modal-footer">
 				                        <input class="btn btn-danger" type="submit" name="accion" value="Eliminar">
@@ -85,7 +82,7 @@
 
 				{% else %}
 				<div class="alert alert-danger" role="alert">
-				  ¡No se ha encontrado ningún Medicamento!
+				  ¡No se ha encontrado ningún Médico!
 				</div>
 				{% endif %}
 			</tbody>
