@@ -26,12 +26,13 @@
     <link rel="stylesheet" href="{% static 'css/animate.css' %}">
     <link rel="stylesheet" href="{% static 'css/slicknav.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block link %}{% endblock %}
     <!-- <link rel="stylesheet" href="css/responsive.css"> -->
 {% endblock %}
 </head>
 
 <body>
-
+{% block body %}
     <!--[if lte IE 9]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
         <![endif]-->
@@ -39,6 +40,63 @@
     <!-- header-start -->
     <header>
     {% block header %}
+
+
+
+
+
+{%if user.is_superuser == True%}
+
+ <div class="container">        
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                            
+        <div class="logo">
+            <a href="{% url 'hospital:index' %}">
+                <img src="{% static 'img/logo.png' %}" alt="">
+            </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbarColor03">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#"> Medicos </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'hospital:especialidadList' %}"> Especialidades </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'hospital:medicamentoList' %}"> Medicamentos </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'hospital:sistemaMedicionList' %}"> Sistema de Medición </a>
+                </li>
+            </ul>
+    {% if user.is_authenticated %}
+            <form>
+                <a class="btn btn-outline-primary my-2 my-sm-0" href="{% url 'logout' %}" role="button"><b>{{user.first_name}}</b> Cerrar sesion</a>
+            </form>
+            {% else %}
+            <form>
+                <a class="btn btn-outline-primary my-2 my-sm-0" href="{% url 'login' %}" role="button">Iniciar Sesión</a>
+            </form>
+    {% endif %}
+
+        </div>
+    </nav>
+
+</div>
+{% else %}
+        
+
+
+
+
+
+
+
+
+
+
         <div class="header-area ">
             <!--
             <div class="header-top_area">
@@ -88,11 +146,12 @@
                             {% endif %}
                         </div>
                         <div class="col-xl-6 col-lg-7">
-                            <div class="main-menu  d-none d-lg-block">
-                                <nav>
-                                {% block navbar %}
+                            <div class="main-menu  d-none d-lg-block">                               
+                                
                                 {% if not tipoPersona  %}
                                 {% else %}
+                                <nav>
+                                {% block navbar %}
                                 {% ifequal tipoPersona "1" %}
                                 <!--
                                 <ul id="navigation">
@@ -122,9 +181,10 @@
                                     
                                 </ul>
                                 {% endifequal %}
-                                {% endif %}
                                 {% endblock %}
                                 </nav>
+                                {% endif %}
+                                
                             </div>
                         </div>
                         {% if user.is_authenticated %}
@@ -151,6 +211,7 @@
                 </div>
             </div>
         </div>
+{% endif %}
     {% endblock %}
         </header>
     <!-- header-end -->
@@ -842,6 +903,8 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     $('.js-example-basic-multiple').select2();
 });
     </script>
+{% endblock %}
 </body>
+
 
 </html>

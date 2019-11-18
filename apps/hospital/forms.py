@@ -1,5 +1,5 @@
 from django import forms
-from apps.hospital.models import Especialidad, Medicamento
+from apps.hospital.models import Especialidad, Medicamento, SistemaMedicion
 
 class EspecialidadForm(forms.ModelForm):
 
@@ -101,4 +101,46 @@ class MedicamentoForm_2(forms.ModelForm):
             'farmacia': forms.TextInput(attrs={'class':'form-control','placeholder':'Escriba la farmacia del Medicamento'}),
             'descripcion' : forms.Textarea(attrs={'rows':5, 'class':'form-control','placeholder':'Escriba la descripción del Medicamento'}),
             'sistema_medicion': forms.CheckboxSelectMultiple(),
+                    }
+
+class SistemaMedicionForm(forms.ModelForm):
+
+    class Meta:
+        model = SistemaMedicion
+
+        fields = [
+            'cod_sistema',
+            'nombre_sistema',
+
+        ]
+        labels = {
+            'cod_sistema' : 'Código',
+            'nombre_sistema' : 'Nombre',
+
+        }
+
+        widgets = {
+            'cod_sistema' : forms.TextInput(attrs={'class':'form-control','placeholder':'Escriba el Código del Sistema de Medicion'}),
+            'nombre_sistema' : forms.TextInput(attrs={'class':'form-control','placeholder':'Escriba el Nombre del Sistema de Medicion'}),
+                    }
+
+class SistemaMedicionForm_2(forms.ModelForm):
+
+    class Meta:
+        model = SistemaMedicion
+
+        fields = [
+            'cod_sistema',
+            'nombre_sistema',
+
+        ]
+        labels = {
+            'cod_sistema' : 'Código',
+            'nombre_sistema' : 'Nombre',
+
+        }
+
+        widgets = {
+            'cod_sistema' : forms.TextInput(attrs={'class':'form-control','readonly':'readonly','placeholder':'Escriba el Código del Sistema de Medicion'}),
+            'nombre_sistema' : forms.TextInput(attrs={'class':'form-control','placeholder':'Escriba el Nombre del Sistema de Medicion'}),
                     }

@@ -196,4 +196,58 @@ def medicamentoEdit(request, cod_medicamento):
 			form1.save()
 		return redirect('hospital:medicamentoList')
 	return render(request, 'medicamento/medicamentoCreate.html', {'form1':form1})
+
+def sistemaMedicionList(request):
+	if 'buscar' in request.GET:		
+		if request.GET['buscarInput'] != "":
+			palabraClave = request.GET['buscarInput']
+			
+			if SistemaMedicion.objects.filter(cod_sistema__contains = palabraClave).exists():
+				sistema = SistemaMedicion.objects.filter(cod_sistema__contains = palabraClave)
+				contexto={'sistemas':sistema}
+				return render(request, 'sistemaMedicion/sistemaMedicionList.html', contexto)
+			else:
+				if SistemaMedicion.objects.filter(nombre_sistema__contains = palabraClave).exists():
+					sistema = SistemaMedicion.objects.filter(nombre_sistema__contains = palabraClave)
+					contexto={'sistemas':sistema}
+					return render(request, 'sistemaMedicion/sistemaMedicionList.html', contexto)
+				
+		pass
+	if 'accion' in request.POST:
+		accion = request.POST['accion']
+		codigo_sistema = request.POST['sistema']
+		sistema = SistemaMedicion.objects.get(cod_sistema = codigo_sistema)
+		if accion == 'Eliminar':	
+			sistema.delete()
+			pass
+						
+		else:
+			pass
+		pass
+	sistema = SistemaMedicion.objects.all().order_by('cod_sistema')
+	contexto = {'sistemas':sistema}
+	return render(request, 'sistemaMedicion/sistemaMedicionList.html', contexto)	
+
+def sistemaMedicionCreate(request):
+	if request.method == 'POST':
+		form = SistemaMedicionForm(request.POST)
+		if form.is_valid():
+			form.save()
+			pass
+		pass
+		return redirect('hospital:sistemaMedicionList')
+	else:
+		form = SistemaMedicionForm()
+	return render(request, 'sistemaMedicion/sistemaMedicionCreate.html', {'form':form})
+
+def sistemaMedicionEdit(request, cod_sistema):
+	sistema = SistemaMedicion.objects.get(pk=cod_sistema)
+	if request.method == 'GET':
+		form1 = SistemaMedicionForm_2(instance=sistema)
+	else:
+		form1 = SistemaMedicionForm_2(request.POST, instance=sistema)
+		if form1.is_valid():
+			form1.save()
+		return redirect('hospital:sistemaMedicionList')
+	return render(request, 'sistemaMedicion/sistemaMedicionCreate.html', {'form1':form1})
 #Final views Marco

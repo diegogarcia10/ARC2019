@@ -19,5 +19,8 @@ urlpatterns = [
     url(r'^medicamentoList/$',login_required(medicamentoList),name="medicamentoList"),
     url(r'^medicamentoCreate/$',login_required(medicamentoCreate), name='medicamentoCreate'),
     path('medicamentoEdit/<str:cod_medicamento>/',login_required(medicamentoEdit), name='medicamentoEdit'),
+    url(r'^sistemaMedicionList/$',login_required(sistemaMedicionList),name="sistemaMedicionList"),
+    url(r'^sistemaMedicionCreate/$',login_required(sistemaMedicionCreate), name='sistemaMedicionCreate'),
+    path('sistemaMedicionEdit/<str:cod_sistema>/',login_required(sistemaMedicionEdit), name='sistemaMedicionEdit'),
 	#FIN URLS MARCO
 ]
