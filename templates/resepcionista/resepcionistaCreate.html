@@ -1,0 +1,62 @@
+{% extends 'base/index.html'%}
+{% block title %}
+{% if form %}
+Agregar Recepcionista
+{% else %}
+Modificar Recepcionista
+{% endif %}
+{% endblock %}
+ 
+{% block content %}
+<div class="container">
+
+	<form method="post">
+	{% csrf_token %}
+	<div class="row">		
+	
+		<div class="col">				
+			<div class="form-group">
+				{% if form %}
+				{%for element in form %} 
+                <div class="form-group"> 
+                    <label class="col-md-8 control-label">
+                        {{element.label}}            
+                    </label> 
+                    <div class="col-md-8"> 
+                        {{element}} 
+                        <div class="error">
+                            {{element.errors}}
+                        </div>
+                    </div> 
+                </div> 
+                {% endfor %}
+                {% else %}
+				{%for element in form1 %} 
+                <div class="form-group"> 
+                    <label class="col-md-8 control-label">
+                        {{element.label}}            
+                    </label> 
+                    <div class="col-md-8"> 
+                        {{element}} 
+                        <div class="error">
+                            {{element.errors}}
+                        </div>
+                    </div> 
+                </div> 
+                {% endfor %}
+				{% endif %}
+			</div>
+		</div>
+
+	</div>
+	<div class="">
+		<br>
+		<button type="submit" class="btn btn-primary">Guardar</button>
+		<a href="{% url 'hospital:resepcionistaList' %}" class="btn btn-warning">Volver a la lista</a> 
+		<br>
+	</div>
+	</form>
+</div>
+<br>
+<br>
+{% endblock %}

@@ -26,4 +26,9 @@ urlpatterns = [
     url(r'^medicoCreate/$',login_required(medicoCreate), name='medicoCreate'),
     path('medicoEdit/<str:cod_medico>/',login_required(medicoEdit), name='medicoEdit'),
 	#FIN URLS MARCO
+
+    url(r'^resepcionistaList/$',login_required(resepcionistaList),name="resepcionistaList"),
+    url(r'^resepcionistaCreate/$',login_required(resepcionistaCreate), name='resepcionistaCreate'),
+    path('resepcionistaEdit/<str:cod_resepcionista>/',login_required(resepcionistaEdit), name='resepcionistaEdit'),
+    
 ]

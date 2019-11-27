@@ -1,5 +1,5 @@
 from django import forms
-from apps.hospital.models import Especialidad, Medicamento, SistemaMedicion, Medico
+from apps.hospital.models import Especialidad, Medicamento, SistemaMedicion, Medico, Resepcionista
 
 class EspecialidadForm(forms.ModelForm):
 
@@ -196,5 +196,47 @@ class MedicoForm_2(forms.ModelForm):
             'cod_medico' : forms.TextInput(attrs={'class':'form-control','readonly':'readonly','placeholder':'Escriba el Código del Medico'}),
             'num_regsitro' : forms.TextInput(attrs={'class':'form-control','placeholder':'Escriba el Numero de Registro del Medico'}),
             'especialidad': forms.CheckboxSelectMultiple(),
+            'cod_persona': forms.Select(attrs={'class':'form-control'}),
+                    }
+
+class ResepcionistaForm(forms.ModelForm):
+
+    class Meta:
+        model = Resepcionista
+
+        fields = [
+            'cod_resepcionista',
+            'cod_persona',
+
+        ]
+        labels = {
+            'cod_resepcionista' : 'Código',
+            'cod_persona' : 'Persona',
+
+        }
+
+        widgets = {
+            'cod_resepcionista' : forms.TextInput(attrs={'class':'form-control','placeholder':'Escriba el Código del Recepcionista'}),
+            'cod_persona': forms.Select(attrs={'class':'form-control'}),
+                    }
+
+class ResepcionistaForm_2(forms.ModelForm):
+
+    class Meta:
+        model = Resepcionista
+
+        fields = [
+            'cod_resepcionista',
+            'cod_persona',
+
+        ]
+        labels = {
+            'cod_resepcionista' : 'Código',
+            'cod_persona' : 'Persona',
+
+        }
+
+        widgets = {
+            'cod_resepcionista' : forms.TextInput(attrs={'class':'form-control', 'readonly':'readonly','placeholder':'Escriba el Código del Recepcionista'}),
             'cod_persona': forms.Select(attrs={'class':'form-control'}),
                     }

@@ -304,3 +304,52 @@ def medicoEdit(request, cod_medico):
 		return redirect('hospital:medicoList')
 	return render(request, 'medico/medicoCreate.html', {'form1':form1})
 #Final views Marco
+
+def resepcionistaList(request):
+	if 'buscar' in request.GET:		
+		if request.GET['buscarInput'] != "":
+			palabraClave = request.GET['buscarInput']
+			
+			if Resepcionista.objects.filter(cod_resepcionista__contains = palabraClave).exists():
+				recepcionista = Resepcionista.objects.filter(cod_resepcionista__contains = palabraClave)
+				contexto={'recepcionistas':recepcionista}
+				return render(request, 'resepcionista/resepcionistaList.html', contexto)
+				
+		pass
+	if 'accion' in request.POST:
+		accion = request.POST['accion']
+		cod_resepcionista = request.POST['recepcionista']
+		recepcionista = Resepcionista.objects.get(cod_resepcionista = cod_resepcionista)
+		if accion == 'Eliminar':	
+			recepcionista.delete()
+			pass
+						
+		else:
+			pass
+		pass
+	recepcionista = Resepcionista.objects.all().order_by('cod_resepcionista')
+	contexto = {'recepcionistas':recepcionista}
+	return render(request, 'resepcionista/resepcionistaList.html', contexto)	
+
+def resepcionistaCreate(request):
+	if request.method == 'POST':
+		form = ResepcionistaForm(request.POST)
+		if form.is_valid():
+			form.save()
+			pass
+		pass
+		return redirect('hospital:resepcionistaList')
+	else:
+		form = ResepcionistaForm()
+	return render(request, 'resepcionista/resepcionistaCreate.html', {'form':form})
+
+def resepcionistaEdit(request, cod_resepcionista):
+	recepcionista = Resepcionista.objects.get(pk=cod_resepcionista)
+	if request.method == 'GET':
+		form1 = ResepcionistaForm_2(instance=recepcionista)
+	else:
+		form1 = ResepcionistaForm_2(request.POST, instance=recepcionista)
+		if form1.is_valid():
+			form1.save()
+		return redirect('hospital:resepcionistaList')
+	return render(request, 'resepcionista/resepcionistaCreate.html', {'form1':form1})
