@@ -2,14 +2,38 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from apps.hospital.models import *
 from apps.hospital.forms import *
+#Librerias Necesarias para la comunicacion con el arduino
+import time
+import serial
+import serial.tools.list_ports
 
-def usuarioActual(param=None):
-	usuario_actual=""
-	if param==None:
-		usuario_actual=""
-	else:
-		usuario_actual=param
-	return usuario_actual
+#--------PARTE DE DIEGO--------------#
+#Metodo que verifica cual es el puerto en el que esta conectado el arduino
+def puerto():
+	ports = list(serial.tools.list_ports.comports())
+	puerto = ''
+	for p in ports:
+		puerto = p
+	puerto = puerto[0]
+	return puerto
+
+#Metodo que retorna el codigo leido por el RFID--> Arduino --> Sistema WEB
+def lectura():	
+	puerto_asignado = puerto()
+	arduino = serial.Serial(puerto_asignado, 9600)
+	time.sleep(2)
+	codigo=''
+	while codigo == '':
+		codigo = arduino.readline()
+	arduino.close()	
+	return codigo
+
+#Metodo que convierte el codigo de la targeta sin espacios por inconvenientes en la base de datos
+
+def sinEspacio(param):
+	codigo=str(param)
+	nuevo=codigo.replace(' ', '')
+	return nuevo 
 
 # Create your views here.
 def index(request):
@@ -87,6 +111,65 @@ def index3(request,id_tipo):
 		print("Elijio 3")
 		return render(request,'base/index.html',{'tipoPersona':tipoPersona})
 
+
+def registrar_entrada(request):
+	tipoPersona="3"
+	contexto={'tipoPersona':tipoPersona}
+	return render(request,'resepcionista/registrar_entrada.html',contexto)
+
+def captura(request):
+	codigo=lectura()
+	mensaje=''
+
+	codigo=codigo.decode('utf-8')
+	codigo=codigo[1:12]
+	codigo=sinEspacio(codigo)
+	existencia = Paciente.objects.filter(cod_paciente=codigo).exists()
+	if existencia:
+		mensaje = 'Paciente encontrado de clic en el boton para ver su expediente'
+	else:
+		mensaje = 'No hay ningun Paciente asociado a esta tarjeta, intente nuevamente dando clic al boton, codigo: '+codigo 
+	print(codigo)
+	context={
+		'mensaje': mensaje,
+		'existencia': existencia,
+		'codigo': codigo,
+	}
+	return render(request, 'resepcionista/pre_crear.html', context)
+
+def crear_paciente(request,id_tarjeta):
+	codigo=str(id_tarjeta)
+	tipoPersona="3"
+	contexto={'tipoPersona':tipoPersona,'codigo':id_tarjeta}
+
+	if request.method=='POST':
+		usuario=User()
+		persona=Persona()
+		paciente=Paciente()
+
+		usuario.is_staff=True
+		usuario.first_name=request.POST['nombres']
+		usuario.last_name=request.POST['apellidos']
+		#Creando username DO000		
+		concac1=str(usuario.first_name).upper()
+		concac1=concac1[0]
+		concac2=str(usuario.last_name).upper()
+		concac2=concac2[0]
+		concac3=codigo[5:8]
+		usuario.username=concac1+concac2+concac3
+		clave=concac1+concac2+codigo[0:3]
+		usuario.set_password(clave)
+		usuario.save()
+		persona.usuario=usuario
+		persona.sexo=Sexo.objects.get(cod_sexo=str(request.POST['sexo']))
+		persona.fecha_nacimiento=request.POST['fecha_nacimiento']
+		persona.save()
+		paciente.cod_paciente=codigo
+		paciente.cod_persona=persona
+		paciente.save()
+		return redirect('hospital:index3',3)		
+	return render(request,'paciente/registrar_paciente.html',contexto)
+#--------FIN PARTE DE DIEGO--------------#
 #view Marco
 def especialidadList(request):
 	if 'buscar' in request.GET:		

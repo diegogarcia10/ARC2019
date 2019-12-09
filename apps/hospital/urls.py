@@ -30,5 +30,11 @@ urlpatterns = [
     url(r'^resepcionistaList/$',login_required(resepcionistaList),name="resepcionistaList"),
     url(r'^resepcionistaCreate/$',login_required(resepcionistaCreate), name='resepcionistaCreate'),
     path('resepcionistaEdit/<str:cod_resepcionista>/',login_required(resepcionistaEdit), name='resepcionistaEdit'),
+
+    #Parte Diego
+    path('registrarEntrada',registrar_entrada,name="registrar_entrada"),
+    path('captura',captura,name="captura"),
+    path('registrar-paciente/<str:id_tarjeta>',crear_paciente,name="registrar_paciente")
+    #Fin parte Diego
     
 ]

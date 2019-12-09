@@ -23,7 +23,7 @@ class Resepcionista(models.Model):
 		return str(self.cod_persona)
 
 class Paciente(models.Model):
-	cod_paciente=models.CharField(max_length=10,primary_key=True)
+	cod_paciente=models.CharField(max_length=15)
 	cod_persona=models.ForeignKey(Persona,on_delete=models.CASCADE)
 	def __str__(self):
 		return str(self.cod_persona)
@@ -80,7 +80,6 @@ class ResetaMedica(models.Model):
 	def __str__(self):
 		return str(self.cod_reseta)
 
-
-
-
-
+class Cita(models.Model):
+	medico=models.ForeignKey(Medico,on_delete=models.CASCADE)
+	paciente=models.ForeignKey(Paciente,on_delete=models.CASCADE)

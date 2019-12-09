@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="{% static 'css/animate.css' %}">
     <link rel="stylesheet" href="{% static 'css/slicknav.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    {% block link %}{% endblock %}
+    {% block extracss %}{% endblock %}
     <!-- <link rel="stylesheet" href="css/responsive.css"> -->
 {% endblock %}
 </head>
@@ -175,9 +175,9 @@
                                 {% endifequal %}
                                 {% ifequal tipoPersona "3" %}
                                 <ul id="navigation">
-                                    <li><a href="#">Registrar Entrada</a></li>
+                                    <li><a href="{% url 'hospital:registrar_entrada' %}">Registrar Entrada</a></li>
+                                    <li><a href="#">Gestionar Citas</a></li>
                                     <li><a href="#">Gestionar Pacientes</a></li>
-                                    <li><a href="#">Gestionar Doctores</a></li>
                                     
                                 </ul>
                                 {% endifequal %}
@@ -709,7 +709,7 @@
 
 <!-- footer start -->
     <footer class="footer">
-    {% block footer %}
+            {% block footer %}
             <div class="footer_top">
                 <div class="container">
                     <div class="row">
@@ -790,21 +790,21 @@
                     </div>
                 </div>
             </div>
+             {% endblock %}
             <div class="copy-right_text">
                 <div class="container">
                     <div class="footer_border"></div>
                     <div class="row">
                         <div class="col-xl-12">
                             <p class="copy_right text-center">
-                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                Arquitectura de Computadoras &copy;
+
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
-        {% endblock %}
+       
         </footer>
 <!-- footer end  -->
     <!-- link that opens popup -->
@@ -882,6 +882,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     <script src="{% static 'js/jquery.form.js' %}"></script>
     <script src="{% static 'js/jquery.validate.min.js' %}"></script>
     <script src="{% static 'js/mail-script.js' %}"></script>
+    <!--<script src="{% static 'js/jquery-3.2.1.min.js'%}"></script>-->
     {% block extrajs %}
     {% endblock %}
     <script src="{% static 'js/main.js' %}"></script>
