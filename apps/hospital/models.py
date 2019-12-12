@@ -5,7 +5,7 @@ from django.conf import settings
 # Create your models here.
 class Sexo(models.Model):
 	cod_sexo=models.CharField(max_length=10,primary_key=True)
-	nombre_sexo=models.CharField(max_length=8)
+	nombre_sexo=models.CharField(max_length=10)
 	def __str__(self):
 		return str(self.nombre_sexo)
 
@@ -82,3 +82,4 @@ class ResetaMedica(models.Model):
 class Cita(models.Model):
 	medico=models.ForeignKey(Medico,on_delete=models.CASCADE)
 	paciente=models.ForeignKey(Paciente,on_delete=models.CASCADE)
+	fecha_hora_cita=models. DateTimeField()

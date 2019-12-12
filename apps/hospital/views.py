@@ -404,12 +404,15 @@ def calcular_edad(fecha_nacimiento):
 def expedienteDetails(request, cod_paciente):
 	if request.method == 'GET':
 		paciente = Paciente.objects.get(cod_paciente = cod_paciente)
+		expediente = Expediente.objects.get(cod_paciente = paciente.id)
 		cod_person = paciente.cod_persona.id
 		persona = Persona.objects.get(id = cod_person)
 		user=persona.usuario.id
 		usuario = User.objects.get(id = user)
 		edad = calcular_edad(persona.fecha_nacimiento)
-		contexto={'paciente':paciente,'persona':persona, 'usuario':usuario,'edad':edad}
+		citas = Cita.objects.filter(paciente=paciente.id).order_by('-fecha_hora_cita')
+		consultas = Consulta.objects.filter(num_expediente=expediente.id).order_by('-fecha_consulta')
+		contexto={'expediente':expediente,'paciente':paciente,'persona':persona, 'usuario':usuario,'edad':edad,'citas':citas,'consultas':consultas}
 
 		return render(request, 'resepcionista/expedienteDetails.html',contexto)
 
