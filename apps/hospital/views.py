@@ -2,6 +2,10 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from apps.hospital.models import *
 from apps.hospital.forms import *
+#Librerias para calcular edad
+from datetime import date
+from dateutil.relativedelta import relativedelta
+
 #Librerias Necesarias para la comunicacion con el arduino
 import time
 import serial
@@ -101,14 +105,21 @@ def index3(request,id_tipo):
 	if id_tipo=="1":
 		tipoPersona="1"
 		print("Elijio 1")
+		print(str(request.user))
 		return render(request,'base/index.html',{'tipoPersona':tipoPersona})
 	if id_tipo=="2":
 		tipoPersona="2"
 		print("Elijio 2")
-		return render(request,'base/index.html',{'tipoPersona':tipoPersona})
+		print(str(request.user))
+		usuario=User.objects.get(username=str(request.user))
+		persona=Persona.objects.get(usuario=usuario)
+		paciente=Paciente.objects.get(cod_persona=persona)
+		contexto={'tipoPersona':tipoPersona,'paciente':paciente}		
+		return render(request,'base/index.html',contexto)
 	if id_tipo=="3":
 		tipoPersona="3"
 		print("Elijio 3")
+		print(str(request.user))
 		return render(request,'base/index.html',{'tipoPersona':tipoPersona})
 
 
@@ -388,6 +399,30 @@ def medicoEdit(request, cod_medico):
 			form1.save()
 		return redirect('hospital:medicoList')
 	return render(request, 'medico/medicoCreate.html', {'form1':form1})
+
+def calcular_edad(fecha_nacimiento):
+ 
+    edad = date.today().year - fecha_nacimiento.year
+    cumpleanios = fecha_nacimiento + relativedelta(years=edad)
+ 
+    if cumpleanios > date.today():
+        edad = edad - 1
+ 
+    return edad
+
+def expedienteDetails(request, cod_paciente,tipoPersona):
+	if request.method == 'GET':
+		paciente = Paciente.objects.get(cod_paciente = cod_paciente)
+		cod_person = paciente.cod_persona.id
+		persona = Persona.objects.get(id = cod_person)
+		user=persona.usuario.id
+		usuario = User.objects.get(id = user)
+		edad = calcular_edad(persona.fecha_nacimiento)
+		contexto={'paciente':paciente,'persona':persona, 'usuario':usuario,'edad':edad,'tipoPersona':str(tipoPersona)}		
+		return render(request, 'resepcionista/expedienteDetails.html',contexto)
+
+		pass
+	
 #Final views Marco
 
 def resepcionistaList(request):

@@ -3,6 +3,8 @@ from django.conf import settings
 
 
 # Create your models here.
+
+
 class Sexo(models.Model):
 	cod_sexo=models.CharField(max_length=10,primary_key=True)
 	nombre_sexo=models.CharField(max_length=8)

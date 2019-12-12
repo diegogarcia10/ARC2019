@@ -1,0 +1,85 @@
+{% extends 'base/index.html'%}
+
+{% block content %}
+<br><br><br>
+<h1 class="text-center">Expediente Medico</h1>
+<br>
+<h3 class="text-center">Detalle del Paciente</h3>
+<div class="row">
+	<div class="col-md-3"></div>
+	<div class="col-md-6">
+		<hr>
+		<form method="post">
+			{% csrf_token %}
+			<div class="form-group">
+				<div class="row">
+					<div class="col-md-6">
+						<label>Código del paciente: </label>
+						<label>{{ paciente.cod_paciente }}</label>
+					</div>
+					<div class="col-md-6">
+						<label>Usuario: </label>
+						<label>{{ usuario.username }}</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="row">
+					<div class="col-md-6">
+						<label>Nombre: </label>
+						<label>{{ usuario.first_name }}</label>
+					</div>
+					<div class="col-md-6">
+						<label>Apellidos: </label>
+						<label>{{ usuario.last_name }}</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="row">
+					<div class="col-md-6">
+						<label>Sexo:</label>
+						<label>{{ persona.sexo }}</label>
+					</div>
+					<div class="col-md-6">
+						<label>Edad: </label>
+						<label>{{ edad }} años</label>
+					</div>
+				</div>
+			</div>
+			<br>
+		</form>
+		<h3 class="text-center">Detalle de Citas</h3>
+		<hr>
+		<form>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th class="font-weight-bold" scope="col">Medico</th>
+						<th class="font-weight-bold" scope="col">Fecha</th>
+						<th class="font-weight-bold" scope="col">Hora</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Dra. Alba Lazo</td>
+						<td>15/12/2019</td>
+						<td>3:00 pm</td>
+
+					</tr>
+					<tr>
+						<td>Dr. Elmer kado</td>
+						<td>21/12/2019</td>
+						<td>3:00 pm</td>
+
+					</tr>
+				</tbody>
+			</table>
+		</form>
+	</div>
+	<div class="col-md-3"></div>
+</div>
+<br><br><br><br><br><br>
+{% endblock %}
+{% block footer %}
+{% endblock %}

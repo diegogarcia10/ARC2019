@@ -52,7 +52,7 @@
                             
         <div class="logo">
             <a href="{% url 'hospital:index' %}">
-                <img src="{% static 'img/logo.png' %}" alt="">
+                <img src="{% static 'img/logo_nuevo.png' %}" alt="" width="150" height="60">
             </a>
         </div>
 
@@ -135,13 +135,13 @@
                             {% if not tipoPersona  %}                                
                             <div class="logo">
                                 <a href="{% url 'hospital:index' %}">
-                                    <img src="{% static 'img/logo.png' %}" alt="">
+                                    <img src="{% static 'img/logo_nuevo.png' %}" alt=""          width="150" height="60"/>
                                 </a>
                             </div>
                             {% else%}
                             <div class="logo">
                                 <a href="{% url 'hospital:index3' tipoPersona %}">
-                                    <img src="{% static 'img/logo.png' %}" alt="">
+                                     <img src="{% static 'img/logo_nuevo.png' %}" alt=""          width="150" height="60"/>
                                 </a>
                             </div>
                             {% endif %}
@@ -169,7 +169,7 @@
                                 {% ifequal tipoPersona "2" %}
                                 <ul id="navigation">
                                     <li><a href="#">Ver Citas Futuras</a></li>
-                                    <li><a href="#">Mi Expediente</a></li>
+                                    <li><a href="{% url 'hospital:expedienteDetails' paciente.cod_paciente 2 %}">Mi Expediente</a></li>
                                     <li><a href="#">Mis Medicamentos</a></li>
                                     <li><a href="#">Historial de Citas</a></li>
                                 </ul>
