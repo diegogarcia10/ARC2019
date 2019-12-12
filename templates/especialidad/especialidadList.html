@@ -1,5 +1,9 @@
 {% extends 'base/index.html' %}
 {% block title %}ESPECIALIDAD{% endblock %}
+
+
+{% block extracss %}
+{% endblock %}
 {% block content %}
 <br>
 <section class="col-md-12">
@@ -22,7 +26,7 @@
 			</div>
 			
 		</div>
-		<table class="table table-hover table-bordered">
+		<table id="example" class="table table-hover table-bordered">
 			<thead class="table table-hover table-bordered">
 				<tr class="table-success">
 					<td class="font-weight-bold">Código</td>
@@ -81,5 +85,9 @@
 	</div>
 </section>
 <!-- -->
+
+{% endblock %}
+{% block extrajs %}
+
 
 {% endblock %}

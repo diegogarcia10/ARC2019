@@ -126,7 +126,7 @@ def captura(request):
 	codigo=sinEspacio(codigo)
 	existencia = Paciente.objects.filter(cod_paciente=codigo).exists()
 	if existencia:
-		mensaje = 'Paciente encontrado de clic en el boton para ver su expediente'
+		mensaje = 'Paciente encontrado de clic en el boton para ver su expediente, codigo: '+codigo
 	else:
 		mensaje = 'No hay ningun Paciente asociado a esta tarjeta, intente nuevamente dando clic al boton, codigo: '+codigo 
 	print(codigo)
@@ -146,7 +146,7 @@ def crear_paciente(request,id_tarjeta):
 		usuario=User()
 		persona=Persona()
 		paciente=Paciente()
-
+		expediente=Expediente()
 		usuario.is_staff=True
 		usuario.first_name=request.POST['nombres']
 		usuario.last_name=request.POST['apellidos']
@@ -158,7 +158,7 @@ def crear_paciente(request,id_tarjeta):
 		concac3=codigo[5:8]
 		usuario.username=concac1+concac2+concac3
 		clave=concac1+concac2+codigo[0:3]
-		usuario.set_password(clave)
+		usuario.set_password(concac1+concac2+concac3)
 		usuario.save()
 		persona.usuario=usuario
 		persona.sexo=Sexo.objects.get(cod_sexo=str(request.POST['sexo']))
@@ -167,6 +167,8 @@ def crear_paciente(request,id_tarjeta):
 		paciente.cod_paciente=codigo
 		paciente.cod_persona=persona
 		paciente.save()
+		expediente.cod_paciente=paciente
+		expediente.save()
 		return redirect('hospital:index3',3)		
 	return render(request,'paciente/registrar_paciente.html',contexto)
 #--------FIN PARTE DE DIEGO--------------#

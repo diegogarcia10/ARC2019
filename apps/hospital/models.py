@@ -43,7 +43,6 @@ class Medico(models.Model):
 		return str(self.num_regsitro)
 
 class Expediente(models.Model):
-	cod_resepcionista=models.CharField(max_length=10,primary_key=True)
 	cod_paciente=models.OneToOneField(Paciente,on_delete=models.CASCADE)
 	def __str__(self):
 		return str(self.cod_paciente)

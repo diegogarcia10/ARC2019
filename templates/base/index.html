@@ -57,7 +57,8 @@
         </div>
 
         <div class="collapse navbar-collapse" id="navbarColor03">
-            <ul class="navbar-nav mr-auto">
+            
+            <ul class="navbar-nav mr-auto text-center">
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'hospital:medicoList' %}"> Médicos </a>
                 </li>
@@ -73,7 +74,7 @@
             </ul>
     {% if user.is_authenticated %}
             <form>
-                <a class="btn btn-outline-primary my-2 my-sm-0" href="{% url 'logout' %}" role="button"><b>{{user.first_name}}</b> Cerrar sesion</a>
+                <a class="btn btn-outline-primary my-2 my-sm-0" href="{% url 'logout' %}" role="button"><b>{{user.username}}</b> Cerrar sesion</a>
             </form>
             {% else %}
             <form>
@@ -191,7 +192,7 @@
                         <div class="col-xl-3 col-lg-3 d-none d-lg-block">
                             <div class="Appointment">
                                 <div class="book_btn  d-lg-block">
-                                    <a  href="{% url 'logout' %}"><b>{{user.first_name}}</b> Cerrar sesion</a>
+                                    <a  href="{% url 'logout' %}"><b>{{user.username}}</b> Cerrar sesion</a>
                                 </div>
                             </div>
                         </div>
@@ -859,13 +860,13 @@
 
     <!-- JS here -->
     <script src="{% static 'js/vendor/modernizr-3.5.0.min.js' %}"></script>
-    <script src="{% static 'js/vendor/jquery-1.12.4.min.js' %}"></script>
+    <script src="{% static 'js/jquery-3.4.1.js'%}"></script>
     <script src="{% static 'js/popper.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/owl.carousel.min.js' %}"></script>
     <script src="{% static 'js/isotope.pkgd.min.js' %}"></script>
     <script src="{% static 'js/ajax-form.js' %}"></script>
-    <script src="{% static 'js/waypoints.min.js' %}"></script>
+    <!--<script src="{% static 'js/waypoints.min.js' %}"></script>-->
     <script src="{% static 'js/jquery.counterup.min.js' %}"></script>
     <script src="{% static 'js/imagesloaded.pkgd.min.js' %}"></script>
     <script src="{% static 'js/scrollIt.js' %}"></script>
@@ -886,24 +887,7 @@
     {% block extrajs %}
     {% endblock %}
     <script src="{% static 'js/main.js' %}"></script>
-    <script>
-        $('#datepicker').datepicker({
-            iconsLibrary: 'fontawesome',
-            icons: {
-                rightIcon: '<span class="fa fa-caret-down"></span>'
-            }
-        });
-        $('#datepicker2').datepicker({
-            iconsLibrary: 'fontawesome',
-            icons: {
-                rightIcon: '<span class="fa fa-caret-down"></span>'
-            }
-
-        });
-    $(document).ready(function() {
-    $('.js-example-basic-multiple').select2();
-});
-    </script>
+    
 {% endblock %}
 </body>
 
