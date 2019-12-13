@@ -101,11 +101,12 @@ def index2(request):
 	return render(request,'base/base2.html',contexto)
 
 def index3(request,id_tipo):
+	
 	tipoPersona=""
 	if id_tipo=="1":
 		tipoPersona="1"
 		print("Elijio 1")
-		print(str(request.user))
+		print(str(request.user))		
 		return render(request,'base/index.html',{'tipoPersona':tipoPersona})
 	if id_tipo=="2":
 		tipoPersona="2"
@@ -182,6 +183,13 @@ def crear_paciente(request,id_tarjeta):
 		expediente.save()
 		return redirect('hospital:index3',3)		
 	return render(request,'paciente/registrar_paciente.html',contexto)
+
+
+def list_paciente(request):
+	pacientes=Paciente.objects.all().order_by('cod_paciente')
+	contexto={'tipoPersona':str(3),'pacientes':pacientes}
+	return render(request,'paciente/list_paciente.html',contexto)
+
 #--------FIN PARTE DE DIEGO--------------#
 #view Marco
 def especialidadList(request):
@@ -413,15 +421,16 @@ def calcular_edad(fecha_nacimiento):
 def expedienteDetails(request, cod_paciente,tipoPersona):
 	if request.method == 'GET':
 		paciente = Paciente.objects.get(cod_paciente = cod_paciente)
+		expediente = Expediente.objects.get(cod_paciente = paciente.id)
 		cod_person = paciente.cod_persona.id
 		persona = Persona.objects.get(id = cod_person)
 		user=persona.usuario.id
 		usuario = User.objects.get(id = user)
 		edad = calcular_edad(persona.fecha_nacimiento)
-		contexto={'paciente':paciente,'persona':persona, 'usuario':usuario,'edad':edad,'tipoPersona':str(tipoPersona)}		
-		return render(request, 'resepcionista/expedienteDetails.html',contexto)
-
-		pass
+		citas = Cita.objects.filter(paciente=paciente.id).order_by('-fecha_hora_cita')
+		consultas = Consulta.objects.filter(num_expediente=expediente.id).order_by('-fecha_consulta')
+		contexto={'expediente':expediente,'paciente':paciente,'persona':persona, 'usuario':usuario,'edad':edad,'citas':citas,'consultas':consultas,'tipoPersona':str(tipoPersona)}
+		return render(request, 'resepcionista/expedienteDetails.html',contexto)		
 	
 #Final views Marco
 

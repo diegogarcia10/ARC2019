@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="{% static 'css/animate.css' %}">
     <link rel="stylesheet" href="{% static 'css/slicknav.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/sc-2.0.1/datatables.min.css"/>
     {% block extracss %}{% endblock %}
     <!-- <link rel="stylesheet" href="css/responsive.css"> -->
 {% endblock %}
@@ -178,7 +179,7 @@
                                 <ul id="navigation">
                                     <li><a href="{% url 'hospital:registrar_entrada' %}">Registrar Entrada</a></li>
                                     <li><a href="#">Gestionar Citas</a></li>
-                                    <li><a href="#">Gestionar Pacientes</a></li>
+                                    <li><a href="{% url 'hospital:list_paciente' %}">Gestionar Pacientes</a></li>
                                     
                                 </ul>
                                 {% endifequal %}
@@ -883,6 +884,17 @@
     <script src="{% static 'js/jquery.form.js' %}"></script>
     <script src="{% static 'js/jquery.validate.min.js' %}"></script>
     <script src="{% static 'js/mail-script.js' %}"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/sc-2.0.1/datatables.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+          $('#miTabla').DataTable({
+            "language": {
+              "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+            }
+          });
+        });
+    </script>
     <!--<script src="{% static 'js/jquery-3.2.1.min.js'%}"></script>-->
     {% block extrajs %}
     {% endblock %}
