@@ -5,8 +5,8 @@
 <h1 class="text-center">Detalle Consulta</h1>
 <br>
 <div class="row">
-	<div class="col-md-3"></div>
-	<div class="col-md-6">
+	<div class="col-md-2"></div>
+	<div class="col-md-8">
 		<hr>
 		<form>
 			{% csrf_token %}
@@ -35,12 +35,12 @@
 		<hr>
 		{% if recetas %}
 		<form>
-			<table class="table table-hover">
-				<thead>
+			<table table id="miTabla" class="table" style="width:100%">
+				<thead class="bg-info">
 					<tr>
-						<th class="font-weight-bold" scope="col">Medicamento</th>
-						<th class="font-weight-bold" scope="col">Cantidad</th>
-						<th class="font-weight-bold" scope="col">sistema de medicion</th>
+						<th>Medicamento</th>
+						<th>Cantidad</th>
+						<th>sistema de medicion</th>
 					</tr>
 				</thead>
 
@@ -63,7 +63,10 @@
 		  ¡No se ha encontrado ninguna receta medica registrada!
 		</div>
 		{% endif %}
-<br><br><br><br><br><br>
+	</div>
+	<div class="col-md-2"></div>
+</div>
+<br><br>
 {% endblock %}
 {% block footer %}
 {% endblock %}

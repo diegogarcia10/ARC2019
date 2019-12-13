@@ -30,7 +30,7 @@ urlpatterns = [
     path('expedienteDetails/<str:cod_paciente>/<str:tipoPersona>',login_required(expedienteDetails), name='expedienteDetails'),
 
     path('expedienteDetails/<str:cod_paciente>/<str:tipoPersona>',login_required(expedienteDetails), name='expedienteDetails'),
-    path('consultaDetails/<str:cod_consulta>/',login_required(consultaDetails), name='consultaDetails'),
+    path('consultaDetails/<str:cod_consulta>/<str:tipoPersona>',login_required(consultaDetails), name='consultaDetails'),
 
 	#FIN URLS MARCO
 
