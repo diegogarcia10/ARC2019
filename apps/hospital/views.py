@@ -424,14 +424,24 @@ def expedienteDetails(request, cod_paciente,tipoPersona):
 		expediente = Expediente.objects.get(cod_paciente = paciente.id)
 		cod_person = paciente.cod_persona.id
 		persona = Persona.objects.get(id = cod_person)
-		user=persona.usuario.id
+		user = persona.usuario.id
 		usuario = User.objects.get(id = user)
 		edad = calcular_edad(persona.fecha_nacimiento)
 		citas = Cita.objects.filter(paciente=paciente.id).order_by('-fecha_hora_cita')
 		consultas = Consulta.objects.filter(num_expediente=expediente.id).order_by('-fecha_consulta')
-		contexto={'expediente':expediente,'paciente':paciente,'persona':persona, 'usuario':usuario,'edad':edad,'citas':citas,'consultas':consultas,'tipoPersona':str(tipoPersona)}
-		return render(request, 'resepcionista/expedienteDetails.html',contexto)		
-	
+		contexto = {'expediente':expediente,'paciente':paciente,'persona':persona, 'usuario':usuario,'edad':edad,'citas':citas,'consultas':consultas,'tipoPersona':str(tipoPersona)}
+		return render(request, 'resepcionista/expedienteDetails.html',contexto)
+		pass
+
+def consultaDetails(request, cod_consulta):
+	if request.method == 'GET':
+		consulta = Consulta.objects.get(cod_consulta=cod_consulta)
+		recetas = ResetaMedica.objects.filter(cod_consulta = consulta.cod_consulta).order_by('-cod_consulta')
+		contexto = {'consulta':consulta,'recetas':recetas}
+
+		return render(request, 'resepcionista/consultaDetails.html',contexto)
+		pass
+
 #Final views Marco
 
 def resepcionistaList(request):

@@ -1,5 +1,5 @@
 {% extends 'base/index.html'%}
-
+{% block title %}EXPEDIENTE{% endblock %}
 {% block content %}
 <br><br><br>
 <h1 class="text-center">Expediente Medico</h1>
@@ -14,36 +14,30 @@
 			<div class="form-group">
 				<div class="row">
 					<div class="col-md-6">
-						<label>Código del paciente: </label>
-						<label>{{ paciente.cod_paciente }}</label>
+						<h5>Código del paciente: {{ paciente.cod_paciente }}</h5>
 					</div>
 					<div class="col-md-6">
-						<label>Usuario: </label>
-						<label>{{ usuario.username }}</label>
+						<h5>Usuario: {{ usuario.username }}</h5>
 					</div>
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="row">
 					<div class="col-md-6">
-						<label>Nombre: </label>
-						<label>{{ usuario.first_name }}</label>
+						<h5>Nombre: {{ usuario.first_name }}</h5>
 					</div>
 					<div class="col-md-6">
-						<label>Apellidos: </label>
-						<label>{{ usuario.last_name }}</label>
+						<h5>Apellidos: {{ usuario.last_name }}</h5>
 					</div>
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="row">
 					<div class="col-md-6">
-						<label>Sexo:</label>
-						<label>{{ persona.sexo }}</label>
+						<h5>Sexo: {{ persona.sexo }}</h5>
 					</div>
 					<div class="col-md-6">
-						<label>Edad: </label>
-						<label>{{ edad }} años</label>
+						<h5>Edad: {{ edad }} años</h5>
 					</div>
 				</div>
 			</div>
@@ -100,7 +94,7 @@
 						<td>{{ consulta.cod_medico.cod_persona.usuario.first_name }} {{ consulta.cod_medico.cod_persona.usuario.last_name }}</td>
 						<td>{{ consulta.fecha_consulta }}</td>
 						<td>
-							<a href="#">Ver Detalle</a>
+							<a href="{% url 'hospital:consultaDetails' consulta.pk %}">Ver Detalle</a>
 						</td>
 
 					</tr>
