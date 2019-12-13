@@ -190,6 +190,36 @@ def list_paciente(request):
 	contexto={'tipoPersona':str(3),'pacientes':pacientes}
 	return render(request,'paciente/list_paciente.html',contexto)
 
+def cambiar_codigo(request,cod_antiguo):
+	tipoPersona="3"
+	if request.method=='POST':
+		codigo_nuevo=request.POST['codigo']
+		paciente=Paciente.objects.get(cod_paciente=str(cod_antiguo))
+		paciente.cod_paciente=codigo_nuevo
+		paciente.save()
+		return redirect('hospital:list_paciente')
+	contexto={'tipoPersona':tipoPersona}
+	return render(request,'resepcionista/cambiar_codigo.html',contexto)
+
+def captura_changue(request):
+	codigo=lectura()
+	mensaje=''
+
+	codigo=codigo.decode('utf-8')
+	codigo=codigo[1:12]
+	codigo=sinEspacio(codigo)
+	existencia = Paciente.objects.filter(cod_paciente=codigo).exists()
+	if existencia:
+		mensaje = 'Lo Sentimos la tarjeta ya esta registrada con otro paciente intente con otra , codigo: '+codigo
+	else:
+		mensaje = 'Tarjeta Libre de clic en el boton para realizar el cambio, codigo: '+codigo 
+	print(codigo)
+	context={
+		'mensaje': mensaje,
+		'existencia': existencia,
+		'codigo': codigo,
+	}
+	return render(request, 'resepcionista/pre_cambiar.html', context)
 #--------FIN PARTE DE DIEGO--------------#
 #view Marco
 def especialidadList(request):

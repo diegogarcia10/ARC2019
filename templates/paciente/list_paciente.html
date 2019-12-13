@@ -6,49 +6,53 @@
 <h3 class="text-center">Listado de Pacientes</h3>
 <br><br>
 <div class="container">
-<table id="miTabla" class="table" style="width:100%" >
-	 <thead class="bg-info">
-            <tr>
-                <th>Codigo</th>
-                <th>Nombre</th>
-                <th>Apellidos</th>
-                <th>Fecha Nacimiento</th>
-                <th>Sexo</th>
-                <th>Acciones</th>
-                
-            </tr>
-    </thead>
-     <tbody>
-     	{% for paciente in pacientes%}
-     		<tr>
-     			<td>{{paciente.cod_paciente}}</td>
-     			<td>{{paciente.cod_persona.usuario.first_name}}</td>
-     			<td>{{paciente.cod_persona.usuario.last_name}}</td>
-     			<td>{{paciente.cod_persona.fecha_nacimiento}}</td>
-     			<td>{{paciente.cod_persona.sexo.nombre_sexo}}</td>
-     			<td>
-     				<a href="#" class="btn btn btn-info"><i class="fa fa-eye" aria-hidden="true"></i> Ver Expediente</a>
-     				<a href="#" class="btn btn btn-warning"><i class="fa fa-pencil" aria-hidden="true"></i> Cambiar Tarjeta</a>
-
-     			</td>
-     		</tr>
-     	{% endfor %}            
-     </tbody>
-     <tfoot>
-            <tr>
-                <th>Codigo</th>
-                <th>Nombre</th>
-                <th>Apellidos</th>
-                <th>Fecha Nacimiento</th>
-                <th>Sexo</th>
-                <th>Acciones</th>
-                
-            </tr>
-        </tfoot>
-</table>
+    <table id="miTabla" class="table" style="width:100%" >
+    	 <thead class="bg-info">
+                <tr>
+                    <th>Codigo</th>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>Fecha Nacimiento</th>
+                    <th>Sexo</th>
+                    <th>Acciones</th>
+                    
+                </tr>
+        </thead>
+         <tbody>
+         	{% for paciente in pacientes%}
+         		<tr>
+         			<td>{{paciente.cod_paciente}}</td>
+         			<td>{{paciente.cod_persona.usuario.first_name}}</td>
+         			<td>{{paciente.cod_persona.usuario.last_name}}</td>
+         			<td>{{paciente.cod_persona.fecha_nacimiento}}</td>
+         			<td>{{paciente.cod_persona.sexo.nombre_sexo}}</td>
+         			<td>
+         				<a href="{% url 'hospital:expedienteDetails' paciente.cod_paciente 3 %}" class="btn btn btn-info">        <i class="fa fa-eye" aria-hidden="true"></i> Ver Expediente</a>
+                        <a href="{% url 'hospital:cambiar_codigo' paciente.cod_paciente %}" class="btn btn btn-warning">        <i class="fa fa-pencil" aria-hidden="true"></i> Cambiar Tarjeta</a>    				
+                       
+         			</td>
+         		</tr>
+         	{% endfor %}            
+         </tbody>
+         <tfoot>
+                <tr>
+                    <th>Codigo</th>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>Fecha Nacimiento</th>
+                    <th>Sexo</th>
+                    <th>Acciones</th>
+                    
+                </tr>
+            </tfoot>
+    </table>
 </div>
 
+
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<!-- Button trigger modal -->
+
 
 
 {% endblock %}

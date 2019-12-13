@@ -1,0 +1,31 @@
+{% if existencia %}
+    <div class="alert alert-danger" role="alert">
+   		{{mensaje}}
+   	</div>  	
+   	
+    <br>
+    <div class="text-center">
+    	<a class="btn btn-warning btn-lg" href="javascript:location.reload()" ><i class="fa fa-refresh" aria-hidden="true"></i> Recargar</a>
+    </div>
+
+{% else %}
+<br><br><br>
+   	<div class="alert alert-success" role="alert">
+   		{{mensaje}}
+   	</div>
+   	
+   	<br>
+    <div class="text-center">
+      <form method="post">
+        {% csrf_token %}
+        <button class="btn btn-success btn-lg" type="submit" name="codigo" value="{{codigo}}"><i class="fa fa-pencil" aria-hidden="true"></i> Realizar Transaccion </button>        
+      </form>
+      
+        
+    </div>
+    <br>
+    <div class="text-center">
+    	<a class="btn btn-primary btn-lg" href="javascript:location.reload()" ><i class="fa fa-refresh" aria-hidden="true"></i> Recargar</a>
+    </div>
+    	
+{%endif%}
