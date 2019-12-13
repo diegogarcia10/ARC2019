@@ -69,7 +69,7 @@ class Medicamento(models.Model):
 	descripcion=models.CharField(max_length=100)
 	cod_medicamento=models.CharField(max_length=10,primary_key=True)
 	def __str__(self):
-		return str(self.farmacia)
+		return str(self.nombre_medicamento)
 
 class ResetaMedica(models.Model):
 	cod_reseta=models.CharField(max_length=10,primary_key=True)
