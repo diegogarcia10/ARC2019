@@ -178,7 +178,7 @@
                                 {% ifequal tipoPersona "3" %}
                                 <ul id="navigation">
                                     <li><a href="{% url 'hospital:registrar_entrada' %}">Registrar Entrada</a></li>
-                                    <li><a href="#">Gestionar Citas</a></li>
+                                    <li><a href="{% url 'hospital:list_citas' %}">Gestionar Citas</a></li>
                                     <li><a href="{% url 'hospital:list_paciente' %}">Gestionar Pacientes</a></li>
                                     
                                 </ul>
@@ -218,7 +218,28 @@
         </header>
     <!-- header-end -->
     {% block content %}
-    <!-- slider_area_start -->
+    
+    <!--Agregado por mi
+    <div class="container">
+        <div class="row">
+        <div class="col-md-6">
+            <h4 class="text-center">Mira Tu expediente medico en linea</h4>
+            <p class="text-center">Con este sistema podras vizualizar tu Expediente en linea y estar pendiente de las citas programadas</p>
+        </div>
+        <div class="col-md-6">
+            <h4 class="text-center"></h4>
+            <p class="text-center">Con este sistema podras vizualizar tu Expediente en linea y estar pendiente de las citas programadas</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            
+        </div>
+        <div class="col-md-6"></div>
+    </div>
+    </div>-->
+    
+    <!-- slider_area_start-->
     
     <div class="slider_area">
         <div class="slider_active owl-carousel">
@@ -227,11 +248,10 @@
                     <div class="row">
                         <div class="col-xl-12">
                             <div class="slider_text ">
-                                <h3> <span>Health care</span> <br>
-                                    For Hole Family </h3>
-                                <p>In healthcare sector, service excellence is the facility of <br> the hospital as
-                                    healthcare service provider to consistently.</p>
-                                <a href="#" class="boxed-btn3">Check Our Services</a>
+                                <h3> <span>Cuidado de la salud</span> <br>
+                                    para ti y tu familia. </h3>
+                                <p>Tenemos un control centralizado de los procesos relacionados a tu salud</p>
+                                <a href="#" class="boxed-btn3">Consulta nuestros servicios</a>
                             </div>
                         </div>
                     </div>
@@ -242,11 +262,10 @@
                     <div class="row">
                         <div class="col-xl-12">
                             <div class="slider_text ">
-                                <h3> <span>Health care</span> <br>
-                                    For Hole Family </h3>
-                                <p>In healthcare sector, service excellence is the facility of <br> the hospital as
-                                    healthcare service provider to consistently.</p>
-                                <a href="#" class="boxed-btn3">Check Our Services</a>
+                                <h3> <span>Cuidado de la salud</span> <br>
+                                    para ti y tu familia. </h3>
+                                 <p>Tenemos un control centralizado de los procesos relacionados a tu salud</p>
+                                <a href="#" class="boxed-btn3">Consulta nuestros servicios</a>
                             </div>
                         </div>
                     </div>
@@ -257,21 +276,20 @@
                     <div class="row">
                         <div class="col-xl-12">
                             <div class="slider_text ">
-                                <h3> <span>Health care</span> <br>
-                                    For Hole Family </h3>
-                                <p>In healthcare sector, service excellence is the facility of <br> the hospital as
-                                    healthcare service provider to consistently.</p>
-                                <a href="#" class="boxed-btn3">Check Our Services</a>
+                                <h3> <span>Cuidado de la salud</span> <br>
+                                    para ti y tu familia. </h3>
+                                 <p>Tenemos un control centralizado de los procesos relacionados a tu salud</p>
+                                <a href="#" class="boxed-btn3">Consulta nuestros servicios</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </div> 
     <!-- slider_area_end -->
 
-    <!-- service_area_start -->
+    <!-- service_area_start 
     <div class="service_area">
         <div class="container p-0">
             <div class="row no-gutters">
@@ -307,10 +325,10 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
     <!-- service_area_end -->
 
-    <!-- welcome_docmed_area_start -->
+    <!-- welcome_docmed_area_start 
     <div class="welcome_docmed_area">
         <div class="container">
             <div class="row">
@@ -341,10 +359,10 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
     <!-- welcome_docmed_area_end -->
 
-    <!-- offers_area_start -->
+    <!-- offers_area_start 
     <div class="our_department_area">
         <div class="container">
             <div class="row">
@@ -431,10 +449,10 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
     <!-- offers_area_end -->
 
-    <!-- testmonial_area_start -->
+    <!-- testmonial_area_start 
     <div class="testmonial_area">
         <div class="testmonial_active owl-carousel">
             <div class="single-testmonial testmonial_bg_1 overlay2">
@@ -498,10 +516,10 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
     <!-- testmonial_area_end -->
 
-    <!-- business_expert_area_start  -->
+    <!-- business_expert_area_start 
     <div class="business_expert_area">
         <div class="business_tabs_area">
             <div class="container">
@@ -599,11 +617,11 @@
                           </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- business_expert_area_end  -->
 
 
-    <!-- expert_doctors_area_start -->
+    <!-- expert_doctors_area_start 
     <div class="expert_doctors_area">
         <div class="container">
             <div class="row">
@@ -674,10 +692,10 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
     <!-- expert_doctors_area_end -->
 
-    <!-- Emergency_contact start -->
+    <!-- Emergency_contact start 
     <div class="Emergency_contact">
         <div class="conatiner-fluid p-0">
             <div class="row no-gutters">
@@ -706,12 +724,14 @@
             </div>
         </div>
     </div>
+    -->
     <!-- Emergency_contact end -->
     {% endblock %}
 
 <!-- footer start -->
     <footer class="footer">
             {% block footer %}
+            <!--
             <div class="footer_top">
                 <div class="container">
                     <div class="row">
@@ -791,7 +811,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>-->
              {% endblock %}
             <div class="copy-right_text">
                 <div class="container">

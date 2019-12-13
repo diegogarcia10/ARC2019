@@ -220,6 +220,15 @@ def captura_changue(request):
 		'codigo': codigo,
 	}
 	return render(request, 'resepcionista/pre_cambiar.html', context)
+
+
+
+def list_citas(request):
+	citas=Cita.objects.all()
+	contexto={'citas':citas,'tipoPersona':str(3)}
+	return render(request,'resepcionista/list_citas.html',contexto)
+
+
 #--------FIN PARTE DE DIEGO--------------#
 #view Marco
 def especialidadList(request):

@@ -1,0 +1,44 @@
+{% extends 'base/index.html' %}
+
+
+{% block content %}
+<br><br>
+<h3 class="text-center">Listado de Citas</h3>
+<br><br>
+<div class="container">
+	<div class="col" align="right">
+				<a href="#" class="btn btn-info">
+		        <span class="fa fa-plus"></span> Registrar
+			    </a>
+	</div>
+	<br>
+	<table id="miTabla" class="table" style="width:100%" >
+		<thead class="bg-info">
+			<tr>
+				<th>Medico</th>
+				<th>Paciente</th>
+				<th>Fecha y Hora</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for cita in citas %}
+			<tr>
+				<td>{{cita.medico.cod_persona.usuario.first_name}} {{cita.medico.cod_persona.usuario.last_name}}</td>
+				<td>{{cita.paciente.cod_persona.usuario.first_name}} {{cita.paciente.cod_persona.usuario.last_name}}</td>
+				<td>{{cita.fecha_hora_cita}}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+		<tfoot>
+			<tr>
+				<th>Medico</th>
+				<th>Paciente</th>
+				<th>Fecha y Hora</th>
+			</tr>
+		</tfoot>
+	</table>
+</div>
+<br><br><br><br><br><br>
+{% endblock %}
+{% block footer %}
+{% endblock %}
