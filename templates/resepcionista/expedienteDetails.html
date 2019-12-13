@@ -6,8 +6,8 @@
 <br>
 <h3 class="text-center">Detalle del Paciente</h3>
 <div class="row">
-	<div class="col-md-3"></div>
-	<div class="col-md-6">
+	<div class="col-md-2"></div>
+	<div class="col-md-8">
 		<hr>
 		<form>
 			{% csrf_token %}
@@ -47,11 +47,11 @@
 		<hr>
 		{% if citas %}
 		<form>
-			<table class="table table-hover">
-				<thead>
+			<table id="miTabla" class="table" style="width:100%" >
+				<thead class="bg-info">
 					<tr>
-						<th class="font-weight-bold" scope="col">Medico</th>
-						<th class="font-weight-bold" scope="col">Fecha y hora</th>
+						<th>Medico</th>
+						<th>Fecha y hora</th>
 
 					</tr>
 				</thead>
@@ -73,18 +73,18 @@
 		  ¡No se ha encontrado ninguna cita registrada!
 		</div>
 		{% endif %}
-
+		<br>
 		</form>
 		<h3 class="text-center">Detalle de consultas</h3>
 		<hr>
 		{% if consultas %}
 		<form>
-			<table class="table table-hover">
-				<thead>
+			<table id="miTabla2" class="table" style="width:100%">
+				<thead class="bg-info">
 					<tr>
-						<th class="font-weight-bold" scope="col">Medico</th>
-						<th class="font-weight-bold" scope="col">Fecha</th>
-						<th class="font-weight-bold" scope="col">Acción</th>
+						<th>Medico</th>
+						<th>Fecha</th>
+						<th>Acción</th>
 					</tr>
 				</thead>
 
@@ -94,7 +94,7 @@
 						<td>{{ consulta.cod_medico.cod_persona.usuario.first_name }} {{ consulta.cod_medico.cod_persona.usuario.last_name }}</td>
 						<td>{{ consulta.fecha_consulta }}</td>
 						<td>
-							<a href="{% url 'hospital:consultaDetails' consulta.pk %}">Ver Detalle</a>
+							<a href="{% url 'hospital:consultaDetails' consulta.pk tipoPersona %}">Ver Detalle</a>
 						</td>
 
 					</tr>
@@ -109,9 +109,9 @@
 		{% endif %}
 
 	</div>
-	<div class="col-md-3"></div>
+	<div class="col-md-2"></div>
 </div>
-<br><br><br><br><br><br>
+<br><br>
 {% endblock %}
 {% block footer %}
 {% endblock %}

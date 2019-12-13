@@ -463,11 +463,11 @@ def expedienteDetails(request, cod_paciente,tipoPersona):
 		return render(request, 'resepcionista/expedienteDetails.html',contexto)
 		pass
 
-def consultaDetails(request, cod_consulta):
+def consultaDetails(request, cod_consulta,tipoPersona):
 	if request.method == 'GET':
 		consulta = Consulta.objects.get(cod_consulta=cod_consulta)
 		recetas = ResetaMedica.objects.filter(cod_consulta = consulta.cod_consulta).order_by('-cod_consulta')
-		contexto = {'consulta':consulta,'recetas':recetas}
+		contexto = {'consulta':consulta,'recetas':recetas,'tipoPersona':str(tipoPersona)}
 
 		return render(request, 'resepcionista/consultaDetails.html',contexto)
 		pass
