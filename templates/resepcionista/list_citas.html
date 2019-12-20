@@ -4,7 +4,6 @@
 {% block content %}
 <br><br>
 <h3 class="text-center">Listado de Citas</h3>
-<br><br>
 <div class="container">
 	<div class="col" align="right">
 				<a href="#" class="btn btn-info">
@@ -23,7 +22,7 @@
 		<tbody>
 			{% for cita in citas %}
 			<tr>
-				<td>{{cita.medico.cod_persona.usuario.first_name}} {{cita.medico.cod_persona.usuario.last_name}}</td>
+				<td>{{cita.medico.cod_persona.usuario.first_name}}</td>
 				<td>{{cita.paciente.cod_persona.usuario.first_name}} {{cita.paciente.cod_persona.usuario.last_name}}</td>
 				<td>{{cita.fecha_hora_cita}}</td>
 			</tr>
