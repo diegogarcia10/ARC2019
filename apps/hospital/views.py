@@ -10,6 +10,7 @@ from dateutil.relativedelta import relativedelta
 import time
 import serial
 import serial.tools.list_ports
+import random
 
 #--------PARTE DE DIEGO--------------#
 #Metodo que verifica cual es el puerto en el que esta conectado el arduino
@@ -386,16 +387,44 @@ def medicoList(request):
 	return render(request, 'medico/medicoList.html', contexto)
 
 def medicoCreate(request):
+	especialidades=Especialidad.objects.all().order_by('nombre_especialidad')
 	if request.method == 'POST':
-		form = MedicoForm(request.POST)
-		if form.is_valid():
-			form.save()
+		usuario=User()
+		persona=Persona()
+		medico=Medico()
+		#usuario.is_staff=True
+		usuario.first_name=request.POST['nombres']
+		usuario.last_name=request.POST['apellidos']
+		concac1=str(usuario.first_name).upper()
+		concac1=concac1[0:3]
+		concac2=str(usuario.last_name).upper()
+		concac2=concac2[0:3]
+		#Generar una cadena random
+		stringRandom = str(random.randint(0,100))
+		nombreUser = concac1 + concac2	
+		usuario.username=nombreUser
+		password=concac1+concac2+stringRandom
+		usuario.set_password(password)
+		usuario.save()
+		persona.usuario=usuario
+		persona.sexo=Sexo.objects.get(cod_sexo=str(request.POST['sexo']))
+		persona.fecha_nacimiento=request.POST['fecha_nacimiento']
+		persona.save()
+		medico.cod_persona=persona
+		medico.cod_medico=request.POST['cod_medico']
+		medico.num_regsitro=request.POST['num_registro']
+		medico.save()
+		for esp in especialidades:
+			if 'esp_'+esp.cod_especialidad in request.POST:
+				medico.especialidad.add(esp)
+				pass
 			pass
 		pass
-		return redirect('hospital:medicoList')
+		contexto = {'password':password,'username':nombreUser}
+		return render(request, 'medico/medicoDetalle.html',contexto)
 	else:
-		form = MedicoForm()
-	return render(request, 'medico/medicoCreate.html', {'form':form})
+		contexto = {'especialidades':especialidades}
+	return render(request, 'medico/medicoCreate.html',contexto)
 
 def medicoEdit(request, cod_medico):
 	medico = Medico.objects.get(pk=cod_medico)

@@ -1,95 +1,97 @@
 {% extends 'base/index.html' %}
 {% block title %}MÉDICO{% endblock %}
 {% block content %}
-<br>
-<section class="col-md-12">
-	<div class="table-responsive">
-		<div class="row">
-			<div class="col" id="buscadorMedico" style="display:inline-block">
-			    <nav class="navbar navbar-light bg-light" style="width: 57%">
-			        <form class="form-inline">
-			            <input style="width: 70%" id="buscarInput" name="buscarInput" class="form-control mr-sm-2" type="search" placeholder="Atributo" aria-label="Search">
-			            
-			                <button id="buscar" name="buscar" class="btn btn-success my-2 my-sm-0" type="submit">Buscar</button>
-			        </form> 
-			    </nav>
-			    <br>           
-			</div>
-			<div class="col" align="right">
-				<a href="{% url 'hospital:medicoCreate' %}" class="btn btn-success">
-		        <span class="fas fa-plus"></span> Agregar
-			    </a>
-			</div>
-			
+<br><br>
+<h3 class="text-center">Listado de Medicos</h3>
+<div class="container">
+	<div>
+		<div class="col" align="right">
+			<a href="{% url 'hospital:medicoCreate' %}" class="btn btn-success">
+	        <span class="fas fa-plus"></span> Agregar
+		    </a>
 		</div>
-		<table class="table table-hover table-bordered">
-			<thead class="table table-hover table-bordered">
-				<tr class="table-success">
-					<td class="font-weight-bold">Codigo</td>
-					<td class="font-weight-bold">Número de Registro</td>
-					<td class="font-weight-bold">Persona</td>
-					<td class="font-weight-bold">Especialidades</td>
-					<td class="font-weight-bold">Acciones</td>
-				</tr>
-			</thead>
-			<tbody>
-				{% if medicos %}
-				{% for medico in medicos %}
-				<tr class="text-justify">
-					<td>{{ medico.cod_medico }}</td>
-					<td>{{ medico.num_regsitro }}</td>
-					<td>{{ medico.cod_persona }}</td>
-					<td>
-						<ul>
-						{% for esp in medico.especialidad.all %}						
-							<li>{{ esp }}</li>
-						{% endfor %}
-						</ul>
-					</td>
-					<td>
-						<a href="{% url 'hospital:medicoEdit' medico.pk %}">Modificar</a>
-						<br>
-						<div>
-							<form method="POST">
-				                {% csrf_token %}
-				                <input type="hidden" name="medico" value="{{ medico.cod_medico }}"> 
-				                <a href="" data-toggle="modal" data-target="#Eliminar_{{ medico.cod_medico }}">Eliminar</a>
-				                <!-- Modal -->
-				                <div class="modal fade" id="Eliminar_{{ medico.cod_medico }}" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-				                  <div class="modal-dialog" role="document">
-				                    <div class="modal-content">
-				                      <div class="modal-header">
-				                        <h5 class="modal-title" id="exampleModalLabel">Ventana de Confirmación</h5>
-				                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				                          <span aria-hidden="true">&times;</span>
-				                        </button>
-				                      </div>
-				                      <div class="modal-body">
-				                        ¿Esta seguro de eliminar el Médico <b>{{ medico.cod_persona }}?</b>
-				                      </div>
-				                      <div class="modal-footer">
-				                        <input class="btn btn-danger" type="submit" name="accion" value="Eliminar">
-				                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-				                      </div>
-				                    </div>
-				                  </div>
-				                </div>
-				             </form>
-						</div>
-					</td>
-				</tr>
-				{% endfor %}
-
-				{% else %}
-				<div class="alert alert-danger" role="alert">
-				  ¡No se ha encontrado ningún Médico!
-				</div>
-				{% endif %}
-			</tbody>
-		</table>
-
+		<br>
 	</div>
-</section>
+	<div>
+		<table id="miTabla" class="table" style="width:100%">
+		<thead class="bg-info">
+			<tr>
+				<th>Codigo</th>
+				<th>Número de Registro</th>
+				<th>Nombres</th>
+				<th>Especialidades</th>
+				<th>Acciones</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% if medicos %}
+			{% for medico in medicos %}
+			<tr>
+				<td>{{ medico.cod_medico }}</td>
+				<td>{{ medico.num_regsitro }}</td>
+				<td>{{ medico.cod_persona.usuario.first_name }} {{ medico.cod_persona.usuario.last_name }} </td>
+				<td>
+					<ul>
+					{% for esp in medico.especialidad.all %}						
+						<li>{{ esp }}</li>
+					{% endfor %}
+					</ul>
+				</td>
+				<td>
+					<a href="{% url 'hospital:medicoEdit' medico.pk %}">Modificar</a>
+					<br>
+					<div>
+						<form method="POST">
+			                {% csrf_token %}
+			                <input type="hidden" name="medico" value="{{ medico.cod_medico }}"> 
+			                <a href="" data-toggle="modal" data-target="#Eliminar_{{ medico.cod_medico }}">Eliminar</a>
+			                <!-- Modal -->
+			                <div class="modal fade" id="Eliminar_{{ medico.cod_medico }}" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			                  <div class="modal-dialog" role="document">
+			                    <div class="modal-content">
+			                      <div class="modal-header">
+			                        <h5 class="modal-title" id="exampleModalLabel">Ventana de Confirmación</h5>
+			                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			                          <span aria-hidden="true">&times;</span>
+			                        </button>
+			                      </div>
+			                      <div class="modal-body">
+			                        ¿Esta seguro de eliminar el Médico <b>{{ medico.cod_persona }}?</b>
+			                      </div>
+			                      <div class="modal-footer">
+			                        <input class="btn btn-danger" type="submit" name="accion" value="Eliminar">
+			                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+			                      </div>
+			                    </div>
+			                  </div>
+			                </div>
+			             </form>
+					</div>
+				</td>
+			</tr>
+			{% endfor %}
+
+			{% else %}
+			<div class="alert alert-danger" role="alert">
+			  ¡No se ha encontrado ningún Médico!
+			</div>
+			{% endif %}
+		</tbody>
+		<tfoot>
+	        <tr>
+	            <th>Codigo</th>
+				<th>Número de Registro</th>
+				<th>Nombres</th>
+				<th>Especialidades</th>
+				<th>Acciones</th>
+	        </tr>
+	    </tfoot>
+	</table>
+	</div>
+</div>
+<br><br><br><br><br><br><br><br><br><br><br><br><br>
 <!-- -->
 
+{% endblock %}
+{% block footer %}
 {% endblock %}

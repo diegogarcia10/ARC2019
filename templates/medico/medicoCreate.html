@@ -1,61 +1,83 @@
 {% extends 'base/index.html'%}
-{% block title %}
-{% if form %}
-Agregar Médico
-{% else %}
-Modificar Médico
-{% endif %}
-{% endblock %}
- 
-{% block content %}
-<div class="container">
-<br><br>
-	<form method="post">
-	{% csrf_token %}
-	<div class="row">			
-		<div class="col">				
-			<div class="form-group">
-				{% if form %}
-				{%for element in form %} 
-                <div class="form-group"> 
-                    <label class="col-md-8 control-label">
-                        {{element.label}}            
-                    </label> 
-                    <div class="col-md-8"> 
-                        {{element}} 
-                        <div class="error">
-                            {{element.errors}}
-                        </div>
-                    </div> 
-                </div> 
-                {% endfor %}
-                {% else %}
-				{%for element in form1 %} 
-                <div class="form-group"> 
-                    <label class="col-md-8 control-label">
-                        {{element.label}}            
-                    </label> 
-                    <div class="col-md-8"> 
-                        {{element}} 
-                        <div class="error">
-                            {{element.errors}}
-                        </div>
-                    </div> 
-                </div> 
-                {% endfor %}
-				{% endif %}
-			</div>
-		</div>
 
+{% block content %}
+<br><br><br>
+<h1 class="text-center">Crear Médico</h1>
+<br>
+<div class="row">
+	<div class="col-md-3"></div>
+	<div class="col-md-6">
+		<hr>
+		<form method="POST">
+			{% csrf_token %}
+			<div class="form-group">
+				<div class="row">
+					<div class="col-md-6">
+						<h5>Nombre:</h5>
+						<input type="text" name="nombres" placeholder="Ingrese los Nombres" class="form-control">
+					</div>
+					<div class="col-md-6">
+						<h5>Apellidos:</h5>
+						<input type="text" name="apellidos" placeholder="Ingrese los Apellidos" class="form-control">
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="row">
+					<div class="col-md-6">
+						<h5>Sexo:</h5><br>
+						<select class="form-control" name="sexo">
+							<option disabled value="" selected hidden>Seleccione el Sexo </option>
+							<option value="M">Masculino</option>
+							<option value="F">Femenino</option>
+						</select>
+					</div>
+					<div class="col-md-6">
+						<h5>Fecha de Nacimiento:</h5>
+						<input type="date" name="fecha_nacimiento" class="form-control">
+					</div>
+				</div>
+			</div>
+			<hr>
+			<div class="form-group">
+				<div class="row">
+					<div class="col-md-6">
+						<h5>Código:</h5>
+						<input type="text" name="cod_medico" placeholder="Ingrese el código del Médico" class="form-control">
+					</div>
+					<div class="col-md-6">
+						<h5>Número de Registro:</h5>
+						<input type="text" name="num_registro" placeholder="Ingrese el número de registro del Médico" class="form-control">
+					</div>
+				</div>
+			</div>
+			<hr>
+			<div class="form-group">
+				<div class="row">
+					<div class="col-md-12">
+						<br>
+						<h5 class="text-center">Especialidad: </h5>
+						<br>
+						{% if especialidades %}
+						{% for especialidad in especialidades %}
+						<lu>
+							<input type="checkbox" name="esp_{{ especialidad.cod_especialidad }}" value="{{ especialidad.nombre_especialidad }}">
+					 		{{ especialidad.nombre_especialidad }}&nbsp&nbsp
+						{% endfor %}
+						{% endif %}
+						</lu>
+					</div>
+				</div>
+			</div>
+			<div class="form-group text-center">
+				<button type="submit" class="btn btn-success">Registrar Médico</button>
+			</div>
+			<hr>
+		</form>
 	</div>
-	<div class="">
-		<br><br>
-		<button type="submit" class="btn btn-primary">Guardar</button>
-		<a href="{% url 'hospital:medicoList' %}" class="btn btn-warning">Volver a la lista</a> 
-		<br>
-	</div>
-	</form>
+	<div class="col-md-3"></div>
 </div>
-<br>
-<br>
+<br><br>
+{% endblock %}
+{% block footer %}
 {% endblock %}
