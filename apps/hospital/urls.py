@@ -45,7 +45,9 @@ urlpatterns = [
     path('list-paciente',list_paciente,name="list_paciente"),
     path('cambiar-codigo/<str:cod_antiguo>',cambiar_codigo,name="cambiar_codigo"),
     path('capturaCambio',captura_changue,name="captura_changue"),
-    path('list-citas',list_citas,name="list_citas")
+    path('list-citas',list_citas,name="list_citas"),
+    path('nueva-cita',nueva_cita,name="nueva_cita"),
+    path('capturaCita',captura_cita,name="captura_cita"),
     #Fin parte Diego
     
 ]

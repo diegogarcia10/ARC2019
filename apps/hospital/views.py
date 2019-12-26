@@ -222,7 +222,30 @@ def captura_changue(request):
 	}
 	return render(request, 'resepcionista/pre_cambiar.html', context)
 
+def captura_cita(request):
+	codigo=lectura()
+	mensaje=''
 
+	codigo=codigo.decode('utf-8')
+	codigo=codigo[1:12]
+	codigo=sinEspacio(codigo)
+	existencia = Paciente.objects.filter(cod_paciente=codigo).exists()
+	if existencia:
+		mensaje = 'Paciente encontrado, con el codigo: '+codigo
+	else:
+		mensaje = 'Paciente no encontrado, de clic en el boton, codigo: '+codigo 
+	print(codigo)
+	context={
+		'mensaje': mensaje,
+		'existencia': existencia,
+		'codigo': codigo,
+	}
+	return render(request, 'cita/pre_cita.html', context)
+
+def nueva_cita(request):
+	tipoPersona="3"
+	contexto={'tipoPersona':tipoPersona}
+	return render(request,'cita/nueva_cita.html',contexto)
 
 def list_citas(request):
 	citas=Cita.objects.all()

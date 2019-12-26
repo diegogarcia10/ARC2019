@@ -1,0 +1,26 @@
+{% if existencia %}
+    <div class="alert alert-success" role="alert">
+   		{{mensaje}}
+   	</div>
+   	
+   	<br>
+    <div class="text-center">
+    	<a class="btn btn-primary btn-lg" href="#" ><i class="fa fa-pencil" aria-hidden="true"></i> Crear Cita</a>
+    </div>
+    <br>
+    <div class="text-center">
+    	<a class="btn btn-warning btn-lg" href="javascript:location.reload()" ><i class="fa fa-refresh" aria-hidden="true"></i> Recargar</a>
+    </div>
+
+{% else %}
+<br><br><br>
+   	<div class="alert alert-danger" role="alert">
+   		{{mensaje}}
+   	</div>   	
+   	<br>    
+    <br>
+    <div class="text-center">
+    	<a class="btn btn-primary btn-lg" href="javascript:location.reload()" ><i class="fa fa-refresh" aria-hidden="true"></i> Recargar</a>
+    </div>
+    	
+{%endif%}
