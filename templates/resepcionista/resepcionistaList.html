@@ -1,49 +1,36 @@
 {% extends 'base/index.html' %}
-{% block title %}LISTADO RECEPCIONISTAS{% endblock %}
+{% block title %}RECEPCIONISTA{% endblock %}
 {% block content %}
-<br>
-<section class="col-md-12">
-	<div class="table-responsive">
-		<div class="row">
-			<div class="col" id="buscador" style="display:inline-block">
-			    <nav class="navbar navbar-light bg-light" style="width: 57%">
-			        <form class="form-inline">
-			            <input style="width: 70%" id="buscarInput" name="buscarInput" class="form-control mr-sm-2" type="search" placeholder="Atributo" aria-label="Search">
-			            
-			                <button id="buscar" name="buscar" class="btn btn-success my-2 my-sm-0" type="submit">Buscar</button>
-			        </form> 
-			    </nav>
-			    <br>           
-			</div>
-			<div class="col" align="right">
-				<a href="{% url 'hospital:resepcionistaCreate' %}" class="btn btn-success">
-		        <span class="fas fa-plus"></span> Agregar
-			    </a>
-			</div>
-			
-		</div>
-		<table class="table table-hover table-bordered">
-			<thead class="table table-hover table-bordered">
-				<tr class="table-success">
-					<td class="font-weight-bold">Código</td>
-					<td class="font-weight-bold">Persona</td>
-					<td class="font-weight-bold">Acciones</td>
-				</tr>
-			</thead>
-			<tbody>
-				{% if recepcionistas %}
-				{% for recepcionista in recepcionistas %}
-				<tr class="text-justify">
-					<td>{{ recepcionista.cod_resepcionista }}</td>
-					<td>{{ recepcionista.cod_persona }}</td>
-					<td>
-						<a href="{% url 'hospital:resepcionistaEdit' recepcionista.pk %}">Modificar</a>
-						<br>
-						<div>
-							<form method="POST">
+<!--REEDITADO Por Diego Ochoa-->
+
+<div class=" jumbotron container">
+<hr>
+<h3 class="text-center">Lista de Recepcionistas</h3>
+<hr>
+	<div class="col" align="right">
+		<a href="{% url 'hospital:resepcionistaCreate' %}" class="btn btn-info"><span class="fa fa-plus"></span> Registrar</a>
+	</div>
+	<br>
+	<table id="miTabla" class="table table-bordered" style="width:100%">
+		<thead class="bg-info">
+			<tr>
+				<th>Codigo</th>
+				<th>Nombre</th>
+				<th>Acciones</th>
+			</tr>			
+		</thead>
+		<tbody>
+			{% for recepcionista in recepcionistas %}
+			<tr>
+				<td>{{ recepcionista.cod_resepcionista }}</td>
+				<td>{{ recepcionista.cod_persona.usuario.first_name }} {{ recepcionista.cod_persona.usuario.last_name }} </td>
+				<td>
+					<a href="{% url 'hospital:resepcionistaEdit' recepcionista.pk %}" class="btn btn btn-warning"><i class="fa fa-pencil" aria-hidden="true"></i></a>					
+					<a class="btn btn btn-danger" data-toggle="modal" data-target="#Eliminar_{{ recepcionista.cod_resepcionista }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+					<form method="POST">
 				                {% csrf_token %}
 				                <input type="hidden" name="recepcionista" value="{{ recepcionista.cod_resepcionista }}"> 
-				                <a href="" data-toggle="modal" data-target="#Eliminar_{{ recepcionista.cod_resepcionista }}">Eliminar</a>
+				                
 				                <!-- Modal -->
 				                <div class="modal fade" id="Eliminar_{{ recepcionista.cod_resepcionista }}" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				                  <div class="modal-dialog" role="document">
@@ -55,7 +42,7 @@
 				                        </button>
 				                      </div>
 				                      <div class="modal-body">
-				                        ¿Esta seguro de eliminar al recepcionista <b>{{ recepcionista.cod_resepcionista }}?</b>
+				                        ¿Esta seguro de eliminar al Recepcionista<b>{{ recepcionista.cod_resepcionista }}?</b>
 				                      </div>
 				                      <div class="modal-footer">
 				                        <input class="btn btn-danger" type="submit" name="accion" value="Eliminar">
@@ -65,20 +52,19 @@
 				                  </div>
 				                </div>
 				             </form>
-						</div>
-					</td>
-				</tr>
-				{% endfor %}
-
-				{% else %}
-				<div class="alert alert-danger" role="alert">
-				  ¡No se ha encontrado ningún Recepcionista registrado!
-				</div>
-				{% endif %}
-			</tbody>
-		</table>
-
-	</div>
-</section>
-<!-- -->
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+		<tfoot>
+			<tr>
+				<th>Codigo</th>
+				<th>Nombre</th>
+				<th>Acciones</th>
+			</tr>
+		</tfoot>
+	</table>
+</div>
+<br><br><br><br><br>
+<!--Fin-->
 {% endblock %}

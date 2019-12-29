@@ -1,0 +1,72 @@
+{% extends 'base/index.html'%}
+{% block title %}CONSULTA{% endblock %}
+{% block content %}
+<br><br><br>
+<h1 class="text-center">Detalle Consulta</h1>
+<br>
+<div class="row">
+	<div class="col-md-2"></div>
+	<div class="col-md-8">
+		<hr>
+		<form>
+			{% csrf_token %}
+			<div class="form-group">
+				<div class="row">
+					<div class="col-md-6">
+						<h5>Medico: {{ consulta.cod_medico.cod_persona.usuario.first_name }} {{ consulta.cod_medico.cod_persona.usuario.last_name }}</h5>
+					</div>
+					<div class="col-md-6">
+						<h5>Fecha: {{ consulta.fecha_consulta }}</h5>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="row">
+					<div class="col-md-12">
+						<h5>Diagnóstico: </h5>
+						<br>
+						<h5>{{ consulta.diagnostico }}</h5>
+					</div>
+				</div>
+			</div>
+		</form>
+		<br>
+		<h3 class="text-center">Recetas Medicas</h3>
+		<hr>
+		{% if recetas %}
+		<form>
+			<table table id="miTabla" class="table" style="width:100%">
+				<thead class="bg-info">
+					<tr>
+						<th>Medicamento</th>
+						<th>Cantidad</th>
+						<th>sistema de medicion</th>
+					</tr>
+				</thead>
+
+				<tbody>
+				{% for receta in recetas %}
+					<tr>
+						<td>{{ receta.cod_medicamento }}</td>
+						<td>{{ receta.cantidad }}</td>
+						<td>{% for sis_med in receta.cod_medicamento.sistema_medicion.all %}
+							<li>{{ sis_med }}</li>
+						{% endfor %}</td>
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+		</form>
+		<br>
+		{% else %}
+		<div class="alert alert-danger" role="alert">
+		  ¡No se ha encontrado ninguna receta medica registrada!
+		</div>
+		{% endif %}
+	</div>
+	<div class="col-md-2"></div>
+</div>
+<br><br>
+{% endblock %}
+{% block footer %}
+{% endblock %}

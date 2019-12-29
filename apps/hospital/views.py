@@ -535,6 +535,8 @@ def consultaDetails(request, cod_consulta,tipoPersona):
 
 #Final views Marco
 
+#**************************************ROSA**************************************************************************
+
 def resepcionistaList(request):
 	if 'buscar' in request.GET:		
 		if request.GET['buscarInput'] != "":
@@ -583,3 +585,64 @@ def resepcionistaEdit(request, cod_resepcionista):
 			form1.save()
 		return redirect('hospital:resepcionistaList')
 	return render(request, 'resepcionista/resepcionistaCreate.html', {'form1':form1})
+
+def atenderPacientesList(request):
+	if 'buscar' in request.GET:		
+		if request.GET['buscarInput'] != "":
+			palabraClave = request.GET['buscarInput']
+			
+			if Paciente.objects.filter(cod_paciente__contains = palabraClave).exists():
+				paciente = Paciente.objects.filter(cod_paciente__contains = palabraClave)
+				contexto={'pacientes':paciente}
+				return render(request, 'paciente/atenderPacienteList.html', contexto)
+				
+		pass
+	if 'accion' in request.POST:
+		accion = request.POST['accion']
+		cod_paciente = request.POST['paciente']
+		paciente = Paciente.objects.get(cod_paciente = cod_paciente)
+		if accion == 'Eliminar':	
+			paciente.delete()
+			pass
+						
+		else:
+			pass
+		pass
+	paciente = Paciente.objects.all().order_by('cod_paciente')
+	contexto = {'pacientes':paciente}
+	return render(request, 'paciente/atenderPacienteList.html', contexto)
+
+def expedienteDetailsPaciente(request, cod_paciente,tipoPersona):
+	if request.method == 'GET':
+		paciente = Paciente.objects.get(cod_paciente = cod_paciente)
+		expediente = Expediente.objects.get(cod_paciente = paciente.id)
+		cod_person = paciente.cod_persona.id
+		persona = Persona.objects.get(id = cod_person)
+		user = persona.usuario.id
+		usuario = User.objects.get(id = user)
+		edad = calcular_edad(persona.fecha_nacimiento)
+		citas = Cita.objects.filter(paciente=paciente.id).order_by('-fecha_hora_cita')
+		consultas = Consulta.objects.filter(num_expediente=expediente.id).order_by('-fecha_consulta')
+		contexto = {'expediente':expediente,'paciente':paciente,'persona':persona, 'usuario':usuario,'edad':edad,'citas':citas,'consultas':consultas,'tipoPersona':str(tipoPersona)}
+		return render(request, 'paciente/expedienteDetails.html',contexto)
+		pass
+
+def consultaDetailsPaciente(request, cod_consulta,tipoPersona):
+	if request.method == 'GET':
+		consulta = Consulta.objects.get(cod_consulta=cod_consulta)
+		recetas = ResetaMedica.objects.filter(cod_consulta = consulta.cod_consulta).order_by('-cod_consulta')
+		contexto = {'consulta':consulta,'recetas':recetas,'tipoPersona':str(tipoPersona)}
+		return render(request, 'paciente/consultaDetails.html',contexto)
+		pass
+
+def consultaCreate(request):
+	if request.method == 'POST':
+		form = ConsultaForm(request.POST)
+		if form.is_valid():
+			form.save()
+			pass
+		pass
+		return redirect('hospital:atenderPacienteList')
+	else:
+		form = ConsultaForm()
+	return render(request, 'consulta/consultaCreate.html', {'form':form})

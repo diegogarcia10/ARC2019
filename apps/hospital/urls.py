@@ -34,10 +34,15 @@ urlpatterns = [
 
 	#FIN URLS MARCO
 
+    #ROSA************
     url(r'^resepcionistaList/$',login_required(resepcionistaList),name="resepcionistaList"),
     url(r'^resepcionistaCreate/$',login_required(resepcionistaCreate), name='resepcionistaCreate'),
     path('resepcionistaEdit/<str:cod_resepcionista>/',login_required(resepcionistaEdit), name='resepcionistaEdit'),
-
+    url(r'^atenderPacientesList/$',login_required(atenderPacientesList),name="atenderPacientesList"),
+    path('expedienteDetailsPaciente/<str:cod_paciente>/<str:tipoPersona>',login_required(expedienteDetailsPaciente), name='expedienteDetailsPaciente'),
+    path('consultaDetailsPaciente/<str:cod_consulta>/<str:tipoPersona>',login_required(consultaDetailsPaciente), name='consultaDetailsPaciente'),
+    url(r'^consultaCreate/$',login_required(consultaCreate), name='consultaCreate'),
+    #****************
     #Parte Diego
     path('registrarEntrada',registrar_entrada,name="registrar_entrada"),
     path('captura',captura,name="captura"),

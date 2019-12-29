@@ -1,0 +1,58 @@
+{% extends 'base/index.html' %}
+{% block title %}ATENDER PACIENTES{% endblock %}
+{% block content %}
+
+<br><br>
+<h3 class="text-center">Listado de Pacientes a Atender</h3>
+<div class="container">
+    <table id="miTabla" class="table" style="width:100%" >
+    	 <thead class="bg-info">
+                <tr>
+                    <th>Codigo</th>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>Fecha Nacimiento</th>
+                    <th>Sexo</th>
+                    <th>Acciones</th>
+                    
+                </tr>
+        </thead>
+         <tbody>
+         	{% for paciente in pacientes%}
+         		<tr>
+         			<td>{{paciente.cod_paciente}}</td>
+         			<td>{{paciente.cod_persona.usuario.first_name}}</td>
+         			<td>{{paciente.cod_persona.usuario.last_name}}</td>
+         			<td>{{paciente.cod_persona.fecha_nacimiento}}</td>
+         			<td>{{paciente.cod_persona.sexo.nombre_sexo}}</td>
+         			<td>
+         				<a href="{% url 'hospital:expedienteDetailsPaciente' paciente.cod_paciente 3 %}" class="btn btn btn-info">        <i class="fa fa-eye" aria-hidden="true"></i> Ver Expediente</a>
+                       
+         			</td>
+         		</tr>
+         	{% endfor %}            
+         </tbody>
+         <tfoot>
+                <tr>
+                    <th>Codigo</th>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>Fecha Nacimiento</th>
+                    <th>Sexo</th>
+                    <th>Acciones</th>
+                    
+                </tr>
+            </tfoot>
+    </table>
+</div>
+
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<!-- Button trigger modal -->
+
+
+
+{% endblock %}
+{% block footer %}
+{% endblock %}
