@@ -635,14 +635,29 @@ def consultaDetailsPaciente(request, cod_consulta,tipoPersona):
 		return render(request, 'paciente/consultaDetails.html',contexto)
 		pass
 
-def consultaCreate(request):
+def consultaCreate(request, cod_paciente):
+	c=str(cod_paciente)
+	contexto = {'c':cod_paciente}
 	if request.method == 'POST':
-		form = ConsultaForm(request.POST)
-		if form.is_valid():
-			form.save()
-			pass
-		pass
-		return redirect('hospital:atenderPacienteList')
-	else:
-		form = ConsultaForm()
-	return render(request, 'consulta/consultaCreate.html', {'form':form})
+		usuario=User()
+		persona=Persona()
+		medico=Medico()
+		paciente=Paciente()
+		expediente=Expediente()
+		consulta=Consulta()
+		consulta.cod_consulta=request.POST['cod_consulta']
+		consulta.fecha_consulta=request.POST['fecha_consulta']
+		consulta.diagnostico=request.POST['diagnostico']
+		usuario_log=User.objects.get(username=request.user)
+		persona=Persona.objects.get(usuario_id=usuario_log)
+		medico=Medico.objects.get(cod_persona=persona)
+		cod = medico.cod_medico
+		consulta.cod_medico_id=cod
+		paciente=Paciente.objects.get(cod_paciente=c)
+		expediente=Expediente.objects.get(cod_paciente=paciente)
+		ids=expediente.id
+		consulta.num_expediente_id=ids
+		consulta.save()
+		return redirect('hospital:atenderPacientesList')
+	return render(request, 'consulta/consultaCreate.html', contexto)
+	
