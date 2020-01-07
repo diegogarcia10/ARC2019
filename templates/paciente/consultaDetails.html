@@ -13,25 +13,24 @@
 			<div class="form-group">
 				<div class="row">
 					<div class="col-md-6">
-						<h5>Medico: {{ consulta.cod_medico.cod_persona.usuario.first_name }} {{ consulta.cod_medico.cod_persona.usuario.last_name }}</h5>
+						<h5><strong>Médico: </strong> {{ consulta.cod_medico.cod_persona.usuario.first_name }} {{ consulta.cod_medico.cod_persona.usuario.last_name }}</h5>
 					</div>
 					<div class="col-md-6">
-						<h5>Fecha: {{ consulta.fecha_consulta }}</h5>
+						<h5><strong>Fecha: </strong> {{ consulta.fecha_consulta }}</h5>
 					</div>
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="row">
 					<div class="col-md-12">
-						<h5>Diagnóstico: </h5>
-						<br>
+						<h5><strong>Diagnóstico:</strong> </h5>
 						<h5>{{ consulta.diagnostico }}</h5>
 					</div>
 				</div>
 			</div>
 		</form>
 		<br>
-		<h3 class="text-center">Recetas Medicas</h3>
+		<h3 class="text-center">Recetas Médicas</h3>
 		<hr>
 		{% if recetas %}
 		<form>
@@ -40,7 +39,7 @@
 					<tr>
 						<th>Medicamento</th>
 						<th>Cantidad</th>
-						<th>sistema de medicion</th>
+						<th>Sistema de medición</th>
 					</tr>
 				</thead>
 
@@ -63,6 +62,10 @@
 		  ¡No se ha encontrado ninguna receta medica registrada!
 		</div>
 		{% endif %}
+		<br><br>
+        <div class="col" align="right">
+            <a href="{% url 'hospital:recetaCreate' consulta.cod_consulta %}"  class="btn btn-success"><span class="fa fa-plus"></span> Añadir Receta</a>
+        </div>
 	</div>
 	<div class="col-md-2"></div>
 </div>

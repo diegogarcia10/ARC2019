@@ -2,7 +2,7 @@
 {% block title %}EXPEDIENTE{% endblock %}
 {% block content %}
 <br><br><br>
-<h1 class="text-center">Expediente Medico</h1>
+<h1 class="text-center">Expediente Medico5555</h1>
 <br>
 <h3 class="text-center">Detalle del Paciente</h3>
 <div class="row">
@@ -94,7 +94,7 @@
 						<td>{{ consulta.cod_medico.cod_persona.usuario.first_name }} {{ consulta.cod_medico.cod_persona.usuario.last_name }}</td>
 						<td>{{ consulta.fecha_consulta }}</td>
 						<td>
-							<a href="{% url 'hospital:consultaDetails' consulta.pk tipoPersona %}">Ver Detalle</a>
+							<a href="{% url 'hospital:consultaDetailsPaciente' consulta.pk tipoPersona %}">Ver Detalle</a>
 						</td>
 
 					</tr>
