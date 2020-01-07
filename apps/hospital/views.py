@@ -490,14 +490,47 @@ def medicoCreate(request):
 
 def medicoEdit(request, cod_medico):
 	medico = Medico.objects.get(pk=cod_medico)
+	especialidades=Especialidad.objects.all().order_by('nombre_especialidad')
 	if request.method == 'GET':
-		form1 = MedicoForm_2(instance=medico)
+		fecha=str(medico.cod_persona.fecha_nacimiento)
+		contexto = {'medico':medico,'especialidades':especialidades,'fecha':fecha}
 	else:
-		form1 = MedicoForm_2(request.POST, instance=medico)
-		if form1.is_valid():
-			form1.save()
+		person=Persona.objects.get(pk=medico.cod_persona.pk)
+		user=User.objects.get(pk=person.usuario.pk)
+
+		user.first_name=request.POST['nombres']
+		user.last_name=request.POST['apellidos']
+		user.save()
+
+		person.sexo=Sexo.objects.get(cod_sexo=str(request.POST['sexo']))
+		person.fecha_nacimiento=request.POST['fecha_nacimiento']
+		person.save()
+		medico.num_regsitro=request.POST['num_registro']
+
+		if not medico.especialidad.exists():			
+			for esp in especialidades:
+				if 'esp_'+esp.cod_especialidad in request.POST:
+					medico.especialidad.add(esp)
+					pass
+				pass
+			pass
+		else:
+			for esp in especialidades:
+				if 'esp_'+esp.cod_especialidad in request.POST:
+					if  not esp in medico.especialidad.all():
+						medico.especialidad.add(esp)
+						pass
+					pass
+				pass
+			for esp in medico.especialidad.all():
+				if  not 'esp_'+esp.cod_especialidad in request.POST:
+					medico.especialidad.remove(esp)
+					pass
+				pass
+				
+		medico.save()
 		return redirect('hospital:medicoList')
-	return render(request, 'medico/medicoCreate.html', {'form1':form1})
+	return render(request, 'medico/medicoEdit.html', contexto)
 
 def calcular_edad(fecha_nacimiento):
  

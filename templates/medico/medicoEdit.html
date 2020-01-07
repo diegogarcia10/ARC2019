@@ -1,0 +1,95 @@
+{% extends 'base/index.html'%}
+
+{% block content %}
+<br><br><br>
+<h1 class="text-center">Editar Médico</h1>
+<br>
+<div class="row">
+	<div class="col-md-3"></div>
+	<div class="col-md-6">
+		<hr>
+		<form method="POST">
+			{% csrf_token %}
+			<div class="form-group">
+				<div class="row">
+					<div class="col-md-6">
+						<h5>Nombre:</h5>
+						<input type="text" name="nombres" value="{{ medico.cod_persona.usuario.first_name }}" placeholder="Ingrese los Nombres" class="form-control">
+					</div>
+					<div class="col-md-6">
+						<h5>Apellidos:</h5>
+						<input type="text" name="apellidos" value="{{ medico.cod_persona.usuario.last_name }}" placeholder="Ingrese los Apellidos" class="form-control">
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="row">
+					<div class="col-md-6">
+						<h5>Sexo:</h5>
+						{% if medico.cod_persona.sexo.cod_sexo == "M" %}
+						<select class="form-control" name="sexo">
+							<option value="M" selected hidden>Masculino</option>
+							<option value="F">Femenino</option>
+						</select>
+						{% endif %}
+						{% if medico.cod_persona.sexo.cod_sexo == "F" %}
+						<select class="form-control" name="sexo">
+							<option value="M">Masculino</option>
+							<option value="F" selected hidden>Femenino</option>
+						</select>
+						{% endif %}
+					</div>
+					<div class="col-md-6">
+						<h5>Fecha de Nacimiento:</h5>
+						<input type="date" name="fecha_nacimiento" value="{{fecha}}" class="form-control">
+					</div>
+				</div>
+			</div>
+			<hr>
+			<div class="form-group">
+				<div class="row">
+					<div class="col-md-6">
+						<h5>Código:</h5>
+						<input type="text" name="cod_medico" readonly="readonly" value="{{medico.cod_medico}}" placeholder="Ingrese el código del Médico" class="form-control">
+					</div>
+					<div class="col-md-6">
+						<h5>Número de Registro:</h5>
+						<input type="text" name="num_registro" value="{{medico.num_regsitro}}" placeholder="Ingrese el número de registro del Médico" class="form-control">
+					</div>
+				</div>
+			</div>
+			<hr>
+			<div class="form-group">
+				<div class="row">
+					<div class="col-md-12">
+						<br>
+						<h5 class="text-center">Especialidad: </h5>
+						<br>
+						{% if especialidades %}
+						{% for especialidad in especialidades %}
+						<lu>
+							{% if especialidad in medico.especialidad.all %}
+							<input type="checkbox" checked="true" name="esp_{{ especialidad.cod_especialidad }}" value="{{ especialidad.nombre_especialidad }}">
+					 		{{ especialidad.nombre_especialidad }}&nbsp&nbsp
+							{% else %}
+							<input type="checkbox" name="esp_{{ especialidad.cod_especialidad }}" value="{{ especialidad.nombre_especialidad }}">
+					 		{{ especialidad.nombre_especialidad }}&nbsp&nbsp	 		
+					 		{% endif %}
+						{% endfor %}
+						{% endif %}
+						</lu>
+					</div>
+				</div>
+			</div>
+			<div class="form-group text-center">
+				<button type="submit" class="btn btn-success">Registrar Médico</button>
+			</div>
+			<hr>
+		</form>
+	</div>
+	<div class="col-md-3"></div>
+</div>
+<br><br>
+{% endblock %}
+{% block footer %}
+{% endblock %}
