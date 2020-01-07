@@ -1,63 +1,146 @@
 {% extends 'base/index.html'%}
 {% block title %}
-{% if form %}
-Agregar Medicamento
-{% else %}
+{% if medicamento %}
 Modificar Medicamento
+{% else %}
+Agregar Medicamento
 {% endif %}
 {% endblock %}
  
 {% block content %}
-<div class="container">
-    <br><br>
-	<form method="post">
-	{% csrf_token %}
-	<div class="row">		
-	
-		<div class="col">				
-			<div class="form-group">
-                <br><br>
-				{% if form %}
-				{%for element in form %} 
-                <div class="form-group"> 
-                    <label class="col-md-8 control-label">
-                        {{element.label}}            
-                    </label> 
-                    <div class="col-md-8"> 
-                        {{element}} 
-                        <div class="error">
-                            {{element.errors}}
-                        </div>
-                    </div> 
-                </div> 
-                {% endfor %}
-                {% else %}
-				{%for element in form1 %} 
-                <div class="form-group"> 
-                    <label class="col-md-8 control-label">
-                        {{element.label}}            
-                    </label> 
-                    <div class="col-md-8"> 
-                        {{element}} 
-                        <div class="error">
-                            {{element.errors}}
-                        </div>
-                    </div> 
-                </div> 
-                {% endfor %}
-				{% endif %}
-			</div>
-		</div>
-
-	</div>
-	<div class="">
-		<br>
-		<button type="submit" class="btn btn-primary">Guardar</button>
-		<a href="{% url 'hospital:medicamentoList' %}" class="btn btn-warning">Volver a la lista</a> 
-		<br>
-	</div>
-	</form>
+<br><br><br>
+{% if medicamento %}
+<h1 class="text-center">Modificar Medicamento</h1>
+<br>
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <hr>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Código:</h5>
+                        <input type="text" name="codigo" value="{{medicamento.cod_medicamento}}" placeholder="Ingrese el código" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Nombre:</h5>
+                        <input type="text" name="nombre" value="{{medicamento.nombre_medicamento}}" placeholder="Ingrese el nombre" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Farmacia:</h5>
+                        <input type="text" name="farmacia" value="{{medicamento.farmacia}}" placeholder="Ingrese el nombre de la farmacia" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5>Descripción</h5>
+                        <textarea name="descripcion" cols="60" id="id_descripcion" placeholder="Escriba la descripcion del Medicamento" maxlength="100" rows="3">{{medicamento.descripcion}}</textarea>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-12">
+                        <br>
+                        <h5 class="text-center">Sistemas de Medición: </h5>
+                        <br>
+                        {% if sistemas %}
+                        {% for sistema in sistemas %}
+                        <lu>
+                            {% if sistema in medicamento.sistema_medicion.all %}
+                            <input type="checkbox" checked="true" name="sis_{{ sistema.cod_sistema }}" value="{{ sistema.nombre_sistema }}">
+                            {{ sistema.nombre_sistema }}&nbsp&nbsp
+                            {% else %}
+                            <input type="checkbox" name="sis_{{ sistema.cod_sistema }}" value="{{ sistema.nombre_sistema }}">
+                            {{ sistema.nombre_sistema }}&nbsp&nbsp
+                            {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                        </lu>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-success">Registrar Medicamento</button>
+            </div>
+            <hr>
+        </form>
+    </div>
+    <div class="col-md-3"></div>
 </div>
+<br><br>
+{% else %}
+<h1 class="text-center">Registrar Medicamento</h1>
 <br>
-<br>
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <hr>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Código:</h5>
+                        <input type="text" name="codigo" placeholder="Ingrese el código" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Nombre:</h5>
+                        <input type="text" name="nombre" placeholder="Ingrese el nombre" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Farmacia:</h5>
+                        <input type="text" name="farmacia" placeholder="Ingrese el nombre de la farmacia" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5>Descripción</h5>
+                        <textarea name="descripcion" cols="60" id="id_descripcion" placeholder="Escriba la descripcion del Medicamento" maxlength="100" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-12">
+                        <br>
+                        <h5 class="text-center">Sistemas de Medición: </h5>
+                        <br>
+                        {% if sistemas %}
+                        {% for sistema in sistemas %}
+                        <lu>
+                            <input type="checkbox" name="sis_{{ sistema.cod_sistema }}" value="{{ sistema.nombre_sistema }}">
+                            {{ sistema.nombre_sistema }}&nbsp&nbsp
+                        {% endfor %}
+                        {% endif %}
+                        </lu>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-success">Registrar Medicamento</button>
+            </div>
+            <hr>
+        </form>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+<br><br>
+{% endif %}
 {% endblock %}
