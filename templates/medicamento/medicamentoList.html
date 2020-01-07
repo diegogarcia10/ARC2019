@@ -41,7 +41,7 @@
 					<a class="btn btn btn-danger" data-toggle="modal" data-target="#Eliminar_{{ medicamento.cod_medicamento }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
 					<form method="POST">
 				                {% csrf_token %}
-				                <input type="hidden" name="medico" value="{{ medicamento.cod_medicamento }}"> 
+				                <input type="hidden" name="medicamento" value="{{ medicamento.cod_medicamento }}"> 
 				                
 				                <!-- Modal -->
 				                <div class="modal fade" id="Eliminar_{{ medicamento.cod_medicamento }}" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

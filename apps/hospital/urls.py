@@ -26,9 +26,6 @@ urlpatterns = [
     url(r'^medicoCreate/$',login_required(medicoCreate), name='medicoCreate'),
     path('medicoEdit/<str:cod_medico>/',login_required(medicoEdit), name='medicoEdit'),
 
-
-    path('expedienteDetails/<str:cod_paciente>/<str:tipoPersona>',login_required(expedienteDetails), name='expedienteDetails'),
-
     path('expedienteDetails/<str:cod_paciente>/<str:tipoPersona>',login_required(expedienteDetails), name='expedienteDetails'),
     path('consultaDetails/<str:cod_consulta>/<str:tipoPersona>',login_required(consultaDetails), name='consultaDetails'),
 
