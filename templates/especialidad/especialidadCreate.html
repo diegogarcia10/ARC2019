@@ -3,7 +3,7 @@
 {% if especialidad %}
 Modificar Especialidad
 {% else %}
-Agregar Especialidad
+Registrar Especialidad
 {% endif %}
 {% endblock %}
  
@@ -22,17 +22,17 @@ Agregar Especialidad
                 <div class="row">
                     <div class="col-md-6">
                         <h5>Código:</h5>
-                        <input type="text" name="codigo" value="{{especialidad.cod_especialidad}}" readonly="readonly" placeholder="Ingrese el código" class="form-control">
+                        <input type="text" name="codigo" value="{{especialidad.cod_especialidad}}" readonly="readonly" placeholder="Ingrese el código de la Especialidad" class="form-control">
                     </div>
                     <div class="col-md-6">
                         <h5>Nombre:</h5>
-                        <input type="text" name="nombre" value="{{especialidad.nombre_especialidad}}" placeholder="Ingrese el nombre" class="form-control">
+                        <input type="text" name="nombre" value="{{especialidad.nombre_especialidad}}" placeholder="Ingrese el nombre de la especialidad" class="form-control">
                     </div>
                 </div>
             </div>
             <br>
             <div class="form-group text-center">
-                <button type="submit" class="btn btn-success">Registrar Especialidad</button>
+                <button type="submit" class="btn btn-success">Modificar</button>
             </div>
             <hr>
         </form>
@@ -54,17 +54,17 @@ Agregar Especialidad
                 <div class="row">
                     <div class="col-md-6">
                         <h5>Código:</h5>
-                        <input type="text" name="codigo" placeholder="Ingrese el código" class="form-control">
+                        <input type="text" name="codigo" placeholder="Ingrese el código de la especialidad" class="form-control">
                     </div>
                     <div class="col-md-6">
                         <h5>Nombre:</h5>
-                        <input type="text" name="nombre" placeholder="Ingrese el nombre" class="form-control">
+                        <input type="text" name="nombre" placeholder="Ingrese el nombre de la especialidad" class="form-control">
                     </div>
                 </div>
             </div>
             <br>
             <div class="form-group text-center">
-                <button type="submit" class="btn btn-success">Registrar Especialidad</button>
+                <button type="submit" class="btn btn-success">Registrar</button>
             </div>
             <hr>
         </form>

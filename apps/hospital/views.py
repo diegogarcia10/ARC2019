@@ -285,7 +285,6 @@ def especialidadEdit(request, cod_especialidad):
 	if request.method == 'GET':
 		contexto={'especialidad':especialidad}
 	else:
-		especialidad.cod_especialidad=request.POST['codigo']
 		especialidad.nombre_especialidad=request.POST['nombre']
 		especialidad.save()
 		return redirect('hospital:especialidadList')
@@ -332,7 +331,6 @@ def medicamentoEdit(request, cod_medicamento):
 	if request.method == 'GET':
 		contexto={'sistemas':sistemas, 'medicamento':medicamento}
 	else:
-		medicamento.cod_medicamento=request.POST['codigo']
 		medicamento.nombre_medicamento=request.POST['nombre']
 		medicamento.farmacia=request.POST['farmacia']
 		medicamento.descripcion=request.POST['descripcion']
@@ -378,26 +376,24 @@ def sistemaMedicionList(request):
 
 def sistemaMedicionCreate(request):
 	if request.method == 'POST':
-		form = SistemaMedicionForm(request.POST)
-		if form.is_valid():
-			form.save()
-			pass
+		sistema=SistemaMedicion()
+		sistema.cod_sistema=request.POST['codigo']
+		sistema.nombre_sistema=request.POST['nombre']
+		sistema.save()
 		pass
 		return redirect('hospital:sistemaMedicionList')
 	else:
-		form = SistemaMedicionForm()
-	return render(request, 'sistemaMedicion/sistemaMedicionCreate.html', {'form':form})
+		return render(request, 'sistemaMedicion/sistemaMedicionCreate.html')
 
 def sistemaMedicionEdit(request, cod_sistema):
 	sistema = SistemaMedicion.objects.get(pk=cod_sistema)
 	if request.method == 'GET':
-		form1 = SistemaMedicionForm_2(instance=sistema)
+		contexto={'sistema':sistema}
 	else:
-		form1 = SistemaMedicionForm_2(request.POST, instance=sistema)
-		if form1.is_valid():
-			form1.save()
+		sistema.nombre_sistema=request.POST['nombre']
+		sistema.save()
 		return redirect('hospital:sistemaMedicionList')
-	return render(request, 'sistemaMedicion/sistemaMedicionCreate.html', {'form1':form1})
+	return render(request, 'sistemaMedicion/sistemaMedicionCreate.html', contexto)
 
 def medicoList(request):
 	if 'buscar' in request.GET:		
