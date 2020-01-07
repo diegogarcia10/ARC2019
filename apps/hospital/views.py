@@ -256,21 +256,6 @@ def list_citas(request):
 #--------FIN PARTE DE DIEGO--------------#
 #view Marco
 def especialidadList(request):
-	if 'buscar' in request.GET:		
-		if request.GET['buscarInput'] != "":
-			palabraClave = request.GET['buscarInput']
-			
-			if Especialidad.objects.filter(cod_especialidad__contains = palabraClave).exists():
-				especialidad = Especialidad.objects.filter(cod_especialidad__contains = palabraClave)
-				contexto={'especialidades':especialidad}
-				return render(request, 'especialidad/especialidadList.html', contexto)
-			else:
-				if Especialidad.objects.filter(nombre_especialidad__contains = palabraClave).exists():
-					especialidad = Especialidad.objects.filter(nombre_especialidad__contains = palabraClave)
-					contexto={'especialidades':especialidad}
-					return render(request, 'especialidad/especialidadList.html', contexto)
-				
-		pass
 	if 'accion' in request.POST:
 		accion = request.POST['accion']
 		codigo_especialidad = request.POST['especialidad']
@@ -278,53 +263,35 @@ def especialidadList(request):
 		if accion == 'Eliminar':	
 			especialidad.delete()
 			pass
-						
-		else:
-			pass
 		pass
+
 	especialidad = Especialidad.objects.all().order_by('cod_especialidad')
 	contexto = {'especialidades':especialidad}
 	return render(request, 'especialidad/especialidadList.html', contexto)	
 
 def especialidadCreate(request):
 	if request.method == 'POST':
-		form = EspecialidadForm(request.POST)
-		if form.is_valid():
-			form.save()
-			pass
+		especialidad=Especialidad()
+		especialidad.cod_especialidad=request.POST['codigo']
+		especialidad.nombre_especialidad=request.POST['nombre']
+		especialidad.save()
 		pass
 		return redirect('hospital:especialidadList')
 	else:
-		form = EspecialidadForm()
-	return render(request, 'especialidad/especialidadCreate.html', {'form':form})
+		return render(request, 'especialidad/especialidadCreate.html')
 
 def especialidadEdit(request, cod_especialidad):
 	especialidad = Especialidad.objects.get(pk=cod_especialidad)
 	if request.method == 'GET':
-		form1 = EspecialidadForm_2(instance=especialidad)
+		contexto={'especialidad':especialidad}
 	else:
-		form1 = EspecialidadForm_2(request.POST, instance=especialidad)
-		if form1.is_valid():
-			form1.save()
+		especialidad.cod_especialidad=request.POST['codigo']
+		especialidad.nombre_especialidad=request.POST['nombre']
+		especialidad.save()
 		return redirect('hospital:especialidadList')
-	return render(request, 'especialidad/especialidadCreate.html', {'form1':form1})
+	return render(request, 'especialidad/especialidadCreate.html', contexto)
 
 def medicamentoList(request):
-	if 'buscar' in request.GET:		
-		if request.GET['buscarInput'] != "":
-			palabraClave = request.GET['buscarInput']
-			
-			if Medicamento.objects.filter(cod_medicamento__contains = palabraClave).exists():
-				medicamento = Medicamento.objects.filter(cod_medicamento__contains = palabraClave)
-				contexto={'medicamentos':medicamento}
-				return render(request, 'medicamento/medicamentoList.html', contexto)
-			else:
-				if Medicamento.objects.filter(nombre_medicamento__contains = palabraClave).exists():
-					medicamento = Medicamento.objects.filter(nombre_medicamento__contains = palabraClave)
-					contexto={'medicamentos':medicamento}
-					return render(request, 'medicamento/medicamentoList.html', contexto)
-				
-		pass
 	if 'accion' in request.POST:
 		accion = request.POST['accion']
 		codigo_medicamento = request.POST['medicamento']
@@ -332,10 +299,8 @@ def medicamentoList(request):
 		if accion == 'Eliminar':	
 			medicamento.delete()
 			pass
-						
-		else:
-			pass
 		pass
+
 	medicamento = Medicamento.objects.all().order_by('cod_medicamento')
 	contexto = {'medicamentos':medicamento}
 	return render(request, 'medicamento/medicamentoList.html', contexto)
@@ -355,7 +320,6 @@ def medicamentoCreate(request):
 				medicamento.sistema_medicion.add(sis)
 				pass
 			pass
-
 		pass
 		return redirect('hospital:medicamentoList')
 	else:
@@ -399,21 +363,6 @@ def medicamentoEdit(request, cod_medicamento):
 	return render(request, 'medicamento/medicamentoCreate.html', contexto)
 
 def sistemaMedicionList(request):
-	if 'buscar' in request.GET:		
-		if request.GET['buscarInput'] != "":
-			palabraClave = request.GET['buscarInput']
-			
-			if SistemaMedicion.objects.filter(cod_sistema__contains = palabraClave).exists():
-				sistema = SistemaMedicion.objects.filter(cod_sistema__contains = palabraClave)
-				contexto={'sistemas':sistema}
-				return render(request, 'sistemaMedicion/sistemaMedicionList.html', contexto)
-			else:
-				if SistemaMedicion.objects.filter(nombre_sistema__contains = palabraClave).exists():
-					sistema = SistemaMedicion.objects.filter(nombre_sistema__contains = palabraClave)
-					contexto={'sistemas':sistema}
-					return render(request, 'sistemaMedicion/sistemaMedicionList.html', contexto)
-				
-		pass
 	if 'accion' in request.POST:
 		accion = request.POST['accion']
 		codigo_sistema = request.POST['sistema']
@@ -421,10 +370,8 @@ def sistemaMedicionList(request):
 		if accion == 'Eliminar':	
 			sistema.delete()
 			pass
-						
-		else:
-			pass
 		pass
+
 	sistema = SistemaMedicion.objects.all().order_by('cod_sistema')
 	contexto = {'sistemas':sistema}
 	return render(request, 'sistemaMedicion/sistemaMedicionList.html', contexto)	
