@@ -1,0 +1,33 @@
+{% if medicos %}
+<div>
+	<ul class="list-group">
+		
+		{% for medico in medicos %}
+		<li class="list-group-item">
+			<div class="row">
+				<div class="col-md-9">
+					<dt>Nombre:</dt>
+					<dd>{{medico.cod_persona.usuario.first_name}} {{medico.cod_persona.usuario.last_name}} </dd>
+					<dt>Especialidades:</dt>
+					<p> 
+						{% for esp in medico.especialidad.all %}
+							{{esp}},
+						{% endfor %}
+					</p>
+				</div>
+				<div id="medico_cod">
+					<br><br>
+					<button type="button" class="boton btn btn-success" value="{{medico.cod_medico}}"><i class="fa fa-check"></i></button>
+
+				</div>
+			</div>
+		</li>
+		{% endfor %}		
+	</ul>
+	<br>			
+</div>
+{% else %}
+<p class="alert alert-danger" role="alert"> No se encuentra ningun medico con los parametros dados</p>
+{% endif %}
+
+

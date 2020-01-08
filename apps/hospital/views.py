@@ -252,6 +252,36 @@ def list_citas(request):
 	contexto={'citas':citas,'tipoPersona':str(3)}
 	return render(request,'resepcionista/list_citas.html',contexto)
 
+def registar_cita(request,id_paciente):
+	tipoPersona="3"
+	existe=''
+	paciente=''
+	edad=''
+	if Paciente.objects.filter(cod_paciente=id_paciente).exists():
+		existe="Si Existe"
+		paciente=Paciente.objects.get(cod_paciente=id_paciente)
+		edad=str(calcular_edad(paciente.cod_persona.fecha_nacimiento))	
+	contexto={'tipoPersona':tipoPersona,'paciente':paciente,'existe':existe,'edad':edad}
+	return render(request,'cita/registrar_cita.html',contexto)
+
+
+def busqueda_medico(request):
+	nombre=request.GET['nombre']
+	usuarios=User.objects.filter(first_name__contains=nombre)
+	if usuarios.exists()==False:
+		usuarios=User.objects.filter(last_name__contains=nombre)
+	print(usuarios)
+	personas=[]
+	for user in usuarios:
+		personas.append(Persona.objects.get(usuario=user))
+	print(personas)
+	medicos=[]
+	for person in personas:
+		medicos.append(Medico.objects.get(cod_persona=person))
+	print(medicos)	
+	#medicos=Medico.objects.filter(cod_persona.usuario.last_name__contains = nombre)
+	contexto={'medicos':medicos}
+	return render(request,'cita/list_busqueda_medicos.html',contexto)
 
 #--------FIN PARTE DE DIEGO--------------#
 #view Marco

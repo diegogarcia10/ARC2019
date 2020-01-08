@@ -1,0 +1,98 @@
+{% extends 'base/index.html' %}
+{% block title %}Registro de Cita{% endblock %}
+{% block content %}
+<div class="container">
+	<h3 class="text-center">Registrar Cita</h3>
+	<br>
+	<br>
+	<form class="" action="">
+		{% if not existe %}
+		<hr>
+		<h4 class="alert alert-danger text-center"><b>No Existe ningun paciente con los datos proporcionados</b></h4>
+		{% else %}
+		<hr>
+		<h4 class="alert alert-warning text-center"><b>Favor llenar los siguientes campos y datos</b></h4>
+			
+		<div class="row ">
+			
+			<div class="col-md-4">
+				<hr>
+				<h5>Paciente y sus datos</h5>
+				<hr>
+				<dl>
+					<dt>Nombre:</dt>
+					<dd>{{paciente.cod_persona.usuario.first_name}} {{paciente.cod_persona.usuario.last_name}}</dd>
+					<dt>Edad:</dt>
+					<dd>{{edad}} años</dd>
+					<dt>Sexo:</dt>
+					<dd>{{paciente.cod_persona.sexo.nombre_sexo}}</dd>					
+				</dl>	
+			</div>
+			<div class="col-md-4">
+				<hr>	
+				<h5>Selecciona el doctor</h5>
+				<hr>				
+					<input id="nombre" type="text" class="form-control" placeholder="Buscar Por nombre">				
+				<br>				
+					<input id="especialidad" type="text" class="form-control" placeholder="buscar por especialidad">				
+				<br>
+				<div id="busqueda_medicos">
+					
+					<p class="alert alert-info" role="alert"> Busca al doctor por su nombre o su especialidad</p>
+				
+					
+				</div>
+			</div>
+			<div class="col-md-4">
+				<hr>	
+				<h5>Fecha y Hora</h5>
+				<hr>
+				<input type="date" class="form-control"><br>
+				<input type="time" class="form-control"><br>
+				<button class="btn btn-success" >Registrar Cita</button>
+				<a href="#" class="btn btn-danger">Cancelar</a>
+			</div>
+		</div>
+		<hr>
+		{% endif %}
+		
+	</form>
+
+
+	
+</div>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+{% endblock %}
+
+{% block extrajs %}
+<script type="text/javascript">
+	
+	
+	$( "#nombre" ).keyup(function() {
+	  	var nombre = $('#nombre').val();
+	  	if(nombre == ''){
+	  		console.clear();
+	  		$("#busqueda_medicos").html('<p class="alert alert-info" role="alert"> Busca al doctor por su nombre o su especialidad</p>')
+	  	}
+	  	else{
+	  		$.ajax({  			
+
+	  			data:{'nombre':nombre},
+				type:'get',
+	  			url: '{% url "hospital:busqueda_medico" %}',
+            	success: function(data){
+                	$("#busqueda_medicos").html(data)
+            	}
+	  		});
+	  	}
+		
+
+	});
+
+	$('body').on('click', 'button.boton', function(e) {
+	    var codigo_medico=$(this).attr("value");
+	    console.log(codigo_medico);
+	    
+	});
+</script>
+{% endblock %}
