@@ -1,8 +1,12 @@
 {% extends 'base/index.html'%}
 
+{% block title %}
+Registrar Medico
+{% endblock %}
+
 {% block content %}
 <br><br><br>
-<h1 class="text-center">Crear Médico</h1>
+<h1 class="text-center">Registrar Médico</h1>
 <br>
 <div class="row">
 	<div class="col-md-3"></div>
@@ -13,7 +17,7 @@
 			<div class="form-group">
 				<div class="row">
 					<div class="col-md-6">
-						<h5>Nombre:</h5>
+						<h5>Nombres:</h5>
 						<input type="text" name="nombres" placeholder="Ingrese los Nombres" class="form-control">
 					</div>
 					<div class="col-md-6">
@@ -70,7 +74,7 @@
 				</div>
 			</div>
 			<div class="form-group text-center">
-				<button type="submit" class="btn btn-success">Registrar Médico</button>
+				<button type="submit" class="btn btn-success">Registrar</button>
 			</div>
 			<hr>
 		</form>

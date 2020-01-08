@@ -241,33 +241,3 @@ class ResepcionistaForm_2(forms.ModelForm):
             'cod_persona': forms.Select(attrs={'class':'form-control'}),
                     }
 
-class ConsultaForm(forms.ModelForm):
-
-    class Meta:
-        model = Consulta
-
-        fields = [
-            'cod_consulta',
-            'cod_medico',
-            'num_expediente',
-            'fecha_consulta',
-            'diagnostico',
-
-        ]
-        labels = {
-            'cod_consulta' : 'Código de Consulta',
-            'cod_medico' : 'Código de el Medico',
-            'num_expediente' : 'Número de Expediente',
-            'fecha_consulta' : 'Fecha de Consulta',
-            'diagnostico' : 'Diagnóstico de Consulta'
-
-
-        }
-
-        widgets = {
-            'cod_consulta' : forms.TextInput(attrs={'class':'form-control','placeholder':'Ingrese el Código de la Consulta'}),
-            'cod_medico' : forms.Select(attrs={'class':'form-control'}),
-            'num_expediente' : forms.Select(attrs={'class':'form-control'}),
-            'fecha_consulta' : forms.TextInput(attrs={'class':'form-control','placeholder':'Ingrese la fecha de la Consulta'}),
-            'diagnostico' : forms.TextInput(attrs={'class':'form-control','placeholder':'Ingrese el Diagnóstico de la Consulta'}),
-        }

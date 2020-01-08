@@ -1,0 +1,49 @@
+{% extends 'base/index.html'%}
+{% block title %}RECETA{% endblock %}
+{% block content %}
+<br><br><br>
+<h1 class="text-center">Crear receta</h1>
+<br>
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <hr>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-6">
+						<label>Elija el medicamento:</label>
+						<br>
+						<select name="lista_medicamento" class="rounded">
+							<option value="Seleccione">Seleccione</option>
+							{% for medicamento in medicamento %}
+							<option value="{{medicamento.nombre_medicamento}}">{{medicamento.nombre_medicamento}}</option>
+							{% endfor %}
+						</select>
+					</div>
+                </div>
+            </div>
+            <div class="form-group">
+				<div class="row">
+					<div class="col-md-6">
+						<label>Cantidad de medicamento:</label>
+						<input type="text" name="cantidad" placeholder="Ingrese el cantidad de medicina" class="form-control">
+					</div>
+				</div>  
+            </div>
+            <hr>
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-success">Registrar Receta</button>
+            </div>
+            <hr>
+        </form>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+<br><br><br><br><br><br>
+{% endblock %}
+{% block footer %}
+{% endblock %}
+{% block extrajs %}
+{% endblock %}

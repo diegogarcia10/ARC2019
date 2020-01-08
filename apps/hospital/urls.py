@@ -26,9 +26,6 @@ urlpatterns = [
     url(r'^medicoCreate/$',login_required(medicoCreate), name='medicoCreate'),
     path('medicoEdit/<str:cod_medico>/',login_required(medicoEdit), name='medicoEdit'),
 
-
-    path('expedienteDetails/<str:cod_paciente>/<str:tipoPersona>',login_required(expedienteDetails), name='expedienteDetails'),
-
     path('expedienteDetails/<str:cod_paciente>/<str:tipoPersona>',login_required(expedienteDetails), name='expedienteDetails'),
     path('consultaDetails/<str:cod_consulta>/<str:tipoPersona>',login_required(consultaDetails), name='consultaDetails'),
 
@@ -41,7 +38,8 @@ urlpatterns = [
     url(r'^atenderPacientesList/$',login_required(atenderPacientesList),name="atenderPacientesList"),
     path('expedienteDetailsPaciente/<str:cod_paciente>/<str:tipoPersona>',login_required(expedienteDetailsPaciente), name='expedienteDetailsPaciente'),
     path('consultaDetailsPaciente/<str:cod_consulta>/<str:tipoPersona>',login_required(consultaDetailsPaciente), name='consultaDetailsPaciente'),
-    url(r'^consultaCreate/$',login_required(consultaCreate), name='consultaCreate'),
+    path('consultaCreate/<str:cod_paciente>',login_required(consultaCreate), name='consultaCreate'),
+    path('recetaCreate/<str:cod_consulta>',login_required(recetaCreate), name='recetaCreate'),
     #****************
     #Parte Diego
     path('registrarEntrada',registrar_entrada,name="registrar_entrada"),

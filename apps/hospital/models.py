@@ -74,7 +74,7 @@ class Medicamento(models.Model):
 		return str(self.nombre_medicamento)
 
 class ResetaMedica(models.Model):
-	cod_reseta=models.CharField(max_length=10,primary_key=True)
+	cod_reseta=models.AutoField(primary_key=True)
 	cod_consulta=models.ForeignKey(Consulta,on_delete=models.CASCADE)
 	cod_medicamento=models.ForeignKey(Medicamento,on_delete=models.CASCADE)
 	cantidad=models.IntegerField()

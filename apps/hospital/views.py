@@ -286,21 +286,6 @@ def busqueda_medico(request):
 #--------FIN PARTE DE DIEGO--------------#
 #view Marco
 def especialidadList(request):
-	if 'buscar' in request.GET:		
-		if request.GET['buscarInput'] != "":
-			palabraClave = request.GET['buscarInput']
-			
-			if Especialidad.objects.filter(cod_especialidad__contains = palabraClave).exists():
-				especialidad = Especialidad.objects.filter(cod_especialidad__contains = palabraClave)
-				contexto={'especialidades':especialidad}
-				return render(request, 'especialidad/especialidadList.html', contexto)
-			else:
-				if Especialidad.objects.filter(nombre_especialidad__contains = palabraClave).exists():
-					especialidad = Especialidad.objects.filter(nombre_especialidad__contains = palabraClave)
-					contexto={'especialidades':especialidad}
-					return render(request, 'especialidad/especialidadList.html', contexto)
-				
-		pass
 	if 'accion' in request.POST:
 		accion = request.POST['accion']
 		codigo_especialidad = request.POST['especialidad']
@@ -308,53 +293,34 @@ def especialidadList(request):
 		if accion == 'Eliminar':	
 			especialidad.delete()
 			pass
-						
-		else:
-			pass
 		pass
+
 	especialidad = Especialidad.objects.all().order_by('cod_especialidad')
 	contexto = {'especialidades':especialidad}
 	return render(request, 'especialidad/especialidadList.html', contexto)	
 
 def especialidadCreate(request):
 	if request.method == 'POST':
-		form = EspecialidadForm(request.POST)
-		if form.is_valid():
-			form.save()
-			pass
+		especialidad=Especialidad()
+		especialidad.cod_especialidad=request.POST['codigo']
+		especialidad.nombre_especialidad=request.POST['nombre']
+		especialidad.save()
 		pass
 		return redirect('hospital:especialidadList')
 	else:
-		form = EspecialidadForm()
-	return render(request, 'especialidad/especialidadCreate.html', {'form':form})
+		return render(request, 'especialidad/especialidadCreate.html')
 
 def especialidadEdit(request, cod_especialidad):
 	especialidad = Especialidad.objects.get(pk=cod_especialidad)
 	if request.method == 'GET':
-		form1 = EspecialidadForm_2(instance=especialidad)
+		contexto={'especialidad':especialidad}
 	else:
-		form1 = EspecialidadForm_2(request.POST, instance=especialidad)
-		if form1.is_valid():
-			form1.save()
+		especialidad.nombre_especialidad=request.POST['nombre']
+		especialidad.save()
 		return redirect('hospital:especialidadList')
-	return render(request, 'especialidad/especialidadCreate.html', {'form1':form1})
+	return render(request, 'especialidad/especialidadCreate.html', contexto)
 
 def medicamentoList(request):
-	if 'buscar' in request.GET:		
-		if request.GET['buscarInput'] != "":
-			palabraClave = request.GET['buscarInput']
-			
-			if Medicamento.objects.filter(cod_medicamento__contains = palabraClave).exists():
-				medicamento = Medicamento.objects.filter(cod_medicamento__contains = palabraClave)
-				contexto={'medicamentos':medicamento}
-				return render(request, 'medicamento/medicamentoList.html', contexto)
-			else:
-				if Medicamento.objects.filter(nombre_medicamento__contains = palabraClave).exists():
-					medicamento = Medicamento.objects.filter(nombre_medicamento__contains = palabraClave)
-					contexto={'medicamentos':medicamento}
-					return render(request, 'medicamento/medicamentoList.html', contexto)
-				
-		pass
 	if 'accion' in request.POST:
 		accion = request.POST['accion']
 		codigo_medicamento = request.POST['medicamento']
@@ -362,53 +328,69 @@ def medicamentoList(request):
 		if accion == 'Eliminar':	
 			medicamento.delete()
 			pass
-						
-		else:
-			pass
 		pass
+
 	medicamento = Medicamento.objects.all().order_by('cod_medicamento')
 	contexto = {'medicamentos':medicamento}
 	return render(request, 'medicamento/medicamentoList.html', contexto)
 
 def medicamentoCreate(request):
+	sistemas = SistemaMedicion.objects.all().order_by('nombre_sistema')
 	if request.method == 'POST':
-		form = MedicamentoForm(request.POST)
-		if form.is_valid():
-			form.save()
+		medicamento = Medicamento()
+		medicamento.cod_medicamento=request.POST['codigo']
+		medicamento.nombre_medicamento=request.POST['nombre']
+		medicamento.farmacia=request.POST['farmacia']
+		medicamento.descripcion=request.POST['descripcion']
+		medicamento.save()
+
+		for sis in sistemas:
+			if 'sis_'+str(sis.cod_sistema) in request.POST:
+				medicamento.sistema_medicion.add(sis)
+				pass
 			pass
 		pass
 		return redirect('hospital:medicamentoList')
 	else:
-		form = MedicamentoForm()
-	return render(request, 'medicamento/medicamentoCreate.html', {'form':form})
+		contexto={'sistemas':sistemas}
+	return render(request, 'medicamento/medicamentoCreate.html', contexto)
 
 def medicamentoEdit(request, cod_medicamento):
 	medicamento = Medicamento.objects.get(pk=cod_medicamento)
+	sistemas = SistemaMedicion.objects.all().order_by('nombre_sistema')
 	if request.method == 'GET':
-		form1 = MedicamentoForm_2(instance=medicamento)
+		contexto={'sistemas':sistemas, 'medicamento':medicamento}
 	else:
-		form1 = MedicamentoForm_2(request.POST, instance=medicamento)
-		if form1.is_valid():
-			form1.save()
+		medicamento.nombre_medicamento=request.POST['nombre']
+		medicamento.farmacia=request.POST['farmacia']
+		medicamento.descripcion=request.POST['descripcion']
+		medicamento.save()
+
+		if not medicamento.sistema_medicion.exists():			
+			for sis in sistemas:
+				if 'sis_'+str(sis.cod_sistema) in request.POST:
+					medicamento.sistema_medicion.add(sis)
+					pass
+				pass
+			pass
+		else:
+			for sis in sistemas:
+				if 'sis_'+str(sis.cod_sistema) in request.POST:
+					if  not sis in medicamento.sistema_medicion.all():
+						medicamento.sistema_medicion.add(sis)
+						pass
+					pass
+				pass
+			for sis in medicamento.sistema_medicion.all():
+				if  not 'sis_'+str(sis.cod_sistema) in request.POST:
+					medicamento.sistema_medicion.remove(sis)
+					pass
+				pass
+
 		return redirect('hospital:medicamentoList')
-	return render(request, 'medicamento/medicamentoCreate.html', {'form1':form1})
+	return render(request, 'medicamento/medicamentoCreate.html', contexto)
 
 def sistemaMedicionList(request):
-	if 'buscar' in request.GET:		
-		if request.GET['buscarInput'] != "":
-			palabraClave = request.GET['buscarInput']
-			
-			if SistemaMedicion.objects.filter(cod_sistema__contains = palabraClave).exists():
-				sistema = SistemaMedicion.objects.filter(cod_sistema__contains = palabraClave)
-				contexto={'sistemas':sistema}
-				return render(request, 'sistemaMedicion/sistemaMedicionList.html', contexto)
-			else:
-				if SistemaMedicion.objects.filter(nombre_sistema__contains = palabraClave).exists():
-					sistema = SistemaMedicion.objects.filter(nombre_sistema__contains = palabraClave)
-					contexto={'sistemas':sistema}
-					return render(request, 'sistemaMedicion/sistemaMedicionList.html', contexto)
-				
-		pass
 	if 'accion' in request.POST:
 		accion = request.POST['accion']
 		codigo_sistema = request.POST['sistema']
@@ -416,36 +398,32 @@ def sistemaMedicionList(request):
 		if accion == 'Eliminar':	
 			sistema.delete()
 			pass
-						
-		else:
-			pass
 		pass
+
 	sistema = SistemaMedicion.objects.all().order_by('cod_sistema')
 	contexto = {'sistemas':sistema}
 	return render(request, 'sistemaMedicion/sistemaMedicionList.html', contexto)	
 
 def sistemaMedicionCreate(request):
 	if request.method == 'POST':
-		form = SistemaMedicionForm(request.POST)
-		if form.is_valid():
-			form.save()
-			pass
+		sistema=SistemaMedicion()
+		sistema.cod_sistema=request.POST['codigo']
+		sistema.nombre_sistema=request.POST['nombre']
+		sistema.save()
 		pass
 		return redirect('hospital:sistemaMedicionList')
 	else:
-		form = SistemaMedicionForm()
-	return render(request, 'sistemaMedicion/sistemaMedicionCreate.html', {'form':form})
+		return render(request, 'sistemaMedicion/sistemaMedicionCreate.html')
 
 def sistemaMedicionEdit(request, cod_sistema):
 	sistema = SistemaMedicion.objects.get(pk=cod_sistema)
 	if request.method == 'GET':
-		form1 = SistemaMedicionForm_2(instance=sistema)
+		contexto={'sistema':sistema}
 	else:
-		form1 = SistemaMedicionForm_2(request.POST, instance=sistema)
-		if form1.is_valid():
-			form1.save()
+		sistema.nombre_sistema=request.POST['nombre']
+		sistema.save()
 		return redirect('hospital:sistemaMedicionList')
-	return render(request, 'sistemaMedicion/sistemaMedicionCreate.html', {'form1':form1})
+	return render(request, 'sistemaMedicion/sistemaMedicionCreate.html', contexto)
 
 def medicoList(request):
 	if 'buscar' in request.GET:		
@@ -520,14 +498,47 @@ def medicoCreate(request):
 
 def medicoEdit(request, cod_medico):
 	medico = Medico.objects.get(pk=cod_medico)
+	especialidades=Especialidad.objects.all().order_by('nombre_especialidad')
 	if request.method == 'GET':
-		form1 = MedicoForm_2(instance=medico)
+		fecha=str(medico.cod_persona.fecha_nacimiento)
+		contexto = {'medico':medico,'especialidades':especialidades,'fecha':fecha}
 	else:
-		form1 = MedicoForm_2(request.POST, instance=medico)
-		if form1.is_valid():
-			form1.save()
+		person=Persona.objects.get(pk=medico.cod_persona.pk)
+		user=User.objects.get(pk=person.usuario.pk)
+
+		user.first_name=request.POST['nombres']
+		user.last_name=request.POST['apellidos']
+		user.save()
+
+		person.sexo=Sexo.objects.get(cod_sexo=str(request.POST['sexo']))
+		person.fecha_nacimiento=request.POST['fecha_nacimiento']
+		person.save()
+		medico.num_regsitro=request.POST['num_registro']
+		medico.save()
+
+		if not medico.especialidad.exists():			
+			for esp in especialidades:
+				if 'esp_'+esp.cod_especialidad in request.POST:
+					medico.especialidad.add(esp)
+					pass
+				pass
+			pass
+		else:
+			for esp in especialidades:
+				if 'esp_'+esp.cod_especialidad in request.POST:
+					if  not esp in medico.especialidad.all():
+						medico.especialidad.add(esp)
+						pass
+					pass
+				pass
+			for esp in medico.especialidad.all():
+				if  not 'esp_'+esp.cod_especialidad in request.POST:
+					medico.especialidad.remove(esp)
+					pass
+				pass
+				
 		return redirect('hospital:medicoList')
-	return render(request, 'medico/medicoCreate.html', {'form1':form1})
+	return render(request, 'medico/medicoEdit.html', contexto)
 
 def calcular_edad(fecha_nacimiento):
  
@@ -665,14 +676,47 @@ def consultaDetailsPaciente(request, cod_consulta,tipoPersona):
 		return render(request, 'paciente/consultaDetails.html',contexto)
 		pass
 
-def consultaCreate(request):
+def consultaCreate(request, cod_paciente):
+	c=str(cod_paciente)
+	contexto = {'c':cod_paciente}
 	if request.method == 'POST':
-		form = ConsultaForm(request.POST)
-		if form.is_valid():
-			form.save()
-			pass
-		pass
-		return redirect('hospital:atenderPacienteList')
-	else:
-		form = ConsultaForm()
-	return render(request, 'consulta/consultaCreate.html', {'form':form})
+		usuario=User()
+		persona=Persona()
+		medico=Medico()
+		paciente=Paciente()
+		expediente=Expediente()
+		consulta=Consulta()
+		consulta.cod_consulta=request.POST['cod_consulta']
+		consulta.fecha_consulta=request.POST['fecha_consulta']
+		consulta.diagnostico=request.POST['diagnostico']
+		usuario_log=User.objects.get(username=request.user)
+		persona=Persona.objects.get(usuario_id=usuario_log)
+		medico=Medico.objects.get(cod_persona=persona)
+		cod = medico.cod_medico
+		consulta.cod_medico_id=cod
+		paciente=Paciente.objects.get(cod_paciente=c)
+		expediente=Expediente.objects.get(cod_paciente=paciente)
+		ids=expediente.id
+		consulta.num_expediente_id=ids
+		consulta.save()
+		return redirect('hospital:atenderPacientesList')
+	return render(request, 'consulta/consultaCreate.html', contexto)
+
+def recetaCreate(request, cod_consulta):
+	medicamento=Medicamento.objects.all()
+	nombre_medicamento=request.POST.get('lista_medicamento')
+	consult=str(cod_consulta)
+	contexto = {'consult':cod_consulta}
+	if request.method == 'POST':
+		consulta = Consulta()
+		medicina = Medicamento()
+		receta = ResetaMedica()
+		consulta=Consulta.objects.get(cod_consulta=consult)
+		receta.cod_consulta=consulta
+		receta.cantidad=request.POST['cantidad']
+		med=Medicamento.objects.get(nombre_medicamento=nombre_medicamento)
+		receta.cod_medicamento=med
+		receta.save()
+		return redirect('hospital:atenderPacientesList')
+	return render(request, 'receta/recetaCreate.html', {'medicamento':medicamento}, contexto)
+	
