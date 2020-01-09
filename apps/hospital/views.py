@@ -563,8 +563,17 @@ def resepcionistaList(request):
 		accion = request.POST['accion']
 		cod_resepcionista = request.POST['recepcionista']
 		recepcionista = Resepcionista.objects.get(cod_resepcionista = cod_resepcionista)
+		id_persona = recepcionista.cod_persona_id
+		print(id_persona)
+		persona = Persona.objects.get(id=id_persona)
+		print(persona)
+		id_usuario = persona.usuario_id
+		print(id_usuario)
+		usuario = User.objects.get(id=id_usuario)
 		if accion == 'Eliminar':	
 			recepcionista.delete()
+			persona.delete()
+			usuario.delete()
 			pass
 						
 		else:
@@ -575,27 +584,59 @@ def resepcionistaList(request):
 	return render(request, 'resepcionista/resepcionistaList.html', contexto)	
 
 def resepcionistaCreate(request):
+	sexo=Sexo.objects.all()
+	nombres_sexos=request.POST.get('lista_sexo')
 	if request.method == 'POST':
-		form = ResepcionistaForm(request.POST)
-		if form.is_valid():
-			form.save()
-			pass
-		pass
+		usuario=User()
+		persona=Persona()
+		recepcionista=Resepcionista()
+		#usuario.is_staff=True
+		usuario.first_name=request.POST['nombres']
+		usuario.last_name=request.POST['apellidos']
+		concac1=str(usuario.first_name).upper()
+		concac1=concac1[0:3]
+		concac2=str(usuario.last_name).upper()
+		concac2=concac2[0:3]
+		#Generar una cadena random
+		stringRandom = str(random.randint(0,100))
+		nombreUser = concac1 + concac2	
+		usuario.username=nombreUser
+		print(usuario)
+		password=concac1+concac2+stringRandom
+		print(password)
+		usuario.set_password(password)
+		usuario.save()
+		persona.usuario=usuario
+		s=Sexo.objects.get(nombre_sexo=nombres_sexos)
+		persona.sexo=s
+		print(s)
+		persona.fecha_nacimiento=request.POST['fecha_nacimiento']
+		persona.save()
+		recepcionista.cod_persona=persona
+		recepcionista.cod_resepcionista=request.POST['cod_recepcionista']
+		recepcionista.save()
 		return redirect('hospital:resepcionistaList')
-	else:
-		form = ResepcionistaForm()
-	return render(request, 'resepcionista/resepcionistaCreate.html', {'form':form})
+	return render(request, 'resepcionista/resepcionistaCreate.html', {'sexo':sexo})
 
 def resepcionistaEdit(request, cod_resepcionista):
-	recepcionista = Resepcionista.objects.get(pk=cod_resepcionista)
+	resepcionista = Resepcionista.objects.get(pk=cod_resepcionista)
+	sexo=Sexo.objects.all()
+	nombres_sexos=request.POST.get('lista_sexo')
 	if request.method == 'GET':
-		form1 = ResepcionistaForm_2(instance=recepcionista)
+		fecha=str(resepcionista.cod_persona.fecha_nacimiento)
+		contexto = {'resepcionista': resepcionista, 'sexo':sexo, 'fecha':fecha}
 	else:
-		form1 = ResepcionistaForm_2(request.POST, instance=recepcionista)
-		if form1.is_valid():
-			form1.save()
+		person=Persona.objects.get(pk=resepcionista.cod_persona.pk)
+		user=User.objects.get(pk=person.usuario.pk)
+		user.first_name=request.POST['nombres']
+		user.last_name=request.POST['apellidos']
+		user.save()
+		s=Sexo.objects.get(nombre_sexo=nombres_sexos)
+		person.sexo=s
+		person.fecha_nacimiento=request.POST['fecha_nacimiento']
+		person.save()
 		return redirect('hospital:resepcionistaList')
-	return render(request, 'resepcionista/resepcionistaCreate.html', {'form1':form1})
+	return render(request, 'resepcionista/resepcionistaEdit.html',  contexto)
 
 def atenderPacientesList(request):
 	if 'buscar' in request.GET:		
