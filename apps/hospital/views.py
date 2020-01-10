@@ -698,13 +698,15 @@ def consultaCreate(request, cod_paciente):
 		expediente=Expediente()
 		consulta=Consulta()
 		consulta.cod_consulta=request.POST['cod_consulta']
-		consulta.fecha_consulta=request.POST['fecha_consulta']
+		ahora = time.strftime("%Y-%m-%d") #Toma la fecha actual
+		consulta.fecha_consulta=ahora
+		print(ahora)
 		consulta.diagnostico=request.POST['diagnostico']
 		usuario_log=User.objects.get(username=request.user)
 		persona=Persona.objects.get(usuario_id=usuario_log)
 		medico=Medico.objects.get(cod_persona=persona)
-		cod = medico.cod_medico
-		consulta.cod_medico_id=cod
+		cod = medico.cod_medico 
+		consulta.cod_medico_id=cod #el código del médico es el que pertenece al usuario
 		paciente=Paciente.objects.get(cod_paciente=c)
 		expediente=Expediente.objects.get(cod_paciente=paciente)
 		ids=expediente.id
