@@ -679,11 +679,11 @@ def expedienteDetailsPaciente(request, cod_paciente,tipoPersona):
 		return render(request, 'paciente/expedienteDetails.html',contexto)
 		pass
 
-def consultaDetailsPaciente(request, cod_consulta,tipoPersona):
+def consultaDetailsPaciente(request, cod_consulta):
 	if request.method == 'GET':
 		consulta = Consulta.objects.get(cod_consulta=cod_consulta)
 		recetas = ResetaMedica.objects.filter(cod_consulta = consulta.cod_consulta).order_by('-cod_consulta')
-		contexto = {'consulta':consulta,'recetas':recetas,'tipoPersona':str(tipoPersona)}
+		contexto = {'consulta':consulta,'recetas':recetas}
 		return render(request, 'paciente/consultaDetails.html',contexto)
 		pass
 
@@ -698,6 +698,8 @@ def consultaCreate(request, cod_paciente):
 		expediente=Expediente()
 		consulta=Consulta()
 		consulta.cod_consulta=request.POST['cod_consulta']
+		cod_con=consulta.cod_consulta=request.POST['cod_consulta']
+		print(cod_con)
 		ahora = time.strftime("%Y-%m-%d") #Toma la fecha actual
 		consulta.fecha_consulta=ahora
 		print(ahora)
@@ -712,7 +714,7 @@ def consultaCreate(request, cod_paciente):
 		ids=expediente.id
 		consulta.num_expediente_id=ids
 		consulta.save()
-		return redirect('hospital:atenderPacientesList')
+		return redirect('hospital:consultaDetailsPaciente', cod_consulta=cod_con)
 	return render(request, 'consulta/consultaCreate.html', contexto)
 
 def recetaCreate(request, cod_consulta):
@@ -730,6 +732,6 @@ def recetaCreate(request, cod_consulta):
 		med=Medicamento.objects.get(nombre_medicamento=nombre_medicamento)
 		receta.cod_medicamento=med
 		receta.save()
-		return redirect('hospital:atenderPacientesList')
+		return redirect('hospital:consultaDetailsPaciente', cod_consulta=cod_consulta)
 	return render(request, 'receta/recetaCreate.html', {'medicamento':medicamento}, contexto)
 	

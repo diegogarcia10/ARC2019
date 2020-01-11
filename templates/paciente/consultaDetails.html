@@ -64,8 +64,10 @@
 		{% endif %}
 		<br><br>
         <div class="col" align="right">
-            <a href="{% url 'hospital:recetaCreate' consulta.cod_consulta %}"  class="btn btn-success"><span class="fa fa-plus"></span> Añadir Receta</a>
-        </div>
+			<a href="{% url 'hospital:recetaCreate' consulta.cod_consulta  %}"  class="btn btn-success"><span class="fa fa-plus"></span> Añadir Receta</a>
+			<br><br>
+			<a href="{% url 'hospital:atenderPacientesList' %}"  class="btn btn-warning"><span class="fa fa-undo"></span> Regresar</a>
+		</div>
 	</div>
 	<div class="col-md-2"></div>
 </div>

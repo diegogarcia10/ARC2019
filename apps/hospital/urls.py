@@ -37,7 +37,7 @@ urlpatterns = [
     path('resepcionistaEdit/<str:cod_resepcionista>/',login_required(resepcionistaEdit), name='resepcionistaEdit'),
     url(r'^atenderPacientesList/$',login_required(atenderPacientesList),name="atenderPacientesList"),
     path('expedienteDetailsPaciente/<str:cod_paciente>/<str:tipoPersona>',login_required(expedienteDetailsPaciente), name='expedienteDetailsPaciente'),
-    path('consultaDetailsPaciente/<str:cod_consulta>/<str:tipoPersona>',login_required(consultaDetailsPaciente), name='consultaDetailsPaciente'),
+    path('consultaDetailsPaciente/<str:cod_consulta>',login_required(consultaDetailsPaciente), name='consultaDetailsPaciente'),
     path('consultaCreate/<str:cod_paciente>',login_required(consultaCreate), name='consultaCreate'),
     path('recetaCreate/<str:cod_consulta>',login_required(recetaCreate), name='recetaCreate'),
     #****************
