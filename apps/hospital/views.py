@@ -697,9 +697,9 @@ def consultaCreate(request, cod_paciente):
 		paciente=Paciente()
 		expediente=Expediente()
 		consulta=Consulta()
-		consulta.cod_consulta=request.POST['cod_consulta']
-		cod_con=consulta.cod_consulta=request.POST['cod_consulta']
-		print(cod_con)
+		#consulta.cod_consulta=request.POST['cod_consulta']
+		#cod_con=consulta.cod_consulta=request.POST['cod_consulta']
+		#print(cod_con)
 		ahora = time.strftime("%Y-%m-%d") #Toma la fecha actual
 		consulta.fecha_consulta=ahora
 		print(ahora)
@@ -714,7 +714,10 @@ def consultaCreate(request, cod_paciente):
 		ids=expediente.id
 		consulta.num_expediente_id=ids
 		consulta.save()
+		cod_con=consulta.cod_consulta
+		print(cod_con)
 		return redirect('hospital:consultaDetailsPaciente', cod_consulta=cod_con)
+		#return redirect('hospital:atenderPacientesList')
 	return render(request, 'consulta/consultaCreate.html', contexto)
 
 def recetaCreate(request, cod_consulta):
