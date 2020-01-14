@@ -17,7 +17,7 @@ Registrar Especialidad
     <div class="col-md-6">
         <hr>
         <br>
-        <form method="POST">
+        <form method="POST" onsubmit="return validar(this)">
             {% csrf_token %}
             <div class="form-group">
                 <div class="row">
@@ -33,7 +33,7 @@ Registrar Especialidad
             </div>
             <br>
             <div class="form-group text-center">
-                <button type="submit" class="btn btn-success">Modificar</button>
+                <button class="btn btn-success">Modificar</button>
             </div>
             <hr>
         </form>
@@ -41,6 +41,33 @@ Registrar Especialidad
     <div class="col-md-3"></div>
 </div>
 <br><br><br><br><br><br><br><br>
+
+<script type="text/javascript">
+    
+    function validar(form){
+        
+        var code = form.codigo;
+
+        if (code.value == "") {
+            alert("Debes digitar el código de la Especialidad");
+            code.focus();
+            code.select();
+            return false;
+        }
+
+        var name = form.nombre;
+
+        if (name.value == "") {
+            alert("Debes digitar el nombre de la Especialidad");
+            name.focus();
+            name.select();
+            return false;
+        }
+
+    }
+
+</script>
+
 {% else %}
 <br><br><br><br><br><br>
 <h1 class="text-center">Registrar Especialidad</h1>
@@ -50,7 +77,7 @@ Registrar Especialidad
     <div class="col-md-6">
         <hr>
         <br>
-        <form method="POST">
+        <form method="POST" onsubmit="return validar(this)">
             {% csrf_token %}
             <div class="form-group">
                 <div class="row">
@@ -66,7 +93,7 @@ Registrar Especialidad
             </div>
             <br>
             <div class="form-group text-center">
-                <button type="submit" class="btn btn-success">Registrar</button>
+                <button class="btn btn-success">Registrar</button>
             </div>
             <hr>
         </form>
@@ -74,5 +101,31 @@ Registrar Especialidad
     <div class="col-md-3"></div>
 </div>
 <br><br><br><br><br><br><br><br>
+
+<script type="text/javascript">
+    
+    function validar(form){
+        
+        var code = form.codigo;
+
+        if (code.value == "") {
+            alert("Debes digitar el código de la Especialidad");
+            code.focus();
+            code.select();
+            return false;
+        }
+
+        var name = form.nombre;
+
+        if (name.value == "") {
+            alert("Debes digitar el nombre de la Especialidad");
+            name.focus();
+            name.select();
+            return false;
+        }
+        
+    }
+
+</script>
 {% endif %}
 {% endblock %}
