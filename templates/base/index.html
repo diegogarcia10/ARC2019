@@ -66,6 +66,7 @@
                                 <li><a class="nav-link" href="{% url 'hospital:especialidadList' %}"> Especialidades </a></li>
                                 <li><a class="nav-link" href="{% url 'hospital:medicamentoList' %}"> Medicamentos </a></li>
                                 <li><a class="nav-link" href="{% url 'hospital:sistemaMedicionList' %}"> Sistema de Medición </a></li>
+                                <li><a class="nav-link" href="{% url 'hospital:resepcionistaList' %}"> Recepcionistas </a></li>
                             </ul> 
                         </nav>                        
                     </div>
@@ -172,7 +173,8 @@
                                 </ul> 
                                 -->
                                 <ul id="navigation">
-                                    <h3>Bienvenido Medico</h3>
+                                    <!--<h3>Bienvenido Medico</h3>-->
+                                    <li><a href="{% url 'hospital:atenderPacientesList' %}">Listado de pacientes a atender</a></li>
                                 </ul>                                   
                                 {% endifequal %}
                                 {% ifequal tipoPersona "2" %}
