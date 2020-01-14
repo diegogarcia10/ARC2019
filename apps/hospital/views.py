@@ -789,18 +789,22 @@ def atenderPacientesList(request):
 				return render(request, 'paciente/atenderPacienteList.html', contexto)
 				
 		pass
-	if 'accion' in request.POST:
-		accion = request.POST['accion']
-		cod_paciente = request.POST['paciente']
-		paciente = Paciente.objects.get(cod_paciente = cod_paciente)
-		if accion == 'Eliminar':	
-			paciente.delete()
-			pass
-						
-		else:
-			pass
-		pass
-	paciente = Paciente.objects.all().order_by('cod_paciente')
+	usuario=User()
+	persona=Persona()
+	medico=Medico()
+	usuario_log=User.objects.get(username=request.user)
+	persona=Persona.objects.get(usuario_id=usuario_log)
+	medico=Medico.objects.get(cod_persona=persona)
+	cod = medico.cod_medico #Que sean citas del médico que está logueado
+	print(cod)
+	asistio=True
+	cita=[]
+	cita = Cita.objects.filter(medico_id=cod, asistio=asistio)
+	print(cita)
+	paciente = []
+	for c in cita:
+		paciente.append(Paciente.objects.get(id=c.paciente_id))
+		print(paciente)
 	contexto = {'pacientes':paciente}
 	return render(request, 'paciente/atenderPacienteList.html', contexto)
 
