@@ -51,6 +51,13 @@ urlpatterns = [
     path('list-citas',list_citas,name="list_citas"),
     path('nueva-cita',nueva_cita,name="nueva_cita"),
     path('capturaCita',captura_cita,name="captura_cita"),
+    path('registrar-cita/<str:id_paciente>',registar_cita,name="registar_cita"),
+
+    #url para las peticiones ajax
+    path('busqueda_medicos',busqueda_medico,name="busqueda_medico"),
+    path('select_medico',select_medico,name="seleccion_medico"),
+    path('alg_hora',alg_hora,name="alg_hora"),
+    path('confirmar_cita',confirmar_cita,name="confirmarcita")
     #Fin parte Diego
     
 ]

@@ -1,5 +1,7 @@
 {% extends 'base/index.html' %}
-
+{% block title %}
+Listado Citas
+{% endblock%}
 
 {% block content %}
 <br><br>
@@ -22,13 +24,13 @@
 		<tbody>
 			{% for cita in citas %}
 			<tr>
-				<td>{{cita.medico.cod_persona.usuario.first_name}}</td>
+				<td>{{cita.medico.cod_persona.usuario.first_name}} {{cita.medico.cod_persona.usuario.last_name}}</td>
 				<td>{{cita.paciente.cod_persona.usuario.first_name}} {{cita.paciente.cod_persona.usuario.last_name}}</td>
-				<td>{{cita.fecha_hora_cita}}</td>
+				<td>{{cita.fecha_hora_cita|date:"l d \d\e F \d\e Y"}} a las  {{cita.fecha_hora_cita|time:"g:i a"}}</td>
 			</tr>
 			{% endfor %}
 		</tbody>
-		<tfoot>
+		<tfoot class="bg-info">
 			<tr>
 				<th>Medico</th>
 				<th>Paciente</th>

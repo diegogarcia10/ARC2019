@@ -1,8 +1,14 @@
 from django.db import models
 from django.conf import settings
 
+from datetime import datetime
 
-# Create your models here.
+#Generar un id random para cod_consulta
+import random, string
+def random_id(lenght=10):
+    return ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(lenght))
+
+
 
 
 class Sexo(models.Model):
@@ -50,7 +56,7 @@ class Expediente(models.Model):
 		return str(self.cod_paciente)
 
 class Consulta(models.Model):
-	cod_consulta=models.CharField(max_length=10,primary_key=True)
+	cod_consulta=models.CharField(max_length=10,primary_key=True, default=random_id)
 	num_expediente=models.ForeignKey(Expediente,on_delete=models.CASCADE)
 	cod_medico=models.ForeignKey(Medico,on_delete=models.CASCADE)
 	fecha_consulta=models.DateField(null=True)
@@ -85,3 +91,13 @@ class Cita(models.Model):
 	medico=models.ForeignKey(Medico,on_delete=models.CASCADE)
 	paciente=models.ForeignKey(Paciente,on_delete=models.CASCADE)
 	fecha_hora_cita=models.DateTimeField()
+	asistio=models.BooleanField(default=False)
+	def mismo_dia(self):
+		ahora= datetime.now()
+		if ahora.day==self.fecha_hora_cita.day:
+			if ahora.hour < self.fecha_hora_cita.hour:
+				return True
+			else:
+				return False
+		else:
+			return False

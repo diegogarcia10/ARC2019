@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from apps.hospital.models import *
 from apps.hospital.forms import *
 #Librerias para calcular edad
-from datetime import date
+from datetime import date,datetime,timedelta
 from dateutil.relativedelta import relativedelta
 
 #Librerias Necesarias para la comunicacion con el arduino
@@ -248,11 +248,149 @@ def nueva_cita(request):
 	return render(request,'cita/nueva_cita.html',contexto)
 
 def list_citas(request):
-	citas=Cita.objects.all()
+	citas=Cita.objects.all().order_by('-id')
+	print(citas)
 	contexto={'citas':citas,'tipoPersona':str(3)}
 	return render(request,'resepcionista/list_citas.html',contexto)
 
+def registar_cita(request,id_paciente):
+	tipoPersona="3"
+	existe=''
+	paciente=''
+	edad=''
+	if Paciente.objects.filter(cod_paciente=id_paciente).exists():
+		existe="Si Existe"
+		paciente=Paciente.objects.get(cod_paciente=id_paciente)
+		edad=str(calcular_edad(paciente.cod_persona.fecha_nacimiento))
 
+	if request.method=='POST':
+		print("Hay un post xD")
+		hora=request.POST['hora']
+		fecha=request.POST['fecha']
+		print(hora)
+		print(fecha)
+		hora=hora.split(":")
+		fecha=fecha.split("-")
+		print(hora)
+		print(fecha)
+		cod_medico=request.POST['cod_medico']
+		print(cod_medico)
+		objeto_datetime=datetime(int(fecha[0]),int(fecha[1]),int(fecha[2]),int(hora[0]),int(hora[1]))
+		print(objeto_datetime)
+
+		#Creando el objeto de cita
+		cita_save=Cita()
+		cita_save.medico=Medico.objects.get(cod_medico=cod_medico)
+		cita_save.paciente=paciente
+		cita_save.fecha_hora_cita=objeto_datetime
+		cita_save.save()
+		return redirect('hospital:list_citas')
+	especialidades=Especialidad.objects.all()	
+	contexto={'tipoPersona':tipoPersona,'paciente':paciente,'existe':existe,'edad':edad,'especialidades':especialidades}
+	return render(request,'cita/registrar_cita.html',contexto)
+
+
+def busqueda_medico(request):
+	nombre=request.GET['nombre']
+	nombre=str(nombre)
+	nombre=nombre.lower()
+	cod_especialidad=request.GET['especialidad']
+	personas=[]
+	medicos=[]
+	if cod_especialidad=="0":
+		print("Entra a este if 1")
+		usuarios=User.objects.filter(first_name__contains=nombre)
+		if usuarios.exists()==False:
+			usuarios=User.objects.filter(last_name__contains=nombre)
+			if usuarios.exists()==False:
+				pass
+			else:
+				for user in usuarios:
+					personas.append(Persona.objects.get(usuario=user))	
+				
+				for person in personas:
+					medico=Medico.objects.get(cod_persona=person)
+					medicos.append(medico)
+		else:
+			for user in usuarios:
+				personas.append(Persona.objects.get(usuario=user))	
+				
+			for person in personas:
+				medico=Medico.objects.get(cod_persona=person)
+				medicos.append(medico)		
+	else:
+		if nombre=='':
+			print("Entra a este if 2")
+			especialidad=Especialidad.objects.get(cod_especialidad=cod_especialidad)
+			medicos=Medico.objects.filter(especialidad=cod_especialidad)			
+		else:
+			print("Entra a este else 1")
+			usuarios=User.objects.filter(first_name__contains=nombre)
+			print(usuarios)
+			if usuarios.exists()==False:
+				usuarios=User.objects.filter(last_name__contains=nombre)
+				if usuarios.exists()==False:
+					pass
+				else:
+					for user in usuarios:
+						personas.append(Persona.objects.get(usuario=user))			
+					for person in personas:
+						especialidad2=Especialidad.objects.get(cod_especialidad=cod_especialidad)				
+						medico=Medico.objects.get(cod_persona=person)
+						for especialidad in medico.especialidad.all():					
+							if especialidad.nombre_especialidad==especialidad2.nombre_especialidad:
+								medicos.append(medico)
+			else:
+				for user in usuarios:
+					personas.append(Persona.objects.get(usuario=user))			
+				for person in personas:
+					especialidad2=Especialidad.objects.get(cod_especialidad=cod_especialidad)				
+					medico=Medico.objects.get(cod_persona=person)
+					for especialidad in medico.especialidad.all():					
+						if especialidad.nombre_especialidad==especialidad2.nombre_especialidad:
+							medicos.append(medico)
+	contexto={'medicos':medicos}
+	return render(request,'cita/list_busqueda_medicos.html',contexto)
+
+
+def select_medico(request):
+	cod_medico=request.GET['cod_medico']
+	medico=Medico.objects.get(cod_medico=cod_medico)
+	contexto={'medico':medico}
+	return render(request,'cita/select_medico.html',contexto)
+
+#Algoritmo que retorna un html con la ultima hora registrada para ese dia asi lo toma a consideracion la doctora
+def alg_hora(request):
+	hora_recomendada=""
+	fecha=request.GET['fecha']
+	fecha=fecha.split("-")
+	print(fecha)
+	#fecha_busqueda=datetime(int(fecha[0]),int(fecha[1]),int(fecha[2]))
+	#print(str(fecha_busqueda))
+	medico=request.GET['cod_medico']
+	medico_bus=Medico.objects.get(cod_medico=str(medico))
+	citas=Cita.objects.filter(medico=medico,fecha_hora_cita__year=fecha[0],fecha_hora_cita__month=fecha[1],fecha_hora_cita__day=fecha[2])	
+	if citas.exists()==True:
+		ultima_cita=citas.latest('fecha_hora_cita')
+		print(ultima_cita.medico.cod_persona.usuario.first_name)
+		fecha_query=ultima_cita.fecha_hora_cita
+		formato1="%I:%M %p"
+		print(fecha_query)
+		hora_recomendada=fecha_query
+		hora_recomendada=hora_recomendada.strftime(formato1)
+	else:
+		hora_recomendada="No Hay Registros"
+		print("No Existe")
+	
+	contexto={'hora':hora_recomendada}
+	return render(request,'cita/buscar_hora.html',contexto)
+
+def confirmar_cita(request):
+	codigo_cita=request.GET['codigo_cita']
+	cita=Cita.objects.get(id=codigo_cita)
+	cita.asistio=True
+	cita.save()
+	return render(request,'cita/confirmacion.html')
 #--------FIN PARTE DE DIEGO--------------#
 #view Marco
 def especialidadList(request):
@@ -522,6 +660,7 @@ def calcular_edad(fecha_nacimiento):
 
 def expedienteDetails(request, cod_paciente,tipoPersona):
 	if request.method == 'GET':
+		lista_nueva=[]
 		paciente = Paciente.objects.get(cod_paciente = cod_paciente)
 		expediente = Expediente.objects.get(cod_paciente = paciente.id)
 		cod_person = paciente.cod_persona.id
@@ -530,6 +669,7 @@ def expedienteDetails(request, cod_paciente,tipoPersona):
 		usuario = User.objects.get(id = user)
 		edad = calcular_edad(persona.fecha_nacimiento)
 		citas = Cita.objects.filter(paciente=paciente.id).order_by('-fecha_hora_cita')
+		
 		consultas = Consulta.objects.filter(num_expediente=expediente.id).order_by('-fecha_consulta')
 		contexto = {'expediente':expediente,'paciente':paciente,'persona':persona, 'usuario':usuario,'edad':edad,'citas':citas,'consultas':consultas,'tipoPersona':str(tipoPersona)}
 		return render(request, 'resepcionista/expedienteDetails.html',contexto)
@@ -697,9 +837,9 @@ def consultaCreate(request, cod_paciente):
 		paciente=Paciente()
 		expediente=Expediente()
 		consulta=Consulta()
-		consulta.cod_consulta=request.POST['cod_consulta']
-		cod_con=consulta.cod_consulta=request.POST['cod_consulta']
-		print(cod_con)
+		#consulta.cod_consulta=request.POST['cod_consulta']
+		#cod_con=consulta.cod_consulta=request.POST['cod_consulta']
+		#print(cod_con)
 		ahora = time.strftime("%Y-%m-%d") #Toma la fecha actual
 		consulta.fecha_consulta=ahora
 		print(ahora)
@@ -714,7 +854,10 @@ def consultaCreate(request, cod_paciente):
 		ids=expediente.id
 		consulta.num_expediente_id=ids
 		consulta.save()
+		cod_con=consulta.cod_consulta
+		print(cod_con)
 		return redirect('hospital:consultaDetailsPaciente', cod_consulta=cod_con)
+		#return redirect('hospital:atenderPacientesList')
 	return render(request, 'consulta/consultaCreate.html', contexto)
 
 def recetaCreate(request, cod_consulta):

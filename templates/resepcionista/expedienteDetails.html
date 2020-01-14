@@ -2,6 +2,7 @@
 {% block title %}EXPEDIENTE{% endblock %}
 {% block content %}
 <br><br><br>
+<div class="container"></div>
 <h1 class="text-center">Expediente Medico</h1>
 <br>
 <h3 class="text-center">Detalle del Paciente</h3>
@@ -52,7 +53,7 @@
 					<tr>
 						<th>Medico</th>
 						<th>Fecha y hora</th>
-
+						<th>Acciones</th>
 					</tr>
 				</thead>
 
@@ -60,8 +61,16 @@
 				{% for cita in citas %}
 					<tr>
 						<td>{{ cita.medico.cod_persona.usuario.first_name }} {{ cita.medico.cod_persona.usuario.last_name }}</td>
-						<td>{{ cita.fecha_hora_cita }}</td>
-
+						<td>{{cita.fecha_hora_cita|date:"l d \d\e F \d\e Y"}} a las  {{cita.fecha_hora_cita|time:"g:i a"}}</td>
+						<td>
+							{% if cita.asistio %}
+							{% else %}
+								{% if cita.mismo_dia %}
+								<button type="button" class="btn btn-success" id="boton_confirmacion" value="{{cita.id}}"> Confirmar</button>
+								{% endif %}
+							{% endif %}
+							
+						</td>
 					</tr>
 				{% endfor %}
 				</tbody>
@@ -114,4 +123,23 @@
 <br><br>
 {% endblock %}
 {% block footer %}
+{% endblock %}
+{% block extrajs %}
+
+<script type="text/javascript">
+	$("#boton_confirmacion").on('click',confirmar_cita);
+	function confirmar_cita(){
+		var codigo_cita=$(this).attr("value");
+		console.log(codigo_cita);
+		$.ajax({
+	    	data:{'codigo_cita':codigo_cita},
+	    	type:'get',
+	    	url:'{% url "hospital:confirmarcita" %}',
+	    	success: function(data){
+	    		location.reload();
+	    	}
+	    });
+	}
+	
+</script>
 {% endblock %}
