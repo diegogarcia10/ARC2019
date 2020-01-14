@@ -57,11 +57,15 @@ Registrar Medicamento
                         {% for sistema in sistemas %}
                         <lu>
                             {% if sistema in medicamento.sistema_medicion.all %}
-                            <input type="checkbox" checked="true" name="sis_{{ sistema.cod_sistema }}" value="{{ sistema.nombre_sistema }}">
-                            {{ sistema.nombre_sistema }}&nbsp&nbsp
+                            <label>
+                                <input type="checkbox" checked="true" name="sis_{{ sistema.cod_sistema }}" value="{{ sistema.nombre_sistema }}">
+                                {{ sistema.nombre_sistema }}&nbsp&nbsp
+                            </label>                           
                             {% else %}
-                            <input type="checkbox" name="sis_{{ sistema.cod_sistema }}" value="{{ sistema.nombre_sistema }}">
-                            {{ sistema.nombre_sistema }}&nbsp&nbsp
+                            <label>
+                                <input type="checkbox" name="sis_{{ sistema.cod_sistema }}" value="{{ sistema.nombre_sistema }}">
+                                {{ sistema.nombre_sistema }}&nbsp&nbsp
+                            </label>
                             {% endif %}
                         {% endfor %}
                         {% endif %}
@@ -169,8 +173,10 @@ Registrar Medicamento
                         {% if sistemas %}
                         {% for sistema in sistemas %}
                         <lu>
-                            <input type="checkbox" name="sis_{{ sistema.cod_sistema }}" value="{{ sistema.nombre_sistema }}">
-                            {{ sistema.nombre_sistema }}&nbsp&nbsp
+                            <label>
+                                <input type="checkbox" name="sis_{{ sistema.cod_sistema }}" value="{{ sistema.nombre_sistema }}">
+                                {{ sistema.nombre_sistema }}&nbsp&nbsp
+                            </label>
                         {% endfor %}
                         {% endif %}
                         </lu>
