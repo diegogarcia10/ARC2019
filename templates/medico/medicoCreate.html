@@ -136,16 +136,19 @@ Registrar Medico
 		var code = form.cod_medico;
 
 		if (code.value == "") {
-			alert("Debes ingresar el codigo del Médico");
+			alert("Debes digitar el codigo del Médico");
 			code.focus();
-			lastName.select();
+			code.select();
 			return false;
 		}
 
 		var number = form.num_registro;
 
 		if (number.value == "") {
-			alert("Debes ingresar el Numero de Registro del Médico");
+			alert("Debes digitar el Numero de Registro del Médico");
+			number.focus();
+			number.select();
+			return false;
 		}
 	}
 
