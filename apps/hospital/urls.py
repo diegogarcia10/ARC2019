@@ -55,6 +55,9 @@ urlpatterns = [
 
     #url para las peticiones ajax
     path('busqueda_medicos',busqueda_medico,name="busqueda_medico"),
+    path('select_medico',select_medico,name="seleccion_medico"),
+    path('alg_hora',alg_hora,name="alg_hora"),
+    path('confirmar_cita',confirmar_cita,name="confirmarcita")
     #Fin parte Diego
     
 ]

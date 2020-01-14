@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 
-
+from datetime import datetime
 # Create your models here.
 
 
@@ -85,3 +85,13 @@ class Cita(models.Model):
 	medico=models.ForeignKey(Medico,on_delete=models.CASCADE)
 	paciente=models.ForeignKey(Paciente,on_delete=models.CASCADE)
 	fecha_hora_cita=models.DateTimeField()
+	asistio=models.BooleanField(default=False)
+	def mismo_dia(self):
+		ahora= datetime.now()
+		if ahora.day==self.fecha_hora_cita.day:
+			if ahora.hour < self.fecha_hora_cita.hour:
+				return True
+			else:
+				return False
+		else:
+			return False

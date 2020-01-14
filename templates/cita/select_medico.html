@@ -1,0 +1,17 @@
+<input id="cod_medico" name="cod_medico" type="hidden" value="{{medico.cod_medico}}" readonly>
+<dl>
+	<dt>Nombre:</dt>
+	<dd>{{medico.cod_persona.usuario.first_name}} {{medico.cod_persona.usuario.last_name}}</dd>
+	<dt>Especialidades:</dt>
+	<dd> 
+		{% for esp in medico.especialidad.all %}
+			{{esp}},
+		{% endfor %}
+	</dd>
+	<dt>Sexo:</dt>
+	<dd>{{medico.cod_persona.sexo.nombre_sexo}}</dd>					
+</dl>
+
+<div>
+	<a class="btn btn-danger" href="javascript:location.reload()" ><i class="fa fa-refresh" aria-hidden="true"></i> Cambiar Medico</a>
+</div>

@@ -3,16 +3,20 @@
 {% block content %}
 <div class="container">
 	<h3 class="text-center">Registrar Cita</h3>
-	<br>
-	<br>
-	<form class="" action="">
+	
+	
+	<form method="POST" class="" action="">
+		{% csrf_token %}
 		{% if not existe %}
 		<hr>
 		<h4 class="alert alert-danger text-center"><b>No Existe ningun paciente con los datos proporcionados</b></h4>
 		{% else %}
 		<hr>
 		<h4 class="alert alert-warning text-center"><b>Favor llenar los siguientes campos y datos</b></h4>
-			
+		<div id="barra_carga" class="progress">
+		  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 25%">		  	
+		  </div>
+		</div>	
 		<div class="row ">
 			
 			<div class="col-md-4">
@@ -32,24 +36,36 @@
 				<hr>	
 				<h5>Selecciona el doctor</h5>
 				<hr>				
+				<div id="select_medico">
 					<input id="nombre" type="text" class="form-control" placeholder="Buscar Por nombre">				
-				<br>				
-					<input id="especialidad" type="text" class="form-control" placeholder="buscar por especialidad">				
-				<br>
-				<div id="busqueda_medicos">
-					
-					<p class="alert alert-info" role="alert"> Busca al doctor por su nombre o su especialidad</p>
-				
-					
+					<br>				
+						
+						<select name="especialidad" id="especialidad" class="form-control">
+							<option value="0">Todas las Especialidades</option>
+							{% for especialidad in especialidades %}
+							<option value="{{especialidad.cod_especialidad}}">{{especialidad.nombre_especialidad}}</option>
+							{% endfor %}
+						</select>				
+					<br>
+					<div id="busqueda_medicos">
+						
+						<p class="alert alert-info" role="alert">Busca al doctor por su nombre o su especialidad</p>
+						
+						
+					</div>
 				</div>
+				
 			</div>
 			<div class="col-md-4">
 				<hr>	
 				<h5>Fecha y Hora</h5>
 				<hr>
-				<input type="date" class="form-control"><br>
-				<input type="time" class="form-control"><br>
-				<button class="btn btn-success" >Registrar Cita</button>
+				<input id="fecha" name="fecha" type="date" class="form-control">
+				<div id="hora_recomendada">
+					<small class="text-danger"><i> Recomendacion de hora:</i></small>
+				</div>				
+				<input id="hora" name="hora" type="time" class="form-control" min="08:00" max="23:59" required><br>
+				<button type="submit" class="btn btn-success" >Registrar Cita</button>
 				<a href="#" class="btn btn-danger">Cancelar</a>
 			</div>
 		</div>
@@ -70,20 +86,49 @@
 	
 	$( "#nombre" ).keyup(function() {
 	  	var nombre = $('#nombre').val();
+	  	var especialidad=$('#especialidad').val();
 	  	if(nombre == ''){
 	  		console.clear();
-	  		$("#busqueda_medicos").html('<p class="alert alert-info" role="alert"> Busca al doctor por su nombre o su especialidad</p>')
+	  		if(especialidad==0){
+	  			$("#busqueda_medicos").html('<p class="alert alert-info" role="alert"> Busca al doctor por su nombre o su especialidad</p>')
+	  		}
+	  		else{
+	  			$.ajax({ 			
+
+		  			data:{'nombre':nombre,'especialidad':especialidad},
+					type:'get',
+		  			url: '{% url "hospital:busqueda_medico" %}',
+	            	success: function(data){
+	                	$("#busqueda_medicos").html(data)
+	            	}
+		  		});
+	  		}
+	  		
 	  	}
 	  	else{
-	  		$.ajax({  			
+	  		if(especialidad==0){
+	  			$.ajax({ 
+		  			data:{'nombre':nombre,'especialidad':especialidad},
+					type:'get',
+		  			url: '{% url "hospital:busqueda_medico" %}',
+	            	success: function(data){
+	                	$("#busqueda_medicos").html(data)
+	            	}
+		  		});
+	  		}
+	  		else{
+	  			$.ajax({ 			
 
-	  			data:{'nombre':nombre},
-				type:'get',
-	  			url: '{% url "hospital:busqueda_medico" %}',
-            	success: function(data){
-                	$("#busqueda_medicos").html(data)
-            	}
-	  		});
+		  			data:{'nombre':nombre,'especialidad':especialidad},
+					type:'get',
+		  			url: '{% url "hospital:busqueda_medico" %}',
+	            	success: function(data){
+	                	$("#busqueda_medicos").html(data)
+	            	}
+		  		});
+	  		}
+
+	  		
 	  	}
 		
 
@@ -92,7 +137,89 @@
 	$('body').on('click', 'button.boton', function(e) {
 	    var codigo_medico=$(this).attr("value");
 	    console.log(codigo_medico);
-	    
+	    $.ajax({
+	    	data:{'cod_medico':codigo_medico},
+	    	type:'get',
+	    	url:'{% url "hospital:seleccion_medico" %}',
+	    	success: function(data){
+	    		$("#select_medico").html(data);
+	    		$("#barra_carga").html('<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 50%"></div>');
+
+	    	}
+	    });	    
 	});
+
+	$("#especialidad").on('change',cambio_esp);
+	function cambio_esp(){
+		var cod_especialidad=$(this).val();
+		var nombre = $('#nombre').val();
+		if(cod_especialidad==0){
+			if(nombre==''){
+				$("#busqueda_medicos").html('<p class="alert alert-info" role="alert"> Busca al doctor por su nombre o su especialidad</p>')
+			}
+			else{
+				$.ajax({ 			
+
+		  			data:{'nombre':nombre,'especialidad':cod_especialidad},
+					type:'get',
+		  			url: '{% url "hospital:busqueda_medico" %}',
+	            	success: function(data){
+	                	$("#busqueda_medicos").html(data);
+	            	}
+		  		});
+			}
+
+			
+		}
+		else{
+			$.ajax({ 			
+
+		  			data:{'nombre':nombre,'especialidad':cod_especialidad},
+					type:'get',
+		  			url: '{% url "hospital:busqueda_medico" %}',
+	            	success: function(data){
+	                	$("#busqueda_medicos").html(data)
+	            	}
+		  		});
+		}
+	};
+
+	$("#fecha").on('change',set_fecha);
+	function set_fecha(){		
+		var fecha = $(this).val();
+		var cod_medico=$('#cod_medico').val(); 
+		$.ajax({
+			data:{'fecha':fecha,'cod_medico':cod_medico},
+			type:'get',
+			url:'{% url "hospital:alg_hora" %}',
+			success:function(data){
+				$("#hora_recomendada").html(data);
+			}
+		});
+	};
+
+	$("#hora").on('change',set_tiempo);
+	function set_tiempo(){		
+		var hora = $(this).val().split(':');
+		var hours,minutes,meridian;
+		hours = hora[0];
+		minutes = hora[1];
+		if (hours > 12) {
+			meridian = 'p.m.';
+		    hours -= 12;
+		} 
+		else if (hours < 12) {
+		    meridian = 'a.m.';
+		    if (hours == 0) {
+		      hours = 12;
+		    }
+		} 
+		else {
+		    meridian = 'p.m.';
+		}
+		  console.log("La hora es: "+hours + ':' + minutes + ' ' + meridian);
+
+	};
+
 </script>
 {% endblock %}
