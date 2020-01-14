@@ -1,5 +1,5 @@
 {% extends 'base/index.html'%}
-
+{% load static from staticfiles %}
 {% block title %}
 Registrar Medico
 {% endblock %}
@@ -12,7 +12,7 @@ Registrar Medico
 	<div class="col-md-3"></div>
 	<div class="col-md-6">
 		<hr>
-		<form method="POST">
+		<form method="POST" onsubmit="return validar(this)">
 			{% csrf_token %}
 			<div class="form-group">
 				<div class="row">
@@ -65,8 +65,10 @@ Registrar Medico
 						{% if especialidades %}
 						{% for especialidad in especialidades %}
 						<lu>
-							<input type="checkbox" name="esp_{{ especialidad.cod_especialidad }}" value="{{ especialidad.nombre_especialidad }}">
-					 		{{ especialidad.nombre_especialidad }}&nbsp&nbsp
+							<label>
+								<input type="checkbox" name="esp_{{ especialidad.cod_especialidad }}" value="{{ especialidad.nombre_especialidad }}">
+						 		{{ especialidad.nombre_especialidad }}
+						 	</label>&nbsp&nbsp
 						{% endfor %}
 						{% endif %}
 						</lu>
@@ -74,7 +76,7 @@ Registrar Medico
 				</div>
 			</div>
 			<div class="form-group text-center">
-				<button type="submit" class="btn btn-success">Registrar</button>
+				<button class="btn btn-success">Registrar</button>
 			</div>
 			<hr>
 		</form>
@@ -82,6 +84,75 @@ Registrar Medico
 	<div class="col-md-3"></div>
 </div>
 <br><br>
+
+<script src="{% static 'js/moment.min.js' %}"></script>
+<script type="text/javascript">
+	
+	function validar(form){
+		
+
+		var firstName = form.nombres;
+
+		if (firstName.value == "") {
+			alert("Debes digitar los Nombre del Médico");
+			firstName.focus();
+			firstName.select();
+			return false;
+		}
+
+		var lastName = form.apellidos;
+
+		if (lastName.value == "") {
+			alert("Debes digitar los Apellidos del Médico");
+			lastName.focus();
+			lastName.select();
+			return false;
+		}
+
+		var gender = form.sexo;
+
+		if (gender.value == "") {
+			alert("Debes seleccionar un Sexo");
+			return false;
+		}
+
+		var date = form.fecha_nacimiento;
+		var today = moment();
+		var year = today.diff(date.value, "years");
+
+		if (date.value == "") {
+			alert("Debes ingresar la Fecha de Nacimiento del Médico");
+			return false;
+		}
+		else{
+			if (year < 18) {
+				alert("El Médico debe ser mayor de edad");
+				date.focus();
+				date.select();
+				return false;
+			}
+		}
+
+		var code = form.cod_medico;
+
+		if (code.value == "") {
+			alert("Debes digitar el codigo del Médico");
+			code.focus();
+			code.select();
+			return false;
+		}
+
+		var number = form.num_registro;
+
+		if (number.value == "") {
+			alert("Debes digitar el Numero de Registro del Médico");
+			number.focus();
+			number.select();
+			return false;
+		}
+	}
+
+</script>
 {% endblock %}
 {% block footer %}
 {% endblock %}

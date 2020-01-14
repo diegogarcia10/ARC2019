@@ -16,7 +16,7 @@ Registrar Medicamento
     <div class="col-md-3"></div>
     <div class="col-md-6">
         <hr>
-        <form method="POST">
+        <form method="POST" onsubmit="return validar(this)">
             {% csrf_token %}
             <div class="form-group">
                 <div class="row">
@@ -57,11 +57,15 @@ Registrar Medicamento
                         {% for sistema in sistemas %}
                         <lu>
                             {% if sistema in medicamento.sistema_medicion.all %}
-                            <input type="checkbox" checked="true" name="sis_{{ sistema.cod_sistema }}" value="{{ sistema.nombre_sistema }}">
-                            {{ sistema.nombre_sistema }}&nbsp&nbsp
+                            <label>
+                                <input type="checkbox" checked="true" name="sis_{{ sistema.cod_sistema }}" value="{{ sistema.nombre_sistema }}">
+                                {{ sistema.nombre_sistema }}&nbsp&nbsp
+                            </label>                           
                             {% else %}
-                            <input type="checkbox" name="sis_{{ sistema.cod_sistema }}" value="{{ sistema.nombre_sistema }}">
-                            {{ sistema.nombre_sistema }}&nbsp&nbsp
+                            <label>
+                                <input type="checkbox" name="sis_{{ sistema.cod_sistema }}" value="{{ sistema.nombre_sistema }}">
+                                {{ sistema.nombre_sistema }}&nbsp&nbsp
+                            </label>
                             {% endif %}
                         {% endfor %}
                         {% endif %}
@@ -70,7 +74,7 @@ Registrar Medicamento
                 </div>
             </div>
             <div class="form-group text-center">
-                <button type="submit" class="btn btn-success">Modificar</button>
+                <button class="btn btn-success">Modificar</button>
             </div>
             <hr>
         </form>
@@ -78,6 +82,50 @@ Registrar Medicamento
     <div class="col-md-3"></div>
 </div>
 <br><br>
+
+<script type="text/javascript">
+    
+    function validar(form){
+        
+        var code = form.codigo;
+
+        if (code.value == "") {
+            alert("Debes digitar el código del Medicamento");
+            code.focus();
+            code.select();
+            return false;
+        }
+
+        var name = form.nombre;
+
+        if (name.value == "") {
+            alert("Debes digitar el nombre del Medicamento");
+            name.focus();
+            name.select();
+            return false;
+        }
+
+        var pharmacy = form.farmacia;
+
+        if (pharmacy.value == "") {
+            alert("Debes digitar la  Farmacia del Medicamento");
+            pharmacy.focus();
+            pharmacy.select();
+            return false;
+        }
+
+        var description = form.descripcion;
+
+        if (description.value == "") {
+            alert("Debes digitar la Descripción del medicamento");
+            description.focus();
+            description.select();
+            return false;
+        }
+    }
+
+</script>
+
 {% else %}
 <h1 class="text-center">Registrar Medicamento</h1>
 <br>
@@ -85,7 +133,7 @@ Registrar Medicamento
     <div class="col-md-3"></div>
     <div class="col-md-6">
         <hr>
-        <form method="POST">
+        <form method="POST" onsubmit="return validar(this)">
             {% csrf_token %}
             <div class="form-group">
                 <div class="row">
@@ -125,8 +173,10 @@ Registrar Medicamento
                         {% if sistemas %}
                         {% for sistema in sistemas %}
                         <lu>
-                            <input type="checkbox" name="sis_{{ sistema.cod_sistema }}" value="{{ sistema.nombre_sistema }}">
-                            {{ sistema.nombre_sistema }}&nbsp&nbsp
+                            <label>
+                                <input type="checkbox" name="sis_{{ sistema.cod_sistema }}" value="{{ sistema.nombre_sistema }}">
+                                {{ sistema.nombre_sistema }}&nbsp&nbsp
+                            </label>
                         {% endfor %}
                         {% endif %}
                         </lu>
@@ -134,7 +184,7 @@ Registrar Medicamento
                 </div>
             </div>
             <div class="form-group text-center">
-                <button type="submit" class="btn btn-success">Registrar</button>
+                <button class="btn btn-success">Registrar</button>
             </div>
             <hr>
         </form>
@@ -142,5 +192,49 @@ Registrar Medicamento
     <div class="col-md-3"></div>
 </div>
 <br><br>
+
+<script type="text/javascript">
+    
+    function validar(form){
+        
+        var code = form.codigo;
+
+        if (code.value == "") {
+            alert("Debes digitar el código del Medicamento");
+            code.focus();
+            code.select();
+            return false;
+        }
+
+        var name = form.nombre;
+
+        if (name.value == "") {
+            alert("Debes digitar el nombre del Medicamento");
+            name.focus();
+            name.select();
+            return false;
+        }
+
+        var pharmacy = form.farmacia;
+
+        if (pharmacy.value == "") {
+            alert("Debes digitar la  Farmacia del Medicamento");
+            pharmacy.focus();
+            pharmacy.select();
+            return false;
+        }
+
+        var description = form.descripcion;
+
+        if (description.value == "") {
+            alert("Debes digitar la Descripción del medicamento");
+            description.focus();
+            description.select();
+            return false;
+        }
+    }
+
+</script>
+
 {% endif %}
 {% endblock %}
