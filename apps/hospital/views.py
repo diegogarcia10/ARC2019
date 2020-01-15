@@ -779,6 +779,7 @@ def resepcionistaEdit(request, cod_resepcionista):
 	return render(request, 'resepcionista/resepcionistaEdit.html',  contexto)
 
 def atenderPacientesList(request):
+	tipoPersona="1"
 	if 'buscar' in request.GET:		
 		if request.GET['buscarInput'] != "":
 			palabraClave = request.GET['buscarInput']
@@ -798,18 +799,19 @@ def atenderPacientesList(request):
 	cod = medico.cod_medico #Que sean citas del médico que está logueado
 	print(cod)
 	asistio=True
-	cita=[]
+	cita=[] #Array de citas que cumplen con 2 condiciones
 	cita = Cita.objects.filter(medico_id=cod, asistio=asistio)
 	print(cita)
 	paciente = []
 	for c in cita:
-		paciente.append(Paciente.objects.get(id=c.paciente_id))
+		paciente.append(Paciente.objects.get(id=c.paciente_id)) #Array de pacientes del array de citas
 		print(paciente)
-	contexto = {'pacientes':paciente}
+	contexto = {'pacientes':paciente, 'tipoPersona':str(tipoPersona)}
 	return render(request, 'paciente/atenderPacienteList.html', contexto)
 
 def expedienteDetailsPaciente(request, cod_paciente,tipoPersona):
 	if request.method == 'GET':
+		tipoPersona="1"
 		paciente = Paciente.objects.get(cod_paciente = cod_paciente)
 		expediente = Expediente.objects.get(cod_paciente = paciente.id)
 		cod_person = paciente.cod_persona.id
@@ -825,15 +827,17 @@ def expedienteDetailsPaciente(request, cod_paciente,tipoPersona):
 
 def consultaDetailsPaciente(request, cod_consulta):
 	if request.method == 'GET':
+		tipoPersona="1"
 		consulta = Consulta.objects.get(cod_consulta=cod_consulta)
 		recetas = ResetaMedica.objects.filter(cod_consulta = consulta.cod_consulta).order_by('-cod_consulta')
-		contexto = {'consulta':consulta,'recetas':recetas}
+		contexto = {'consulta':consulta,'recetas':recetas, 'tipoPersona':str(tipoPersona)}
 		return render(request, 'paciente/consultaDetails.html',contexto)
 		pass
 
 def consultaCreate(request, cod_paciente):
 	c=str(cod_paciente)
-	contexto = {'c':cod_paciente}
+	tipoPersona="1"
+	contexto = {'c':cod_paciente, 'tipoPersona':str(tipoPersona)}
 	if request.method == 'POST':
 		usuario=User()
 		persona=Persona()
@@ -865,10 +869,11 @@ def consultaCreate(request, cod_paciente):
 	return render(request, 'consulta/consultaCreate.html', contexto)
 
 def recetaCreate(request, cod_consulta):
+	tipoPersona="1"
 	medicamento=Medicamento.objects.all()
 	nombre_medicamento=request.POST.get('lista_medicamento')
 	consult=str(cod_consulta)
-	contexto = {'consult':cod_consulta}
+	contexto = {'consult':cod_consulta, 'tipoPersona':str(tipoPersona)}
 	if request.method == 'POST':
 		consulta = Consulta()
 		medicina = Medicamento()
