@@ -34,7 +34,6 @@ def lectura():
 	return codigo
 
 #Metodo que convierte el codigo de la targeta sin espacios por inconvenientes en la base de datos
-
 def sinEspacio(param):
 	codigo=str(param)
 	nuevo=codigo.replace(' ', '')
@@ -133,7 +132,6 @@ def registrar_entrada(request):
 def captura(request):
 	codigo=lectura()
 	mensaje=''
-
 	codigo=codigo.decode('utf-8')
 	codigo=codigo[1:12]
 	codigo=sinEspacio(codigo)
@@ -798,13 +796,18 @@ def atenderPacientesList(request):
 	cod = medico.cod_medico #Que sean citas del médico que está logueado
 	print(cod)
 	asistio=True
-	cita=[]
-	cita = Cita.objects.filter(medico_id=cod, asistio=asistio)
-	print(cita)
+	citas=[]
+	ahora=datetime.now()
+	print(ahora.day)
+	cita = Cita.objects.filter(medico_id=cod,asistio=asistio)
+	#For que valida si el dia actual es el mismo
+	for x in cita:		
+		if x.fecha_hora_cita.day == ahora.day:
+			citas.append(x)
 	paciente = []
-	for c in cita:
+	for c in citas:
 		paciente.append(Paciente.objects.get(id=c.paciente_id))
-		print(paciente)
+		#print(paciente)
 	contexto = {'pacientes':paciente}
 	return render(request, 'paciente/atenderPacienteList.html', contexto)
 

@@ -57,7 +57,7 @@
 <script src="{% static 'js/jquery-3.2.1.min.js'%}"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-    var url = $("#capcu").attr("url-mostrar");
+    
     function readProveedor() {
         $.ajax({
             url: '{% url "hospital:captura" %}',
