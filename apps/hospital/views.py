@@ -795,15 +795,15 @@ def atenderPacientesList(request):
 	persona=Persona.objects.get(usuario_id=usuario_log)
 	medico=Medico.objects.get(cod_persona=persona)
 	cod = medico.cod_medico #Que sean citas del médico que está logueado
-	print(cod)
+	#print(cod)
 	asistio=True
 	citas=[]
 	ahora=datetime.now()
-	print(ahora.day)
+	#print(ahora.day)
 	cita = Cita.objects.filter(medico_id=cod,asistio=asistio,fecha_hora_cita__day=ahora.day)
-	print(cita)
+	#print(cita)
 	for z in cita:
-		if ahora.hour < z.fecha_hora_cita.hour:
+		if ahora.hour <= z.fecha_hora_cita.hour:
 			citas.append(z)
 	#For que valida si el dia actual es el mismo
 	"""
@@ -816,7 +816,11 @@ def atenderPacientesList(request):
 	for c in citas:
 		paciente.append(Paciente.objects.get(id=c.paciente_id))
 		#print(paciente)
-	contexto = {'pacientes':paciente,'tipoPersona':str(tipoPersona)}
+	print(paciente)
+	pacientes_2=set(paciente)
+	print("XDDD")
+	print(pacientes_2)	
+	contexto = {'pacientes':pacientes_2,'tipoPersona':str(tipoPersona)}
 	return render(request, 'paciente/atenderPacienteList.html', contexto)
 
 def expedienteDetailsPaciente(request, cod_paciente,tipoPersona):
