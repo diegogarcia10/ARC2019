@@ -58,7 +58,7 @@
 <script type="text/javascript">
 $(document).ready(function() {
     var url = $("#capcu").attr("url-mostrar");
-    function readProveedor() {
+    function LeerCodigo() {
         $.ajax({
             url: '{% url "hospital:captura_changue" %}',
             success: function(data){
@@ -67,7 +67,7 @@ $(document).ready(function() {
             }
         });
     }
-    var inter = setInterval(readProveedor, 1000);
+    var inter = setInterval(LeerCodigo, 1000);
 });
 </script>
 {% endblock %}
