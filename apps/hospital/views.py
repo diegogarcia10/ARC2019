@@ -865,7 +865,7 @@ def recetaCreate(request, cod_consulta):
 	medicamento=Medicamento.objects.all()
 	nombre_medicamento=request.POST.get('lista_medicamento')
 	consult=str(cod_consulta)
-	contexto = {'consult':cod_consulta, 'tipoPersona':str(tipoPersona)}
+	contexto = {'consult':cod_consulta, 'medicamento':medicamento, 'tipoPersona':str(tipoPersona)}
 	if request.method == 'POST':
 		consulta = Consulta()
 		medicina = Medicamento()
@@ -877,5 +877,5 @@ def recetaCreate(request, cod_consulta):
 		receta.cod_medicamento=med
 		receta.save()
 		return redirect('hospital:consultaDetailsPaciente', cod_consulta=cod_consulta)
-	return render(request, 'receta/recetaCreate.html', {'medicamento':medicamento}, contexto)
+	return render(request, 'receta/recetaCreate.html', contexto)
 	

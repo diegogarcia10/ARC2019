@@ -94,7 +94,7 @@
 						<td>{{ consulta.cod_medico.cod_persona.usuario.first_name }} {{ consulta.cod_medico.cod_persona.usuario.last_name }}</td>
 						<td>{{ consulta.fecha_consulta }}</td>
 						<td>
-							<a href="{% url 'hospital:consultaDetailsPaciente' consulta.pk %}">Ver Detalle</a>
+							<a href="{% url 'hospital:consultaDetails' consulta.pk tipoPersona%}">Ver Detalle</a>
 						</td>
 
 					</tr>
