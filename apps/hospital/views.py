@@ -804,14 +804,9 @@ def atenderPacientesList(request):
 	#print(cita)
 	for z in cita:
 		if ahora.hour <= z.fecha_hora_cita.hour:
-			citas.append(z)
-	#For que valida si el dia actual es el mismo
-	"""
-	for x in cita:		
-		if x.fecha_hora_cita.day == ahora.day:
-			citas.append(x)
-			#if ahora.hour < x.fecha_hora_cita.hour:
-	"""						
+			if ahora.minute <= z.fecha_hora_cita.minute:
+				citas.append(z)									
+	print(citas)
 	paciente = []
 	for c in citas:
 		paciente.append(Paciente.objects.get(id=c.paciente_id))
