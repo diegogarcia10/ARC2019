@@ -275,12 +275,17 @@ def registar_cita(request,id_paciente):
 		print(cod_medico)
 		objeto_datetime=datetime(int(fecha[0]),int(fecha[1]),int(fecha[2]),int(hora[0]),int(hora[1]))
 		print(objeto_datetime)
-
+		#Si el dia en que guarda la cita es igual al dia en que seleciono guarda como true
+		ahora=datetime.now()
+		asistencia=False
+		if ahora.day==objeto_datetime.day:
+			asistencia=True
 		#Creando el objeto de cita
 		cita_save=Cita()
 		cita_save.medico=Medico.objects.get(cod_medico=cod_medico)
 		cita_save.paciente=paciente
 		cita_save.fecha_hora_cita=objeto_datetime
+		cita_save.asistio=asistencia
 		cita_save.save()
 		return redirect('hospital:list_citas')
 	especialidades=Especialidad.objects.all()	
@@ -676,8 +681,12 @@ def expedienteDetails(request, cod_paciente,tipoPersona):
 def consultaDetails(request, cod_consulta,tipoPersona):
 	if request.method == 'GET':
 		consulta = Consulta.objects.get(cod_consulta=cod_consulta)
+		paciente_cod= str(consulta.num_expediente.cod_paciente.cod_paciente)
+		print("Imprimiendo paciente")
+		print(paciente_cod)
+		paciente=Paciente.objects.get(cod_paciente=paciente_cod)
 		recetas = ResetaMedica.objects.filter(cod_consulta = consulta.cod_consulta).order_by('-cod_consulta')
-		contexto = {'consulta':consulta,'recetas':recetas,'tipoPersona':str(tipoPersona)}
+		contexto = {'paciente':paciente,'consulta':consulta,'recetas':recetas,'tipoPersona':str(tipoPersona)}
 
 		return render(request, 'resepcionista/consultaDetails.html',contexto)
 		pass
@@ -793,11 +802,18 @@ def atenderPacientesList(request):
 	citas=[]
 	ahora=datetime.now()
 	print(ahora.day)
-	cita = Cita.objects.filter(medico_id=cod,asistio=asistio)
+	cita = Cita.objects.filter(medico_id=cod,asistio=asistio,fecha_hora_cita__day=ahora.day)
+	print(cita)
+	for z in cita:
+		if ahora.hour < z.fecha_hora_cita.hour:
+			citas.append(z)
 	#For que valida si el dia actual es el mismo
+	"""
 	for x in cita:		
 		if x.fecha_hora_cita.day == ahora.day:
 			citas.append(x)
+			#if ahora.hour < x.fecha_hora_cita.hour:
+	"""						
 	paciente = []
 	for c in citas:
 		paciente.append(Paciente.objects.get(id=c.paciente_id))
