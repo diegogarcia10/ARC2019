@@ -681,9 +681,7 @@ def expedienteDetails(request, cod_paciente,tipoPersona):
 def consultaDetails(request, cod_consulta,tipoPersona):
 	if request.method == 'GET':
 		consulta = Consulta.objects.get(cod_consulta=cod_consulta)
-		paciente_cod= str(consulta.num_expediente.cod_paciente.cod_paciente)
-		print("Imprimiendo paciente")
-		print(paciente_cod)
+		paciente_cod= str(consulta.num_expediente.cod_paciente.cod_paciente)		
 		paciente=Paciente.objects.get(cod_paciente=paciente_cod)
 		recetas = ResetaMedica.objects.filter(cod_consulta = consulta.cod_consulta).order_by('-cod_consulta')
 		contexto = {'paciente':paciente,'consulta':consulta,'recetas':recetas,'tipoPersona':str(tipoPersona)}
