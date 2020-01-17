@@ -722,8 +722,6 @@ def resepcionistaList(request):
 	return render(request, 'resepcionista/resepcionistaList.html', contexto)	
 
 def resepcionistaCreate(request):
-	sexo=Sexo.objects.all()
-	nombres_sexos=request.POST.get('lista_sexo')
 	if request.method == 'POST':
 		usuario=User()
 		persona=Persona()
@@ -745,32 +743,27 @@ def resepcionistaCreate(request):
 		usuario.set_password(password)
 		usuario.save()
 		persona.usuario=usuario
-		s=Sexo.objects.get(nombre_sexo=nombres_sexos)
-		persona.sexo=s
-		print(s)
+		persona.sexo=Sexo.objects.get(cod_sexo=str(request.POST['sexo']))
 		persona.fecha_nacimiento=request.POST['fecha_nacimiento']
 		persona.save()
 		recepcionista.cod_persona=persona
-		recepcionista.cod_resepcionista=request.POST['cod_recepcionista']
 		recepcionista.save()
-		return redirect('hospital:resepcionistaList')
-	return render(request, 'resepcionista/resepcionistaCreate.html', {'sexo':sexo})
+		contexto = {'password':password,'username':nombreUser}
+		return render(request, 'resepcionista/resepcionistaDetalle.html',contexto)
+	return render(request, 'resepcionista/resepcionistaCreate.html')
 
 def resepcionistaEdit(request, cod_resepcionista):
 	resepcionista = Resepcionista.objects.get(pk=cod_resepcionista)
-	sexo=Sexo.objects.all()
-	nombres_sexos=request.POST.get('lista_sexo')
 	if request.method == 'GET':
 		fecha=str(resepcionista.cod_persona.fecha_nacimiento)
-		contexto = {'resepcionista': resepcionista, 'sexo':sexo, 'fecha':fecha}
+		contexto = {'resepcionista': resepcionista, 'fecha':fecha}
 	else:
 		person=Persona.objects.get(pk=resepcionista.cod_persona.pk)
 		user=User.objects.get(pk=person.usuario.pk)
 		user.first_name=request.POST['nombres']
 		user.last_name=request.POST['apellidos']
 		user.save()
-		s=Sexo.objects.get(nombre_sexo=nombres_sexos)
-		person.sexo=s
+		person.sexo=Sexo.objects.get(cod_sexo=str(request.POST['sexo']))
 		person.fecha_nacimiento=request.POST['fecha_nacimiento']
 		person.save()
 		return redirect('hospital:resepcionistaList')
@@ -848,9 +841,6 @@ def consultaCreate(request, cod_paciente):
 		paciente=Paciente()
 		expediente=Expediente()
 		consulta=Consulta()
-		#consulta.cod_consulta=request.POST['cod_consulta']
-		#cod_con=consulta.cod_consulta=request.POST['cod_consulta']
-		#print(cod_con)
 		ahora = time.strftime("%Y-%m-%d") #Toma la fecha actual
 		consulta.fecha_consulta=ahora
 		print(ahora)
@@ -868,7 +858,6 @@ def consultaCreate(request, cod_paciente):
 		cod_con=consulta.cod_consulta
 		print(cod_con)
 		return redirect('hospital:consultaDetailsPaciente', cod_consulta=cod_con)
-		#return redirect('hospital:atenderPacientesList')
 	return render(request, 'consulta/consultaCreate.html', contexto)
 
 def recetaCreate(request, cod_consulta):

@@ -8,9 +8,6 @@ import random, string
 def random_id(lenght=10):
     return ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(lenght))
 
-
-
-
 class Sexo(models.Model):
 	cod_sexo=models.CharField(max_length=10,primary_key=True)
 	nombre_sexo=models.CharField(max_length=10)
@@ -26,7 +23,7 @@ class Persona(models.Model):
 
 class Resepcionista(models.Model):
 	cod_persona=models.ForeignKey(Persona,on_delete=models.CASCADE)
-	cod_resepcionista=models.CharField(max_length=10,primary_key=True)
+	cod_resepcionista=models.CharField(max_length=10,primary_key=True, default=random_id)
 	def __str__(self):
 		return str(self.cod_persona)
 

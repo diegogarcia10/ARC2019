@@ -2,7 +2,7 @@
 {% block title %}RECEPCIONISTA{% endblock %}
 {% block content %}
 
-<div class=" jumbotron container">
+<div class="container">
 <hr>
 <h3 class="text-center">Lista de Recepcionistas</h3>
 <hr>
@@ -41,7 +41,7 @@
 				                        </button>
 				                      </div>
 				                      <div class="modal-body">
-				                        ¿Esta seguro de eliminar al Recepcionista <b>{{ recepcionista.cod_resepcionista }}?</b>
+				                        ¿Esta seguro de eliminar al Recepcionista <b>{{  recepcionista.cod_persona.usuario.first_name }} {{ recepcionista.cod_persona.usuario.last_name }}?</b>
 				                      </div>
 				                      <div class="modal-footer">
 				                        <input class="btn btn-danger" type="submit" name="accion" value="Eliminar">
@@ -50,7 +50,7 @@
 				                    </div>
 				                  </div>
 				                </div>
-				             </form>
+				    </form>
 				</td>
 			</tr>
 			{% endfor %}
