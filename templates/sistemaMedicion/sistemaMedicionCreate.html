@@ -19,16 +19,10 @@ Registrar Sistema de Medición
         <br>
         <form method="POST" onsubmit="return validar(this)">
             {% csrf_token %}
-            <div class="form-group">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h5>Código:</h5>
-                        <input type="number" name="codigo" value="{{sistema.cod_sistema}}" readonly="readonly" placeholder="Ingrese el código del Sistema de Medición" class="form-control">
-                    </div>
-                    <div class="col-md-6">
-                        <h5>Nombre:</h5>
-                        <input type="text" name="nombre" value="{{sistema.nombre_sistema}}" placeholder="Ingrese el nombre del Sistema de Medición" class="form-control">
-                    </div>
+            <div align="center" class="form-group">   
+                <div class="col-md-7">
+                    <h5>Nombre:</h5>
+                    <input type="text" name="nombre" value="{{sistema.nombre_sistema}}" placeholder="Ingrese el nombre del Sistema de Medición" class="form-control">
                 </div>
             </div>
             <br>
@@ -45,15 +39,6 @@ Registrar Sistema de Medición
 <script type="text/javascript">
     
     function validar(form){
-        
-        var code = form.codigo;
-
-        if (code.value == "") {
-            alert("Debes digitar el código del Sistema de Medición");
-            code.focus();
-            code.select();
-            return false;
-        }
 
         var name = form.nombre;
 
@@ -79,16 +64,10 @@ Registrar Sistema de Medición
         <br>
         <form method="POST" onsubmit="return validar(this)">
             {% csrf_token %}
-            <div class="form-group">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h5>Código:</h5>
-                        <input type="number" name="codigo" placeholder="Ingrese el código del Sistema de Medición" class="form-control">
-                    </div>
-                    <div class="col-md-6">
-                        <h5>Nombre:</h5>
-                        <input type="text" name="nombre" placeholder="Ingrese el nombre del Sistema de Medición" class="form-control">
-                    </div>
+            <div align="center" class="form-group">
+                <div class="col-md-7">
+                    <h5>Nombre:</h5>
+                    <input type="text" name="nombre" placeholder="Ingrese el nombre del Sistema de Medición" class="form-control">
                 </div>
             </div>
             <br>
@@ -105,15 +84,6 @@ Registrar Sistema de Medición
 <script type="text/javascript">
     
     function validar(form){
-        
-        var code = form.codigo;
-
-        if (code.value == "") {
-            alert("Debes digitar el código del Sistema de Medición");
-            code.focus();
-            code.select();
-            return false;
-        }
 
         var name = form.nombre;
 

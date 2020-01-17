@@ -413,7 +413,8 @@ def especialidadList(request):
 def especialidadCreate(request):
 	if request.method == 'POST':
 		especialidad=Especialidad()
-		especialidad.cod_especialidad=request.POST['codigo']
+		codRam=random_id()
+		especialidad.cod_especialidad=codRam
 		especialidad.nombre_especialidad=request.POST['nombre']
 		especialidad.save()
 		pass
@@ -449,7 +450,8 @@ def medicamentoCreate(request):
 	sistemas = SistemaMedicion.objects.all().order_by('nombre_sistema')
 	if request.method == 'POST':
 		medicamento = Medicamento()
-		medicamento.cod_medicamento=request.POST['codigo']
+		codRam=random_id()
+		medicamento.cod_medicamento=codRam
 		medicamento.nombre_medicamento=request.POST['nombre']
 		medicamento.farmacia=request.POST['farmacia']
 		medicamento.descripcion=request.POST['descripcion']
@@ -518,7 +520,12 @@ def sistemaMedicionList(request):
 def sistemaMedicionCreate(request):
 	if request.method == 'POST':
 		sistema=SistemaMedicion()
-		sistema.cod_sistema=request.POST['codigo']
+		if SistemaMedicion.objects.exists():
+			last_code = SistemaMedicion.objects.all().order_by('-cod_sistema')[:1][0].cod_sistema
+			sistema.cod_sistema=last_code+1
+			pass
+		else:
+			sistema.cod_sistema=1
 		sistema.nombre_sistema=request.POST['nombre']
 		sistema.save()
 		pass
@@ -592,7 +599,8 @@ def medicoCreate(request):
 		persona.fecha_nacimiento=request.POST['fecha_nacimiento']
 		persona.save()
 		medico.cod_persona=persona
-		medico.cod_medico=request.POST['cod_medico']
+		codRam=random_id()
+		medico.cod_medico=codRam
 		medico.num_regsitro=request.POST['num_registro']
 		medico.save()
 		for esp in especialidades:

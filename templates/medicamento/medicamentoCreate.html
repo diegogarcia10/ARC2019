@@ -21,17 +21,9 @@ Registrar Medicamento
             <div class="form-group">
                 <div class="row">
                     <div class="col-md-6">
-                        <h5>Código:</h5>
-                        <input type="text" name="codigo" value="{{medicamento.cod_medicamento}}" readonly="readonly" placeholder="Ingrese el código del medicamento" class="form-control">
-                    </div>
-                    <div class="col-md-6">
                         <h5>Nombre:</h5>
                         <input type="text" name="nombre" value="{{medicamento.nombre_medicamento}}" placeholder="Ingrese el nombre del medicamento" class="form-control">
                     </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="row">
                     <div class="col-md-6">
                         <h5>Farmacia:</h5>
                         <input type="text" name="farmacia" value="{{medicamento.farmacia}}" placeholder="Ingrese el nombre de la farmacia" class="form-control">
@@ -86,15 +78,6 @@ Registrar Medicamento
 <script type="text/javascript">
     
     function validar(form){
-        
-        var code = form.codigo;
-
-        if (code.value == "") {
-            alert("Debes digitar el código del Medicamento");
-            code.focus();
-            code.select();
-            return false;
-        }
 
         var name = form.nombre;
 
@@ -138,17 +121,9 @@ Registrar Medicamento
             <div class="form-group">
                 <div class="row">
                     <div class="col-md-6">
-                        <h5>Código:</h5>
-                        <input type="text" name="codigo" placeholder="Ingrese el código del medicamento" class="form-control">
-                    </div>
-                    <div class="col-md-6">
                         <h5>Nombre:</h5>
                         <input type="text" name="nombre" placeholder="Ingrese el nombre del medicamento" class="form-control">
                     </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="row">
                     <div class="col-md-6">
                         <h5>Farmacia:</h5>
                         <input type="text" name="farmacia" placeholder="Ingrese el nombre de la farmacia" class="form-control">
@@ -196,15 +171,6 @@ Registrar Medicamento
 <script type="text/javascript">
     
     function validar(form){
-        
-        var code = form.codigo;
-
-        if (code.value == "") {
-            alert("Debes digitar el código del Medicamento");
-            code.focus();
-            code.select();
-            return false;
-        }
 
         var name = form.nombre;
 

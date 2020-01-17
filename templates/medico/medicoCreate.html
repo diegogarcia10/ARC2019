@@ -46,10 +46,6 @@ Registrar Medico
 			<div class="form-group">
 				<div class="row">
 					<div class="col-md-6">
-						<h5>Código:</h5>
-						<input type="text" name="cod_medico" placeholder="Ingrese el código del Médico" class="form-control">
-					</div>
-					<div class="col-md-6">
 						<h5>Número de Registro:</h5>
 						<input type="text" name="num_registro" placeholder="Ingrese el número de registro del Médico" class="form-control">
 					</div>
@@ -131,15 +127,6 @@ Registrar Medico
 				date.select();
 				return false;
 			}
-		}
-
-		var code = form.cod_medico;
-
-		if (code.value == "") {
-			alert("Debes digitar el codigo del Médico");
-			code.focus();
-			code.select();
-			return false;
 		}
 
 		var number = form.num_registro;

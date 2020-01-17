@@ -19,16 +19,10 @@ Registrar Especialidad
         <br>
         <form method="POST" onsubmit="return validar(this)">
             {% csrf_token %}
-            <div class="form-group">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h5>Código:</h5>
-                        <input type="text" name="codigo" value="{{especialidad.cod_especialidad}}" readonly="readonly" placeholder="Ingrese el código de la Especialidad" class="form-control">
-                    </div>
-                    <div class="col-md-6">
-                        <h5>Nombre:</h5>
-                        <input type="text" name="nombre" value="{{especialidad.nombre_especialidad}}" placeholder="Ingrese el nombre de la especialidad" class="form-control">
-                    </div>
+            <div align="center" class="form-group">
+                <div class="col-md-7">
+                    <h5>Nombre:</h5>
+                    <input type="text" name="nombre" value="{{especialidad.nombre_especialidad}}" placeholder="Ingrese el nombre de la especialidad" class="form-control">
                 </div>
             </div>
             <br>
@@ -45,15 +39,6 @@ Registrar Especialidad
 <script type="text/javascript">
     
     function validar(form){
-        
-        var code = form.codigo;
-
-        if (code.value == "") {
-            alert("Debes digitar el código de la Especialidad");
-            code.focus();
-            code.select();
-            return false;
-        }
 
         var name = form.nombre;
 
@@ -79,16 +64,10 @@ Registrar Especialidad
         <br>
         <form method="POST" onsubmit="return validar(this)">
             {% csrf_token %}
-            <div class="form-group">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h5>Código:</h5>
-                        <input type="text" name="codigo" placeholder="Ingrese el código de la especialidad" class="form-control">
-                    </div>
-                    <div class="col-md-6">
-                        <h5>Nombre:</h5>
-                        <input type="text" name="nombre" placeholder="Ingrese el nombre de la especialidad" class="form-control">
-                    </div>
+            <div align="center" class="form-group">
+                <div class="col-md-7">
+                    <h5>Nombre:</h5>
+                    <input type="text" name="nombre" placeholder="Ingrese el nombre de la especialidad" class="form-control">
                 </div>
             </div>
             <br>
@@ -104,16 +83,7 @@ Registrar Especialidad
 
 <script type="text/javascript">
     
-    function validar(form){
-        
-        var code = form.codigo;
-
-        if (code.value == "") {
-            alert("Debes digitar el código de la Especialidad");
-            code.focus();
-            code.select();
-            return false;
-        }
+    function validar(form){        
 
         var name = form.nombre;
 
