@@ -38,14 +38,23 @@
 			<div class="row">
 				<div class="col-md-4"></div>
 				<div class="col-md-4">
-					<div class="loader text-center"></div>
+          <div class="loader text-center"></div>          
 				</div>
 				<div class="col-md-4"></div>
-			</div>
+      </div>
+     
 			
 		</div>
 		<div class="col-md-3"></div>
-	</div>
+  </div>
+  <br><br>
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 text-center" id="button3">
+      <button  id="button2" class="btn btn-success text-center">Precione aqui cuando este listo </button>
+    </div>
+    <div class="col-md-3"></div>
+  </div>
 	
 </div>
 
@@ -63,11 +72,12 @@ $(document).ready(function() {
             url: '{% url "hospital:captura_changue" %}',
             success: function(data){
 
-                $("#paciente_id").html(data)
+                $("#paciente_id").html(data);
+                $("#button3").html("");
             }
         });
     }
-    var inter = setInterval(LeerCodigo, 1000);
+    $("#button2").on('click',LeerCodigo);
 });
 </script>
 {% endblock %}

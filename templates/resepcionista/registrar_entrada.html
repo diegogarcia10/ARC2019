@@ -31,21 +31,28 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-3"></div>
-		<div class="col-md-6" id="paciente_id">
+		<div class="col-md-6 text-center" id="paciente_id">
 			
 			<h3>Coloque la Tarjeta sobre el dispositivo.....</h3>
 			<br>
 			<div class="row">
 				<div class="col-md-4"></div>
 				<div class="col-md-4">
-					<div class="loader text-center"></div>
+          <div class="loader text-center"></div>          
 				</div>
 				<div class="col-md-4"></div>
-			</div>
-			
+      </div>			
 		</div>
 		<div class="col-md-3"></div>
-	</div>
+  </div>
+  <br><br>
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 text-center" id="button3">
+      <button  id="button2" class="btn btn-success text-center">Precione aqui cuando este listo </button>
+    </div>
+    <div class="col-md-3"></div>
+  </div>
 	
 </div>
 
@@ -59,15 +66,16 @@
 $(document).ready(function() {
     
     function LeerCodigo() {
+      console.log("Esta precionando");
         $.ajax({
             url: '{% url "hospital:captura" %}',
             success: function(data){
-
-                $("#paciente_id").html(data)
+                $("#paciente_id").html(data);
+                $("#button3").html("");
             }
         });
     }
-    var inter = setInterval(LeerCodigo, 1000);
+    $("#button2").on('click',LeerCodigo);
 });
 </script>
 {% endblock %}
