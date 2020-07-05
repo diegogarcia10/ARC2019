@@ -3,7 +3,7 @@ from django.urls import path
 from django.contrib.auth.decorators import login_required
 from django.conf.urls import url, include
 from apps.hospital.views import *
-from django.contrib.auth.views import login
+
 
 app_name="hospital"
 urlpatterns = [

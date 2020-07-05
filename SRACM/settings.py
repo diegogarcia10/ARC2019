@@ -25,7 +25,7 @@ SECRET_KEY = 'bvdp#^+9f&*g5*iwd=-r&sosz21f=_^7scpslkafz6-d#8u6k&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -76,12 +76,9 @@ WSGI_APPLICATION = 'SRACM.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'arc_db',#Nombre de la base de datos
-        'USER': 'postgres',#usuario
-        'PASSWORD': 'administrador',#Contraseña de tu Postgres
-        'HOST': 'localhost',
-        'PORT': 5432,
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        
     }
 }
 
@@ -121,12 +118,11 @@ USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATIC_URL = '/static/'
 
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 # Extra places for collectstatic to find static files.
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),
 )
 MEDIA_ROOT = 'media'
 MEDIA_URL = '/media/'

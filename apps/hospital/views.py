@@ -16,16 +16,18 @@ import random
 #Metodo que verifica cual es el puerto en el que esta conectado el arduino
 def puerto():
 	ports = list(serial.tools.list_ports.comports())
-	puerto = ''
+	puerto = ''	
 	for p in ports:
 		puerto = p
+		print(puerto)
 	puerto = puerto[0]
+	print(str(puerto))
 	return puerto
 
 #Metodo que retorna el codigo leido por el RFID--> Arduino --> Sistema WEB
 def lectura():	
-	puerto_asignado = puerto()
-	arduino = serial.Serial(puerto_asignado, 9600)
+	#puerto_asignado = puerto()
+	arduino = serial.Serial('/dev/ttyACM0', 9600)
 	time.sleep(2)
 	codigo=''
 	while codigo == '':

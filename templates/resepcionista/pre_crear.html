@@ -9,7 +9,7 @@
     </div>
     <br>
     <div class="text-center">
-    	<a class="btn btn-warning btn-lg" href="javascript:location.reload()" ><i class="fa fa-refresh" aria-hidden="true"></i> Recargar</a>
+    	<a class="btn btn-warning btn-lg" href="{% url 'hospital:registrar_entrada' %}" ><i class="fa fa-refresh" aria-hidden="true"></i> Recargar</a>
     </div>
 
 {% else %}
@@ -24,7 +24,7 @@
     </div>
     <br>
     <div class="text-center">
-    	<a class="btn btn-primary btn-lg" href="javascript:location.reload()" ><i class="fa fa-refresh" aria-hidden="true"></i> Recargar</a>
+    	<a class="btn btn-primary btn-lg" href="{% url 'hospital:registrar_entrada' %}" ><i class="fa fa-refresh" aria-hidden="true"></i> Recargar</a>
     </div>
     	
 {%endif%}
